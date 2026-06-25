@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Cotizacion — Sabores de Casa — Automatiza LATAM</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root{
+  --bg:#0a0a0c; --surface:#111317; --surface-2:#16191f;
+  --border:rgba(255,255,255,.08);
+  --text:#e6e6e6; --muted:#8b93a1;
+  --cyan:#00E5FF; --cyan-2:#22d3ee; --cyan-soft:rgba(0,229,255,.10);
+  --good:#34d399; --warn:#fbbf24; --orange:#fb923c; --dim:#64748b;
+  --radius:16px; --radius-sm:10px;
+  --shadow:0 20px 60px -20px rgba(0,0,0,.7);
+  --glow:0 0 40px -8px rgba(0,229,255,.35);
+}
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Space Grotesk',system-ui,-apple-system,sans-serif;
+  font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:840px; margin:0 auto; padding:0 28px;}
+.accent{font-family:'Instrument Serif',Georgia,serif; font-style:italic; color:var(--cyan-2); font-weight:400;}
+a{color:var(--cyan); text-decoration:none;}
+.micro-label{display:block; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:8px; font-weight:600;}
+
+section{padding:52px 0; border-top:1px solid var(--border);}
+section:first-of-type{border-top:none;}
+.sec-head{margin-bottom:30px;}
+.sec-head h2{font-size:29px; font-weight:700; margin:0; letter-spacing:-.02em;}
+.sec-head .rule{display:block; width:54px; height:2px; background:var(--cyan); margin:14px 0 0;}
+.sec-sub{color:var(--muted); margin:14px 0 0; font-size:15.5px;}
+p{margin:0 0 14px;}
+.lead{font-size:17px; line-height:1.7;}
+
+/* ── PORTADA ── */
+.cover{min-height:92vh; display:flex; flex-direction:column; justify-content:center;
+  padding:60px 0; border-top:none; position:relative; overflow:hidden;}
+.cover::before{content:""; position:absolute; inset:0;
+  background:radial-gradient(ellipse 60% 50% at 18% 12%, rgba(0,229,255,.14), transparent 60%);
+  pointer-events:none;}
+.cover .wrap{position:relative; z-index:1;}
+.lockup{display:flex; align-items:center; justify-content:space-between; margin-bottom:60px;}
+.lockup-left{display:flex; align-items:center; gap:11px;}
+.wordmark{font-size:12px; letter-spacing:.20em; text-transform:uppercase; color:var(--cyan); font-weight:600;}
+.lockup-date{font-size:13px; color:var(--muted);}
+.eyebrow{font-size:12px; letter-spacing:.20em; text-transform:uppercase; color:var(--cyan); font-weight:600; margin-bottom:20px;}
+.cover h1{font-size:50px; font-weight:700; line-height:1.06; margin:0 0 18px; letter-spacing:-.03em;}
+.cover-sub{font-size:24px; line-height:1.4; color:var(--text); max-width:680px; margin:0 0 28px;}
+.cover-meta{font-size:14.5px; color:var(--muted); margin:0 0 14px;}
+.cover-meta .sep{color:var(--cyan); margin:0 9px;}
+.cover-para{display:flex; gap:48px; flex-wrap:wrap; margin-top:34px;}
+.cover-para .cp-item .cp-k{font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);}
+.cover-para .cp-item .cp-v{font-size:16px; font-weight:600; margin-top:5px;}
+
+/* ── callout / problema ── */
+.callout{background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--cyan);
+  border-radius:var(--radius-sm); padding:22px 26px; margin-top:24px;}
+.callout .micro-label{color:var(--cyan);}
+.callout p{margin:0; font-size:15.5px;}
+.recognition{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:28px 32px;}
+.recognition .q{font-family:'Instrument Serif',Georgia,serif; font-style:italic; font-size:23px; line-height:1.45; color:var(--text); margin:0;}
+.recognition .q::before{content:"\201C"; color:var(--cyan);}
+.recognition .q::after{content:"\201D"; color:var(--cyan);}
+.recognition .attr{font-size:13.5px; color:var(--muted); margin:14px 0 0;}
+
+/* ── ROI band ── */
+.roi-band{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:6px 0 22px;}
+.roi-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px;}
+.roi-num{font-family:'Instrument Serif',Georgia,serif; font-style:italic; font-size:38px; color:var(--cyan); line-height:1;}
+.roi-label{font-size:12px; letter-spacing:.10em; text-transform:uppercase; color:var(--text); margin-top:10px; font-weight:600;}
+.roi-ctx{font-size:13px; color:var(--muted); margin:8px 0 0; line-height:1.45;}
+
+/* ── scope ── */
+.scope-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+.scope-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px 26px;}
+.scope-card h3{font-size:15px; margin:0 0 14px; display:flex; align-items:center; gap:9px;}
+.scope-card.in h3{color:var(--good);}
+.scope-card.out h3{color:var(--muted);}
+.scope-list{list-style:none; margin:0; padding:0;}
+.scope-list li{position:relative; padding:7px 0 7px 26px; font-size:14.5px; border-bottom:1px solid var(--border);}
+.scope-list li:last-child{border-bottom:none;}
+.scope-card.in .scope-list li::before{content:"\2713"; position:absolute; left:0; top:7px; color:var(--good); font-weight:700;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+.scope-card.out .scope-list li::before{content:"\2014"; position:absolute; left:0; top:7px; color:var(--dim);}
+
+/* ── proceso / fases ── */
+.timeline{position:relative; margin-top:8px;}
+.phase{display:flex; gap:20px; padding-bottom:8px;}
+.phase-num{flex:none; width:40px; height:40px; border-radius:50%; background:var(--cyan-soft);
+  border:1px solid rgba(0,229,255,.3); color:var(--cyan); font-weight:700; font-size:16px;
+  display:flex; align-items:center; justify-content:center;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+.phase-body{flex:1; padding-bottom:22px; border-bottom:1px solid var(--border); margin-bottom:22px;}
+.phase:last-child .phase-body{border-bottom:none;}
+.phase-body h3{font-size:17px; margin:6px 0 4px;}
+.phase-body .phase-dur{font-size:12.5px; color:var(--cyan-2); letter-spacing:.04em; text-transform:uppercase;}
+.phase-body p{font-size:14.5px; color:var(--muted); margin:8px 0 0;}
+
+/* ── TIERS good/better/best ── */
+.tiers{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:8px;}
+.tier{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:28px 24px; display:flex; flex-direction:column; opacity:.96;}
+.tier.featured{border:1.5px solid var(--cyan); box-shadow:var(--glow); opacity:1; position:relative;}
+.tier-flag{position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+  background:var(--cyan); color:var(--bg); font-size:11px; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; padding:5px 16px; border-radius:99px; white-space:nowrap;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+.tier-name{font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600;}
+.tier.featured .tier-name{color:var(--cyan);}
+.tier-price{font-family:'Instrument Serif',Georgia,serif; font-style:italic; font-size:40px; color:var(--text); line-height:1; margin:12px 0 2px;}
+.tier.featured .tier-price{color:var(--cyan);}
+.tier-price .cur{font-size:15px; font-style:normal; color:var(--muted); font-family:'Space Grotesk',sans-serif; margin-left:6px; letter-spacing:.04em;}
+.tier-tagline{font-size:13.5px; color:var(--muted); margin:0 0 18px; min-height:38px;}
+.tier-feats{list-style:none; margin:0 0 18px; padding:0; flex:1;}
+.tier-feats li{position:relative; padding:7px 0 7px 24px; font-size:14px; border-bottom:1px solid var(--border);}
+.tier-feats li:last-child{border-bottom:none;}
+.tier-feats li::before{content:"\2713"; position:absolute; left:0; top:7px; color:var(--cyan); font-weight:700; font-size:13px;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+.tier-feats li.muted{color:var(--dim);}
+.tier-feats li.muted::before{content:"\2014"; color:var(--dim);}
+.tier-pay{font-size:12.5px; color:var(--muted); padding-top:14px; border-top:1px solid var(--border);}
+.tier-pay b{color:var(--text);}
+
+/* ── retainer line ── */
+.retainer{background:var(--surface); border:1px dashed rgba(0,229,255,.35); border-radius:var(--radius);
+  padding:26px 30px; margin-top:22px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;}
+.retainer .rt-l{flex:1; min-width:240px;}
+.retainer h3{margin:0 0 6px; font-size:18px;}
+.retainer p{margin:0; font-size:14px; color:var(--muted);}
+.retainer .rt-price{font-family:'Instrument Serif',Georgia,serif; font-style:italic; font-size:30px; color:var(--cyan-2);}
+.retainer .rt-price small{font-size:14px; color:var(--muted); font-style:normal; font-family:'Space Grotesk',sans-serif;}
+
+/* ── términos ── */
+.terms-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.term{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px 22px;}
+.term .micro-label{color:var(--cyan);}
+.term .t-val{font-size:16px; font-weight:600;}
+.term .t-ctx{font-size:13px; color:var(--muted); margin-top:6px;}
+.vigencia{background:var(--cyan-soft); border:1px solid var(--cyan); border-radius:var(--radius);
+  box-shadow:var(--glow); padding:24px 28px; margin-top:22px;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+.vigencia .v-title{font-size:13px; letter-spacing:.10em; text-transform:uppercase; color:var(--cyan); font-weight:700;}
+.vigencia .v-date{font-size:22px; font-weight:700; margin:8px 0 4px;}
+.vigencia p{margin:0; font-size:14px; color:var(--text);}
+
+/* ── cierre / firma ── */
+.closing-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:36px 38px;}
+.closing-card h2{font-size:26px; margin:0 0 12px; letter-spacing:-.02em;}
+.closing-card p{font-size:15.5px; color:var(--muted);}
+.cta-btn{display:inline-block; margin-top:18px; background:var(--cyan); color:var(--bg);
+  font-weight:700; font-size:15px; padding:14px 28px; border-radius:99px; letter-spacing:.01em;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+.sign-row{display:flex; gap:40px; margin-top:34px; flex-wrap:wrap;}
+.sign-box{flex:1; min-width:220px;}
+.sign-line{border-bottom:1px solid var(--muted); height:42px; margin-bottom:8px;}
+.sign-box .sl{font-size:12.5px; color:var(--muted);}
+
+.supuestos{background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:22px 26px;}
+.supuestos ul{margin:0; padding-left:18px;}
+.supuestos li{font-size:13px; color:var(--muted); margin:6px 0; line-height:1.5;}
+
+.doc-footer{text-align:center; padding:40px 0 64px; color:var(--muted); font-size:12.5px;}
+.doc-footer .lf{display:inline-flex; align-items:center; gap:8px; margin-bottom:10px;}
+
+@media (max-width:680px){
+  .wrap{padding:0 20px;}
+  .cover h1{font-size:37px;} .cover-sub{font-size:20px;}
+  .tiers{grid-template-columns:1fr;} .roi-band{grid-template-columns:1fr;}
+  .scope-grid,.terms-grid{grid-template-columns:1fr;}
+  .sec-head h2{font-size:24px;}
+}
+
+@media print{
+  *{-webkit-print-color-adjust:exact !important; print-color-adjust:exact !important;}
+  @page{size:A4; margin:15mm;}
+  body{background:var(--bg) !important; font-size:11.5pt;}
+  .wrap{max-width:100%; padding:0;}
+  section{padding:20px 0;}
+  .cover{min-height:auto; padding:20px 0 14px;}
+  .cover h1{font-size:38px;}
+  .tier{break-inside:avoid;} .tiers{break-inside:avoid;}
+  .roi-card,.scope-card,.term,.phase,.retainer{break-inside:avoid;}
+  .vigencia,.recognition,.callout,.closing-card,.supuestos{break-inside:avoid;}
+  .sec-head{break-after:avoid;}
+}
+</style></head><body><header class="cover"><div class="wrap"><div class="lockup"><div class="lockup-left"><svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="24" cy="21" r="9" stroke="#00E5FF" stroke-width="2.5"/><path d="M6 34 H42" stroke="#00E5FF" stroke-width="2.5" stroke-linecap="round"/></svg><span class="wordmark">Automatiza LATAM</span></div><span class="lockup-date">2026-06-25</span></div><div class="eyebrow">Cotizacion</div><h1>Tu cotizador automático de WhatsApp</h1><p class="cover-sub">Para que dejes de perder pedidos grandes por tardar en contestar — y recuperes tus tardes.</p><p class="cover-meta">Preparada para <b style='color:#e6e6e6'>Sabores de Casa</b><span class="sep">·</span>Marisol — CDMX<span class="sep">·</span>Folio COT-2026-014</p><div class="cover-para"><div class="cp-item"><div class="cp-k">Preparada por</div><div class="cp-v">Automatiza LATAM</div></div><div class="cp-item"><div class="cp-k">Valida hasta</div><div class="cp-v">9 de julio de 2026</div></div><div class="cp-item"><div class="cp-k">Moneda</div><div class="cp-v">USD</div></div></div></div></header><section><div class="wrap"><div class="sec-head"><h2>Resumen</h2><span class="rule"></span></div><p class="lead">Hoy se te van pedidos de eventos porque cotizar a mano te toma toda la tarde y cuando contestas, el cliente ya se fue con otro. Te propongo montar un asistente de WhatsApp que cotiza solo, 24/7, con tus precios y tu tono — y te avisa cada vez que entra un pedido grande para que tú le des seguimiento. Lo construyo, lo conecto a tu número y lo dejo funcionando. Tres opciones abajo según qué tan completo lo quieras.</p></div></section><section><div class="wrap"><div class="sec-head"><h2>El problema que vamos a resolver</h2><span class="rule"></span></div><div class="recognition"><p class="q">Se me va la tarde contestando lo mismo y aún así se me escapan los pedidos buenos.</p><p class="attr">— Lo que me dijiste en nuestra llamada</p></div><p class="lead" style="margin-top:22px">El cuello de botella no es tu comida, es tu tiempo de respuesta. Cada cotización de evento te toma ~12 minutos y la haces ~15 veces por semana, casi siempre escribiendo lo mismo desde cero. Mientras escribes una, llegan otras tres. Los pedidos grandes son los que más valen y los que más se enfrían si tardas.</p></div></section><section><div class="wrap"><div class="sec-head"><h2>La solucion</h2><span class="rule"></span></div><p class="lead">Un asistente de WhatsApp que recibe al cliente que quiere cotizar un evento, le pregunta solo lo que falta (cuántas personas, fecha, tipo de comida), calcula el precio con tu lista y le manda la cotización completa en segundos — con tu tono, 24/7. A ti te llega un aviso de cada pedido grande para que cierres tú la venta.</p><div class="callout"><span class="micro-label">Lo que vas a tener funcionando</span><p>Asistente de WhatsApp conectado a tu número · Tu lista de precios cargada y el flujo de cotización · Aviso a tu teléfono por cada pedido grande · Guía corta de uso para que lo manejes sin depender de mí</p></div></div></section><section><div class="wrap"><div class="sec-head"><h2>Lo que esto te regresa</h2><span class="rule"></span><p class="sec-sub">Números conservadores, atados a tu propio volumen.</p></div><div class="roi-band"><div class="roi-card"><div class="roi-num">~9 h</div><div class="roi-label">Recuperadas al mes</div><p class="roi-ctx">Las tardes que hoy se van en cotizar a mano.</p></div><div class="roi-card"><div class="roi-num">~$180</div><div class="roi-label">Pedidos recuperados/mes</div><p class="roi-ctx">Si recuperas 1 de cada 5 pedidos grandes que hoy se enfrían.</p></div><div class="roi-card"><div class="roi-num">~$14</div><div class="roi-label">Costo de herramientas/mes</div><p class="roi-ctx">WhatsApp + el cerebro de IA, a tu volumen.</p></div></div><p class="sec-sub" style="margin-top:4px">El ahorro de tiempo es lo más sólido; los ingresos recuperados son una estimación conservadora sobre tu volumen actual.</p></div></section><section><div class="wrap"><div class="sec-head"><h2>Alcance</h2><span class="rule"></span><p class="sec-sub">Que entra en este proyecto y que no. Asi evitamos malentendidos despues.</p></div><div class="scope-grid"><div class="scope-card in"><h3>Incluye</h3><ul class="scope-list"><li>Asistente de cotización de eventos por WhatsApp</li><li>Carga de tu lista de precios y reglas</li><li>Aviso de pedidos grandes a tu teléfono</li><li>Conexión de tu número de WhatsApp</li><li>2 semanas de ajustes post-lanzamiento</li><li>Guía de uso</li></ul></div><div class="scope-card out"><h3>No incluye (este proyecto)</h3><ul class="scope-list"><li>Atención de clientes VIP de eventos (eso lo sigues llevando tú, como pediste)</li><li>Publicación del menú diario en redes</li><li>Sistema de cobro en línea dentro del chat</li><li>Costos mensuales de WhatsApp y de la IA (van por tu cuenta, son centavos)</li></ul></div></div></div></section><section><div class="wrap"><div class="sec-head"><h2>Como vamos a trabajar</h2><span class="rule"></span></div><div class="timeline"><div class="phase"><div class="phase-num">1</div><div class="phase-body"><div class="phase-dur">Día 1-2</div><h3>Arranque</h3><p>Me pasas tu lista de precios y las 5 preguntas que siempre haces para cotizar. Entra el anticipo.</p></div></div><div class="phase"><div class="phase-num">2</div><div class="phase-body"><div class="phase-dur">Día 3-9</div><h3>Construcción</h3><p>Construyo el asistente, lo conecto a tu WhatsApp y lo pruebo con cotizaciones reales.</p></div></div><div class="phase"><div class="phase-num">3</div><div class="phase-body"><div class="phase-dur">Día 10-14</div><h3>Entrega y ajuste</h3><p>Lo lanzamos, te enseño a usarlo y afinamos las respuestas sobre conversaciones reales.</p></div></div></div></div></section><section><div class="wrap"><div class="sec-head"><h2>Tu inversion</h2><span class="rule"></span><p class="sec-sub">Tres formas de avanzar. La recomendada esta marcada — es el mejor balance entre alcance y resultado.</p></div><div class="tiers"><div class="tier"><div class="tier-name">Esencial</div><div class="tier-price">$1,500<span class="cur">USD</span></div><div class="tier-tagline">El cotizador funcionando. Lo básico para dejar de perder pedidos.</div><ul class="tier-feats"><li class="">Cotizador de eventos por WhatsApp</li><li class="">Tu lista de precios cargada</li><li class="">1 semana de ajustes</li><li class="muted">Aviso de pedidos grandes</li><li class="muted">Mantenimiento mensual</li></ul><div class="tier-pay"><b>$750</b> de anticipo<br>50% anticipo / 50% al entregar</div></div><div class="tier featured"><div class="tier-flag">Más elegida</div><div class="tier-name">Recomendada</div><div class="tier-price">$2,200<span class="cur">USD</span></div><div class="tier-tagline">El cotizador completo, con avisos y soporte. El mejor balance.</div><ul class="tier-feats"><li class="">Todo lo del Esencial</li><li class="">Aviso de pedidos grandes a tu teléfono</li><li class="">2 semanas de ajustes sobre casos reales</li><li class="">Guía de uso para tu equipo</li></ul><div class="tier-pay"><b>$1,100</b> de anticipo<br>50% anticipo / 50% al entregar</div></div><div class="tier"><div class="tier-name">Completa</div><div class="tier-price">$3,000<span class="cur">USD</span></div><div class="tier-tagline">El cotizador + el asistente que contesta dudas de menú y horarios.</div><ul class="tier-feats"><li class="">Todo lo de la Recomendada</li><li class="">Asistente de preguntas frecuentes (menú, horarios, envío)</li><li class="">1 mes de mantenimiento incluido</li><li class="">Prioridad en cambios el primer mes</li></ul><div class="tier-pay"><b>$1,500</b> de anticipo<br>50% anticipo / 50% al entregar</div></div></div><div class="retainer"><div class="rt-l"><h3>Mantenimiento mensual (opcional)</h3><p>Monitoreo, ajustes de precios y respuestas, y mejoras continuas. Para que el sistema siga rindiendo sin que te ocupes tú.</p></div><div class="rt-price">$400<small>/mes</small></div></div></div></section><section><div class="wrap"><div class="sec-head"><h2>Terminos</h2><span class="rule"></span></div><div class="terms-grid"><div class="term"><span class="micro-label">Anticipo</span><div class="t-val">50% al firmar</div><div class="t-ctx">El trabajo arranca cuando entra el anticipo.</div></div><div class="term"><span class="micro-label">Forma de pago</span><div class="t-val">Link de pago Stripe (tarjeta) o transferencia</div><div class="t-ctx">Te mando el link del anticipo al aceptar; el saldo al entregar y aprobar.</div></div><div class="term"><span class="micro-label">Tiempo de entrega</span><div class="t-val">10 a 14 días hábiles</div><div class="t-ctx">Desde que entra el anticipo y me pasas tu lista de precios.</div></div><div class="term"><span class="micro-label">Soporte incluido</span><div class="t-val">2 semanas de ajustes sin costo</div><div class="t-ctx">Afinamos respuestas y precios sobre conversaciones reales después de lanzar.</div></div></div><div class="vigencia"><div class="v-title">Vigencia de esta cotizacion</div><div class="v-date">9 de julio de 2026</div><p>Despues de esta fecha los precios y el alcance pueden ajustarse. Si quieres avanzar, lo ideal es cerrar antes.</p></div></div></section><section><div class="wrap"><div class="closing-card"><h2>¿Le entramos?</h2><p>Elige la opción que más te late y te mando el link del anticipo el mismo día. En menos de dos semanas tu WhatsApp cotiza solo. Cualquier duda, aquí estoy.</p><a class="cta-btn" href="mailto:tu-correo@tuagencia.com">Aceptar y arrancar</a><div class="sign-row"><div class="sign-box"><div class="sign-line"></div><div class="sl">Por Automatiza LATAM</div></div><div class="sign-box"><div class="sign-line"></div><div class="sl">Por Sabores de Casa (cliente)</div></div></div></div><div class="supuestos" style="margin-top:26px"><span class="micro-label">Notas y supuestos</span><ul><li>Tu hora la valoramos en ~$8 USD como referencia conservadora. Si tu tiempo vale más, el ahorro es mayor.</li><li>Los precios de herramientas van por tu cuenta (~$14/mes) y se verificaron en junio 2026.</li><li>Esta cotización es válida hasta la fecha de vigencia indicada; después puede ajustarse.</li></ul></div></div></section><footer class="doc-footer"><div class="wrap"><div class="lf"><svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="24" cy="21" r="9" stroke="#00E5FF" stroke-width="2.5"/><path d="M6 34 H42" stroke="#00E5FF" stroke-width="2.5" stroke-linecap="round"/></svg><span class="wordmark">Automatiza LATAM</span></div><div>Cotizacion generada 2026-06-25 · Documento confidencial</div></div></footer></body></html>

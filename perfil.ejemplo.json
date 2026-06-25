@@ -1,0 +1,25 @@
+{
+  "_nota": "Este es el perfil de TU agencia. Se crea una sola vez (la primera vez que usas cualquier skill de agencia te entrevista) y se guarda en ~/.config/agencia-ia/perfil.json. De ahí TODOS los skills salen personalizados. Para actualizarlo: 'configura mi agencia'.",
+  "agencia": {
+    "nombre_marca": "Horizontes Automations",
+    "nombre_legal": "Santiago Muñoz / Horizontes IA",
+    "tipo_legal": "persona"
+  },
+  "persona": {
+    "nombre": "Santi",
+    "rol": "Fundador",
+    "email": "santi@tuagencia.com",
+    "whatsapp": "+52 ...",
+    "web": "https://tuagencia.com"
+  },
+  "ubicacion": { "pais": "México", "moneda": "USD" },
+  "precios": {
+    "setup_min": 1500,
+    "setup_max": 3000,
+    "mensualidad": 300,
+    "estructura_pago": "50/50"
+  },
+  "cobro": { "proveedor": "stripe", "datos": "https://buy.stripe.com/tu-link-o-instrucciones" },
+  "marca": { "color_acento": "#00E5FF", "logo_url": null },
+  "tono": "cálido y profesional"
+}

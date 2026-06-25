@@ -1,0 +1,20 @@
+# Investigación interna (no se publica)
+_research/
+
+# Sistema operativo / editores
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+
+# Node (por si algún script trae deps)
+node_modules/
+
+# Perfiles/credenciales locales del usuario (nunca subir)
+perfil.json
+.env
+.env.*

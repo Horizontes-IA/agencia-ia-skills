@@ -1,0 +1,141 @@
+{
+  "_comentario": "PLANTILLA de cotizacion.json. Copia este archivo, llena los campos y corre: python3 scripts/generar_cotizacion.py <este-archivo> <carpeta-salida>. Borra los campos _comentario antes de generar (el generador los ignora, pero deja el JSON mas limpio). Campos OBLIGATORIOS minimos: cliente.nombre_negocio, comercial.titulo, opciones[] (al menos 1, idealmente 3). Todo lo demas es opcional y se omite con gracia si falta. NUNCA inventes numeros: si vienen del /diagnostico, usalos; si no, pregunta al usuario.",
+
+  "schema_version": "1.0",
+
+  "agencia": {
+    "_comentario": "Tu marca (el miembro que opera la agencia). Si no la sabes, preguntala una vez.",
+    "nombre": "[NOMBRE DE TU AGENCIA]",
+    "contacto": "[tu-correo@tuagencia.com o WhatsApp]"
+  },
+
+  "cliente": {
+    "nombre_negocio": "[NOMBRE DEL NEGOCIO DEL CLIENTE]",
+    "contacto": "[Persona — Ciudad, opcional]",
+    "pais": "[Pais, opcional]"
+  },
+
+  "comercial": {
+    "folio": "COT-2026-001",
+    "fecha": "[YYYY-MM-DD — hoy]",
+    "moneda": "USD",
+    "_comentario_moneda": "USD por default (estandar de mercado para anclar). Solo cambia a MXN/ARS/COP si el cliente lo pidio.",
+    "titulo": "[TITULO ORIENTADO A RESULTADO, ej: 'Tu cotizador automatico de WhatsApp']",
+    "subtitulo": "[Una linea que conecta con el dolor, en sus palabras]",
+    "resumen_ejecutivo": "[1 parrafo. Se escribe AL FINAL. Que problema resuelves, que vas a hacer, y por que. Muchos clientes deciden solo con esto.]",
+
+    "anticipo_pct": 50,
+    "_comentario_anticipo": "50 por default (esquema 50/50: 50% al firmar, 50% al entregar). El generador calcula el monto del anticipo de cada opcion solo.",
+
+    "forma_pago": "Link de pago Stripe (tarjeta) o transferencia",
+    "forma_pago_nota": "Te mando el link del anticipo al aceptar; el saldo al entregar y aprobar.",
+    "tiempo_entrega": "[ej: 10 a 14 dias habiles]",
+    "tiempo_entrega_nota": "[Desde que entra el anticipo y me pasas X]",
+    "garantia": "[ej: 2 semanas de ajustes sin costo]",
+    "garantia_nota": "[Que cubren esos ajustes]",
+    "vigencia_fecha": "[FECHA LEGIBLE, ej: '9 de julio de 2026' — por default hoy + 14 dias]"
+  },
+
+  "problema": {
+    "_comentario": "EN SUS PALABRAS. Esta seccion te separa de las cotizaciones genericas. Si hay /diagnostico, jala sangrado_declarado.frase_textual aqui.",
+    "frase_cliente": "[Cita textual del cliente sobre su dolor]",
+    "frase_attr": "— Lo que me dijiste en nuestra llamada",
+    "texto": "[Describe el cuello de botella con SUS numeros: frecuencia, tiempo por vez, lo que pierde]"
+  },
+
+  "solucion": {
+    "_comentario": "Orientada a RESULTADO, no lista de features tecnicas. 'Vamos a [resultado] haciendo [que]'.",
+    "texto": "[Que va a tener el cliente funcionando, en lenguaje simple]",
+    "entregables": [
+      "[Entregable 1, concreto]",
+      "[Entregable 2]",
+      "[Entregable 3]"
+    ]
+  },
+
+  "roi": {
+    "_comentario": "SIEMPRE en dinero, no en tiempo abstracto. Si hay /diagnostico, jala de roi_global y de valor_si_lo_vendes_usd. Regla: proyecto one-off apunta a 5x-10x ROI.",
+    "subtitulo": "Numeros conservadores, atados a tu propio volumen.",
+    "cards": [
+      { "num": "[~9 h]", "label": "[Recuperadas al mes]", "ctx": "[Contexto corto]" },
+      { "num": "[~$180]", "label": "[Ingreso recuperado/mes]", "ctx": "[Supuesto conservador]" },
+      { "num": "[~$14]", "label": "[Costo de herramientas/mes]", "ctx": "[Lo que paga el cliente, centavos]" }
+    ],
+    "nota": "El ahorro de tiempo es lo mas solido; los ingresos recuperados son una estimacion conservadora."
+  },
+
+  "alcance": {
+    "_comentario": "Definir el 'no incluye' EVITA scope creep. Es la seccion que mas malentendidos previene.",
+    "incluye": [
+      "[Lo que SI entra, 1]",
+      "[Lo que SI entra, 2]"
+    ],
+    "no_incluye": [
+      "[Lo que NO entra en este proyecto, 1]",
+      "[Costos mensuales de APIs/herramientas — van por cuenta del cliente]"
+    ]
+  },
+
+  "proceso": [
+    { "titulo": "Arranque", "duracion": "Dia 1-2", "descripcion": "[Que pasa: anticipo + lo que te pasa el cliente]" },
+    { "titulo": "Construccion", "duracion": "Dia 3-9", "descripcion": "[Construyes y pruebas]" },
+    { "titulo": "Entrega y ajuste", "duracion": "Dia 10-14", "descripcion": "[Lanzamiento + ajustes]" }
+  ],
+
+  "opciones": [
+    {
+      "_comentario": "TIER BAJO = ancla/decoy. Items que NO trae van con muted:true (aparecen tachados, hacen ver al de en medio mas valioso).",
+      "nombre": "Esencial",
+      "precio_total": 1500,
+      "tagline": "[Que es: lo basico]",
+      "incluye": [
+        { "texto": "[Feature core]" },
+        { "texto": "[Feature que NO trae este tier]", "muted": true }
+      ]
+    },
+    {
+      "_comentario": "TIER MEDIO = el que quieres que elijan. recomendada:true le pone glow + flag.",
+      "nombre": "Recomendada",
+      "precio_total": 2200,
+      "recomendada": true,
+      "flag": "Mas elegida",
+      "tagline": "[El mejor balance entre alcance y resultado]",
+      "incluye": [
+        { "texto": "Todo lo del Esencial" },
+        { "texto": "[Feature extra 1]" },
+        { "texto": "[Feature extra 2]" }
+      ]
+    },
+    {
+      "_comentario": "TIER ALTO = ancla alta. Hace ver razonable al de en medio.",
+      "nombre": "Completa",
+      "precio_total": 3000,
+      "tagline": "[Todo + lo premium]",
+      "incluye": [
+        { "texto": "Todo lo de la Recomendada" },
+        { "texto": "[Feature premium]" },
+        { "texto": "1 mes de mantenimiento incluido" }
+      ]
+    }
+  ],
+
+  "retainer": {
+    "_comentario": "SIEMPRE ofrecer el retainer como linea aparte — ahi esta la recurrencia (el 70-80% del ingreso de las agencias). Regla: setup vale 50%-100% del retainer. Si el cliente no quiere mensualidad, omite este bloque entero.",
+    "titulo": "Mantenimiento mensual (opcional)",
+    "descripcion": "Monitoreo, ajustes y mejoras continuas para que el sistema siga rindiendo.",
+    "precio_mes": 400
+  },
+
+  "cierre": {
+    "titulo": "[ej: 'Le entramos?']",
+    "texto": "[Siguiente paso concreto: elige opcion -> te mando link de anticipo -> arrancamos]",
+    "cta_label": "Aceptar y arrancar",
+    "cta_url": "[mailto: o link al siguiente paso]"
+  },
+
+  "supuestos": [
+    "[Costo/hora usado como referencia]",
+    "Los precios de herramientas van por cuenta del cliente y se verificaron en [mes/anio].",
+    "Esta cotizacion es valida hasta la fecha de vigencia; despues puede ajustarse."
+  ]
+}

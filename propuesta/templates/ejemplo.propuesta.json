@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.0",
+  "meta": {
+    "fecha": "2026-06-25",
+    "validez_dias": 14,
+    "moneda_display": "USD",
+    "generado_por": "/propuesta v1.0",
+    "id": "prop-2026-06-25-sabores-de-casa"
+  },
+  "agencia": {
+    "nombre": "Nodo Automatización",
+    "tagline": "Sistemas de IA para negocios que quieren dejar de hacer lo repetitivo",
+    "contacto": "Diego Ramírez · diego@nodo.ai · wa.me/521..."
+  },
+  "cliente": {
+    "nombre": "Marisol",
+    "nombre_negocio": "Sabores de Casa",
+    "contacto": "Marisol (dueña)"
+  },
+  "titulo": "Un asistente que cotiza tus eventos por ti, 24/7",
+  "subtitulo": "Para que dejes de perder las tardes —y los pedidos grandes— contestando lo mismo en WhatsApp.",
+  "resumen_ejecutivo": {
+    "parrafo": "Hoy **Sabores de Casa** pierde alrededor de **13 horas al mes** solo respondiendo a mano cotizaciones de eventos por WhatsApp, y aún así se te escapan los pedidos grandes porque no alcanzas a contestar a tiempo. Te proponemos montar un **asistente que cotiza solo**, con tus precios y tu tono, que responde en segundos a cualquier hora. Lo entregamos en 3 semanas, lo dejamos funcionando, y te enseñamos a operarlo.",
+    "kpis": [
+      { "valor": "~13 h", "etiqueta": "que recuperas al mes" },
+      { "valor": "<2 min", "etiqueta": "para responder cada cotización" },
+      { "valor": "3 sem", "etiqueta": "de entrega completa" }
+    ],
+    "costo_del_problema": "cada pedido de evento que se enfría vale ~$60, y se te escapan varios al mes — eso es dinero que hoy se va con la competencia por tardar en contestar."
+  },
+  "problema": {
+    "titulo": "El reto que estás viviendo hoy",
+    "intro": "En el diagnóstico nos quedó muy claro dónde está el sangrado:",
+    "cita_cliente": "Se me va la tarde contestando lo mismo y aún así se me escapan los pedidos buenos.",
+    "cita_fuente": "Marisol, en tu diagnóstico",
+    "puntos": [
+      { "titulo": "15 cotizaciones a la semana, a mano", "detalle": "cada una te toma ~12 min escribiendo precios, opciones y tiempos casi idénticos." },
+      { "titulo": "Pedidos grandes que se enfrían", "detalle": "si no contestas rápido, el cliente se va con otro proveedor — y son los pedidos que más dejan." },
+      { "titulo": "No hay horario", "detalle": "las cotizaciones llegan de noche y fines de semana, justo cuando no puedes responder." }
+    ]
+  },
+  "solucion": {
+    "titulo": "Cómo lo vamos a resolver",
+    "intro": "No te entregamos una herramienta suelta: te entregamos **un sistema que trabaja por ti**. Lo hacemos en 3 fases para que veas resultados desde la primera semana.",
+    "fases": [
+      { "numero": 1, "nombre": "Descubrimiento y setup", "descripcion": "Recopilamos tu lista de precios, tus reglas de cotización y tu tono. Conectamos tu WhatsApp de forma segura (tú solo das un clic, sin compartir contraseñas)." },
+      { "numero": 2, "nombre": "Construcción y pruebas", "descripcion": "Armamos el asistente, lo entrenamos con tus respuestas reales y lo probamos juntos con cotizaciones de verdad hasta que suene exactamente como tú." },
+      { "numero": 3, "nombre": "Entrega y capacitación", "descripcion": "Lo dejamos en producción, te enseñamos a operarlo y editar precios, y te entregamos una guía en video. Quedas dueña del sistema." }
+    ],
+    "nota_confianza_ia": "**La IA aquí es una herramienta que controlamos, no una caja negra.** El asistente sigue TUS precios y reglas; los eventos VIP y los casos especiales siempre te llegan a ti para que decidas. Tus datos y los de tus clientes se quedan en tus cuentas, nunca se venden ni se entrenan modelos públicos con ellos."
+  },
+  "entregables": {
+    "items": [
+      { "titulo": "Asistente de cotización en WhatsApp", "detalle": "responde, pregunta lo que falte y cotiza solo, 24/7." },
+      { "titulo": "Panel para editar tus precios", "detalle": "cambias precios sin depender de nadie." },
+      { "titulo": "Aviso a ti de pedidos grandes", "detalle": "te notifica cuando entra un evento importante." },
+      { "titulo": "Guía de uso en video (~15 min)" },
+      { "titulo": "2 semanas de soporte post-entrega" }
+    ],
+    "revisiones": "1 ronda",
+    "fuera_de_alcance": [
+      "Integración con sistemas de facturación o punto de venta (se cotiza aparte).",
+      "Campañas de marketing o publicidad.",
+      "Atención a clientes de eventos VIP (eso lo sigues atendiendo tú, por decisión tuya)."
+    ]
+  },
+  "timeline": {
+    "intro": "De la firma a tu asistente funcionando, en 3 semanas:",
+    "hitos": [
+      { "cuando": "Semana 1", "titulo": "Setup y conexión", "detalle": "recopilamos precios/reglas y conectamos tu WhatsApp." },
+      { "cuando": "Semana 2", "titulo": "Construcción", "detalle": "armamos y entrenamos el asistente con tus respuestas." },
+      { "cuando": "Semana 3", "titulo": "Pruebas y entrega", "detalle": "lo probamos juntos, lo dejamos en producción y te capacitamos." }
+    ],
+    "nota_pausa": "El reloj se pausa si no recibimos a tiempo tu lista de precios o el acceso a tu WhatsApp — así nadie pierde tiempo y la fecha de entrega se mantiene justa."
+  },
+  "inversion": {
+    "intro": "Tres formas de arrancar, según qué tan completo lo quieras desde el día 1. La mayoría de nuestros clientes elige **Recomendado**.",
+    "ancla_valor": "Para ponerlo en perspectiva: si recuperas aunque sea **3 pedidos de evento al mes** que hoy se te escapan (~$180/mes), el sistema se paga solo en el primer par de meses — y luego es ganancia cada mes.",
+    "nota_anticipo": "Estructura de pago: 50% al firmar para arrancar, 50% al entregar. Empezamos dentro de 3 días hábiles de recibido el anticipo."
+  },
+  "opciones": [
+    {
+      "nombre": "Esencial",
+      "para_quien": "Quiero solo el cotizador, lo más rápido posible.",
+      "precio_usd": 1500,
+      "precio_nota": "USD único",
+      "incluye": [
+        "Asistente de cotización en WhatsApp",
+        "Tus precios y tu tono",
+        "Guía de uso en video",
+        "1 semana de soporte"
+      ],
+      "pago": "50% al firmar / 50% al entregar"
+    },
+    {
+      "nombre": "Recomendado",
+      "para_quien": "Quiero el cotizador + que avise pedidos grandes y poder editar precios yo misma.",
+      "precio_usd": 2500,
+      "precio_nota": "USD único",
+      "recomendada": true,
+      "retainer_mes_usd": 150,
+      "incluye": [
+        "Todo lo de Esencial",
+        "Panel para editar precios tú misma",
+        "Aviso de pedidos grandes a tu WhatsApp",
+        "2 semanas de soporte",
+        "Soporte y mejoras mensuales (opcional)"
+      ],
+      "pago": "50% al firmar / 50% al entregar"
+    },
+    {
+      "nombre": "Completo",
+      "para_quien": "Quiero el sistema completo de atención: cotiza, contesta dudas y manda recordatorios.",
+      "precio_usd": 4500,
+      "precio_nota": "USD único",
+      "retainer_mes_usd": 250,
+      "incluye": [
+        "Todo lo de Recomendado",
+        "Asistente que contesta dudas frecuentes (menú, horarios)",
+        "Recordatorios automáticos de pedido",
+        "1 mes de soporte",
+        "Soporte de crecimiento mensual"
+      ],
+      "pago": "40% al firmar / 30% a mitad / 30% al entregar"
+    }
+  ],
+  "prueba_social": {
+    "titulo": "Por qué confiar en nosotros",
+    "intro": "Construimos sistemas como este para negocios locales que viven de WhatsApp.",
+    "casos": [
+      { "metrica": "60% menos tiempo", "texto": "Una pastelería dejó de pasar las tardes cotizando: ahora el asistente lo hace y ella solo aprueba los pedidos grandes.", "fuente": "Cliente de repostería, CDMX" }
+    ],
+    "logos": ["WhatsApp Business", "Cloudflare", "OpenAI"]
+  },
+  "sobre_agencia": {
+    "parrafo": "Somos una agencia enfocada en **automatización con IA para negocios que viven de mensajería**. No vendemos humo técnico: entregamos sistemas que funcionan, los dejamos operando, y te volvemos dueño de ellos. Nuestra ventaja no es un título, es que entendemos tu operación y la traducimos a algo que trabaja solo.",
+    "herramientas": ["Claude", "OpenAI", "WhatsApp API", "Cloudflare", "n8n"]
+  },
+  "terminos": {
+    "items": [
+      { "titulo": "Propiedad", "detalle": "al pagar el total, el sistema y sus cuentas son 100% tuyos." },
+      { "titulo": "Anticipo", "detalle": "no iniciamos construcción hasta recibir el 50% de anticipo." },
+      { "titulo": "Revisiones", "detalle": "incluye 1 ronda de ajustes por entregable; rondas extra se cotizan aparte." },
+      { "titulo": "Costos de operación", "detalle": "las herramientas (WhatsApp API, IA) cuestan ~$15/mes y los pagas tú directo al proveedor." },
+      { "titulo": "Validez", "detalle": "esta propuesta y sus precios son válidos por 14 días." }
+    ]
+  },
+  "cta": {
+    "titulo": "Para empezar",
+    "pasos": [
+      "Respóndeme confirmando qué opción prefieres (Esencial, Recomendado o Completo).",
+      "Te mando el acuerdo de alcance para firma digital y el link de pago del anticipo.",
+      "Con el anticipo recibido, arrancamos en menos de 3 días hábiles."
+    ],
+    "boton_label": "Agendar 15 min para revisarla juntos",
+    "boton_url": "https://cal.com/diego-nodo/15min",
+    "urgencia": "Los precios de esta propuesta son válidos por 14 días. Después podemos actualizarla, pero suele subir.",
+    "contacto": "¿Dudas antes de decidir? Escríbeme directo: **diego@nodo.ai** o **wa.me/521...**"
+  }
+}

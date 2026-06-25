@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "agencia": {
+    "nombre": "Automatiza LATAM",
+    "contacto": "tu-correo@tuagencia.com"
+  },
+  "cliente": {
+    "nombre_negocio": "Sabores de Casa",
+    "contacto": "Marisol — CDMX",
+    "pais": "México"
+  },
+  "comercial": {
+    "folio": "COT-2026-014",
+    "fecha": "2026-06-25",
+    "moneda": "USD",
+    "titulo": "Tu cotizador automático de WhatsApp",
+    "subtitulo": "Para que dejes de perder pedidos grandes por tardar en contestar — y recuperes tus tardes.",
+    "resumen_ejecutivo": "Hoy se te van pedidos de eventos porque cotizar a mano te toma toda la tarde y cuando contestas, el cliente ya se fue con otro. Te propongo montar un asistente de WhatsApp que cotiza solo, 24/7, con tus precios y tu tono — y te avisa cada vez que entra un pedido grande para que tú le des seguimiento. Lo construyo, lo conecto a tu número y lo dejo funcionando. Tres opciones abajo según qué tan completo lo quieras.",
+    "anticipo_pct": 50,
+    "forma_pago": "Link de pago Stripe (tarjeta) o transferencia",
+    "forma_pago_nota": "Te mando el link del anticipo al aceptar; el saldo al entregar y aprobar.",
+    "tiempo_entrega": "10 a 14 días hábiles",
+    "tiempo_entrega_nota": "Desde que entra el anticipo y me pasas tu lista de precios.",
+    "garantia": "2 semanas de ajustes sin costo",
+    "garantia_nota": "Afinamos respuestas y precios sobre conversaciones reales después de lanzar.",
+    "vigencia_fecha": "9 de julio de 2026"
+  },
+  "problema": {
+    "frase_cliente": "Se me va la tarde contestando lo mismo y aún así se me escapan los pedidos buenos.",
+    "frase_attr": "— Lo que me dijiste en nuestra llamada",
+    "texto": "El cuello de botella no es tu comida, es tu tiempo de respuesta. Cada cotización de evento te toma ~12 minutos y la haces ~15 veces por semana, casi siempre escribiendo lo mismo desde cero. Mientras escribes una, llegan otras tres. Los pedidos grandes son los que más valen y los que más se enfrían si tardas."
+  },
+  "solucion": {
+    "texto": "Un asistente de WhatsApp que recibe al cliente que quiere cotizar un evento, le pregunta solo lo que falta (cuántas personas, fecha, tipo de comida), calcula el precio con tu lista y le manda la cotización completa en segundos — con tu tono, 24/7. A ti te llega un aviso de cada pedido grande para que cierres tú la venta.",
+    "entregables": [
+      "Asistente de WhatsApp conectado a tu número",
+      "Tu lista de precios cargada y el flujo de cotización",
+      "Aviso a tu teléfono por cada pedido grande",
+      "Guía corta de uso para que lo manejes sin depender de mí"
+    ]
+  },
+  "roi": {
+    "subtitulo": "Números conservadores, atados a tu propio volumen.",
+    "cards": [
+      { "num": "~9 h", "label": "Recuperadas al mes", "ctx": "Las tardes que hoy se van en cotizar a mano." },
+      { "num": "~$180", "label": "Pedidos recuperados/mes", "ctx": "Si recuperas 1 de cada 5 pedidos grandes que hoy se enfrían." },
+      { "num": "~$14", "label": "Costo de herramientas/mes", "ctx": "WhatsApp + el cerebro de IA, a tu volumen." }
+    ],
+    "nota": "El ahorro de tiempo es lo más sólido; los ingresos recuperados son una estimación conservadora sobre tu volumen actual."
+  },
+  "alcance": {
+    "incluye": [
+      "Asistente de cotización de eventos por WhatsApp",
+      "Carga de tu lista de precios y reglas",
+      "Aviso de pedidos grandes a tu teléfono",
+      "Conexión de tu número de WhatsApp",
+      "2 semanas de ajustes post-lanzamiento",
+      "Guía de uso"
+    ],
+    "no_incluye": [
+      "Atención de clientes VIP de eventos (eso lo sigues llevando tú, como pediste)",
+      "Publicación del menú diario en redes",
+      "Sistema de cobro en línea dentro del chat",
+      "Costos mensuales de WhatsApp y de la IA (van por tu cuenta, son centavos)"
+    ]
+  },
+  "proceso": [
+    { "titulo": "Arranque", "duracion": "Día 1-2", "descripcion": "Me pasas tu lista de precios y las 5 preguntas que siempre haces para cotizar. Entra el anticipo." },
+    { "titulo": "Construcción", "duracion": "Día 3-9", "descripcion": "Construyo el asistente, lo conecto a tu WhatsApp y lo pruebo con cotizaciones reales." },
+    { "titulo": "Entrega y ajuste", "duracion": "Día 10-14", "descripcion": "Lo lanzamos, te enseño a usarlo y afinamos las respuestas sobre conversaciones reales." }
+  ],
+  "opciones": [
+    {
+      "nombre": "Esencial",
+      "precio_total": 1500,
+      "tagline": "El cotizador funcionando. Lo básico para dejar de perder pedidos.",
+      "incluye": [
+        { "texto": "Cotizador de eventos por WhatsApp" },
+        { "texto": "Tu lista de precios cargada" },
+        { "texto": "1 semana de ajustes" },
+        { "texto": "Aviso de pedidos grandes", "muted": true },
+        { "texto": "Mantenimiento mensual", "muted": true }
+      ]
+    },
+    {
+      "nombre": "Recomendada",
+      "precio_total": 2200,
+      "recomendada": true,
+      "flag": "Más elegida",
+      "tagline": "El cotizador completo, con avisos y soporte. El mejor balance.",
+      "incluye": [
+        { "texto": "Todo lo del Esencial" },
+        { "texto": "Aviso de pedidos grandes a tu teléfono" },
+        { "texto": "2 semanas de ajustes sobre casos reales" },
+        { "texto": "Guía de uso para tu equipo" }
+      ]
+    },
+    {
+      "nombre": "Completa",
+      "precio_total": 3000,
+      "tagline": "El cotizador + el asistente que contesta dudas de menú y horarios.",
+      "incluye": [
+        { "texto": "Todo lo de la Recomendada" },
+        { "texto": "Asistente de preguntas frecuentes (menú, horarios, envío)" },
+        { "texto": "1 mes de mantenimiento incluido" },
+        { "texto": "Prioridad en cambios el primer mes" }
+      ]
+    }
+  ],
+  "retainer": {
+    "titulo": "Mantenimiento mensual (opcional)",
+    "descripcion": "Monitoreo, ajustes de precios y respuestas, y mejoras continuas. Para que el sistema siga rindiendo sin que te ocupes tú.",
+    "precio_mes": 400
+  },
+  "cierre": {
+    "titulo": "¿Le entramos?",
+    "texto": "Elige la opción que más te late y te mando el link del anticipo el mismo día. En menos de dos semanas tu WhatsApp cotiza solo. Cualquier duda, aquí estoy.",
+    "cta_label": "Aceptar y arrancar",
+    "cta_url": "mailto:tu-correo@tuagencia.com"
+  },
+  "supuestos": [
+    "Tu hora la valoramos en ~$8 USD como referencia conservadora. Si tu tiempo vale más, el ahorro es mayor.",
+    "Los precios de herramientas van por tu cuenta (~$14/mes) y se verificaron en junio 2026.",
+    "Esta cotización es válida hasta la fecha de vigencia indicada; después puede ajustarse."
+  ]
+}
