@@ -1,9 +1,14 @@
 {
-  "_nota": "Este es el perfil de TU agencia. Se crea una sola vez (la primera vez que usas cualquier skill de agencia te entrevista) y se guarda en ~/.config/agencia-ia/perfil.json. De ahí TODOS los skills salen personalizados. Para actualizarlo: 'configura mi agencia'.",
+  "_nota": "Este es el perfil de TU agencia. Se crea una sola vez (la primera vez que usas cualquier skill de agencia te entrevista) y se guarda en ~/.config/agencia-ia/perfil.json. De ahí TODOS los skills salen personalizados (marca, colores, nicho, metodología, precios). Para actualizarlo: 'configura mi agencia'.",
   "agencia": {
-    "nombre_marca": "Horizontes Automations",
-    "nombre_legal": "Santiago Muñoz / Horizontes IA",
-    "tipo_legal": "persona"
+    "nombre_marca": "Automatiza LATAM",
+    "nombre_legal": "Tu Nombre Completo / Tu Empresa SA de CV",
+    "tipo_legal": "persona",
+    "que_hace": "Pongo asistentes de WhatsApp y agendas automáticas para que el negocio deje de perder clientes por no contestar a tiempo.",
+    "nicho": "clínicas y consultorios",
+    "metodologia": "1) Diagnostico qué se puede automatizar, 2) lo construyo y lo conecto a tus herramientas, 3) te lo entrego funcionando y te doy soporte el primer mes.",
+    "propuesta_valor": "Voy rápido y te explico todo sin tecnicismos — tú solo ves resultados.",
+    "construye_con": ["n8n", "Make", "Claude Code", "WhatsApp API"]
   },
   "persona": {
     "nombre": "Santi",

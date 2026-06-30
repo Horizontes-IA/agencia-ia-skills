@@ -10,6 +10,7 @@ description: Genera una COTIZACIÓN profesional de agencia de automatización co
 Antes de generar nada, asegura el perfil de la agencia:
 - Si **NO existe** `~/.config/agencia-ia/perfil.json` → lee `~/.config/agencia-ia/configurar.md` y corre el onboarding (unas preguntas, guarda el perfil). **Solo la primera vez** que el usuario usa cualquier skill de agencia.
 - Si **SÍ existe** → cárgalo y **NO vuelvas a preguntar**. Personaliza TODO con él: nombre de la agencia, nombre legal y datos (contrato), precios (cotización), proveedor/link de pago (cobro), color de acento (HTML), tono.
+- **Contenido a la medida de la agencia** (úsalos donde apliquen): `agencia.que_hace` y `agencia.nicho` (a qué se dedica y a quién sirve → encuadra el problema y el lenguaje), `agencia.metodologia` (cómo trabaja → la sección de proceso/qué incluye cada opción), `agencia.propuesta_valor` (su diferenciador → por qué con esta agencia), `agencia.construye_con` (herramientas con las que arma).
 - Para reconfigurar: el usuario dice "configura mi agencia" → re-corre `configurar.md`.
 
 El perfil es el DEFAULT, no una jaula: si para ESTE cliente el precio o el alcance cambian, ajústalo para ese trato sin tocar el perfil.
@@ -140,11 +141,11 @@ El generador: escapa todo input, recalcula el anticipo de cada tier server-side,
 
 **Camino fallback (no hay Python):** usa `templates/cotizacion.fallback.md`, rellena los `{{PLACEHOLDERS}}` a mano con los datos del JSON (calcula el anticipo: precio × pct), y entrega ese markdown. Avísale al operador que para el HTML premium necesita Python (o que tú se lo generas en otra máquina).
 
-**Convertir a PDF (opcional, si el operador lo quiere ya en PDF):** abre el HTML en Chrome headless:
+**Generar el PDF (automático).** Tras crear el `cotizacion.html`, corre el conversor compartido (usa el navegador que el usuario ya tenga, multi-OS):
 ```bash
-"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu --print-to-pdf="<salida>/cotizacion.pdf" --no-pdf-header-footer "file://<ruta-absoluta>/cotizacion.html"
+python3 ~/.config/agencia-ia/html2pdf.py "<salida>/cotizacion.html"
 ```
-Si no hay Chrome, dile que abra el `.html` y haga *Imprimir → Guardar como PDF* (sale idéntico, ya tiene CSS de print A4).
+Si imprime `PDF: <ruta>`, ya quedó el `.pdf` junto al HTML (eso le mandas al cliente). Si imprime `NO_PDF:` (no hay navegador), dile que abra el `.html` y haga **Cmd/Ctrl+P → Guardar como PDF** (sale idéntico, ya tiene CSS de print A4).
 
 ### Fase 4 — Entregar + encadenar la suite
 

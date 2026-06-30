@@ -18,3 +18,5 @@ node_modules/
 perfil.json
 .env
 .env.*
+# …pero sí versionamos las plantillas de ejemplo
+!.env.example

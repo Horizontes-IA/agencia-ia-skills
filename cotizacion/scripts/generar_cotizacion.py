@@ -35,6 +35,32 @@ import html
 import datetime
 
 
+def _color_marca():
+    """Color de acento de la agencia desde el perfil compartido (o None)."""
+    path = os.path.expanduser("~/.config/agencia-ia/perfil.json")
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            p = json.load(f)
+        c = ((p.get("marca") or {}).get("color_acento") or "").strip()
+        return c if (len(c) == 7 and c[0] == "#") else None
+    except Exception:
+        return None
+
+
+def _recolorear(s, hex_color):
+    """Reemplaza el cyan de Horizontes por el acento de la agencia en TODO el HTML."""
+    if not hex_color or len(hex_color) != 7 or hex_color[0] != "#":
+        return s
+    try:
+        r, g, b = int(hex_color[1:3], 16), int(hex_color[3:5], 16), int(hex_color[5:7], 16)
+    except ValueError:
+        return s
+    rgb = "{},{},{}".format(r, g, b)
+    for lit in ("#00E5FF", "#00e5ff", "#22d3ee", "#22D3EE", "#00B8CC", "#00b8cc", "#0e7490", "#0E7490", "#06808f", "#06808F", "#0aa6bd", "#0AA6BD"):
+        s = s.replace(lit, hex_color)
+    return s.replace("0,229,255", rgb).replace("0, 229, 255", rgb).replace("0,184,204", rgb).replace("0, 184, 204", rgb)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # 0. UTILIDADES
 # ─────────────────────────────────────────────────────────────────────────────
@@ -754,7 +780,7 @@ def main():
 
     os.makedirs(out_dir, exist_ok=True)
 
-    html_out = build_html(coti)
+    html_out = _recolorear(build_html(coti), _color_marca())
     md_out = build_md(coti)
 
     html_path = os.path.join(out_dir, "cotizacion.html")

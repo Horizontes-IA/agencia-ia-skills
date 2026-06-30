@@ -14,7 +14,9 @@ Antes de generar nada, asegura el perfil de la agencia:
 
 El perfil es el DEFAULT, no una jaula: si para ESTE cliente el monto o la estructura cambian, ajústalo para ese trato sin tocar el perfil.
 
-Skill que toma un proyecto **ya cerrado** (el cliente dijo que sí, firmó la propuesta o el contrato) y genera **todo lo necesario para cobrarle de verdad**: una factura/recibo que se ve de agencia seria, un **link de pago real** para que el cliente pague con tarjeta en un clic, y la cadena de recordatorios por si se atrasa.
+Skill que toma un proyecto **ya cerrado** (el cliente dijo que sí, firmó la propuesta o el contrato) y genera **todo lo necesario para cobrarle de verdad**: una factura/recibo que se ve de agencia seria con sus **datos/instrucciones de pago** (transferencia o un link que tú generes), y la cadena de recordatorios por si se atrasa.
+
+> **La factura NO embebe un botón de "Pagar".** La mayoría cobra por transferencia, o genera su propio link (Stripe / Mercado Pago) y lo comparte aparte. Por eso la factura muestra el **método + las instrucciones/datos de pago** y, si hay link, como **texto** — no un botón. Si el usuario quiere un link de Stripe, el skill se lo genera (Fase 3) y va dentro de esas instrucciones.
 
 El "wow" no es el documento bonito. Es que el operador —que casi siempre es principiante y nunca le ha cobrado a un negocio— pase de *"ya cerré… ¿y ahora cómo le saco el dinero?"* a tener, en minutos, **un link que le manda al cliente y el dinero entrando a su cuenta**, con la estructura correcta (anticipo primero, nunca arrancar gratis) y sin verse improvisado.
 
@@ -184,9 +186,14 @@ Esto es lo que **ve el cliente**, así que va doble: markdown editable + HTML pr
    - **Conceptos (line items)**: descripción clara (ej. "Anticipo 50% — Asistente de WhatsApp que cotiza"), cantidad, precio unitario, subtotal.
    - **Totales**: subtotal, impuestos si aplica, **total a pagar** de esta factura, y **saldo pendiente del proyecto** (lo que falta de las otras fases).
    - **Condiciones de pago**: método, a qué corresponde (anticipo/saldo/mensualidad), términos.
-   - **Link de pago** embebido (el de Stripe, o el que pegó el usuario).
-2. Genera el **HTML self-contained** con `scripts/factura-html.mjs` (acento cyan `#00E5FF`, A4, listo para imprimir a PDF desde el navegador con Cmd+P → Guardar como PDF). El script recibe un JSON con los mismos campos y escupe el `.html`.
-3. *(opcional)* Si el usuario quiere, **súbelo a Google Docs** con la CLI `gws` (autenticada) para que lo edite/comparta. No es obligatorio.
+   - **Datos / instrucciones de pago**: el método (transferencia, etc.) y los datos para pagar. Si el usuario generó un link (Stripe/Mercado Pago), va en `link_pago` y la factura lo muestra **como texto**, NO como botón.
+2. Genera el **HTML self-contained** con `scripts/factura-html.mjs` (acento de la marca, A4, sin botón de "Pagar"). El script recibe un JSON con los mismos campos y escupe el `.html`.
+3. **Generar el PDF (automático).** Corre el conversor compartido (multi-OS):
+   ```bash
+   python3 ~/.config/agencia-ia/html2pdf.py <ruta>/factura.html
+   ```
+   `PDF: <ruta>` → quedó `factura.pdf` junto al HTML. `NO_PDF:` → el usuario abre el `.html` y hace **Cmd/Ctrl+P → Guardar como PDF**.
+4. *(opcional)* Si el usuario quiere, **súbelo a Google Docs** con la CLI `gws` (autenticada) para que lo edite/comparta. No es obligatorio.
 
 Guarda los entregables junto al cliente: idealmente dentro de `diagnostico-<negocio>/cobro/` (o `cobro-<negocio>/` si no hay diagnóstico):
 - `factura-<fase>.md`

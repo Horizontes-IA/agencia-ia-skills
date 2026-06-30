@@ -1,0 +1,454 @@
+{
+  "schema_version": "1.0",
+  "meta": {
+    "fecha": "2026-06-23",
+    "generado_por": "/diagnostico v1.0",
+    "id": "diag-2026-06-23-marisol",
+    "duracion_entrevista_min": 8,
+    "moneda_display": "USD",
+    "tasa_cambio_a_local": null
+  },
+  "negocio": {
+    "nombre_persona": "Marisol",
+    "nombre_negocio": "Sabores de Casa",
+    "tipo": "Restaurante / comida casera con servicio a domicilio",
+    "descripcion": "Restaurante de comida casera con servicio a domicilio en CDMX; recibe pedidos por WhatsApp e Instagram y cotiza pedidos grandes para eventos.",
+    "pais": "México",
+    "ciudad": "CDMX",
+    "tamano": "con_equipo",
+    "empleados_aprox": 3,
+    "vende_a": "B2C local",
+    "modelo_ingresos": {
+      "que_vende": "Comidas a domicilio, para llevar y pedidos para eventos",
+      "ticket_promedio_usd": 12,
+      "volumen_mes": "≈400 pedidos/mes + ~12 cotizaciones de evento/semana",
+      "como_cobra": "por pedido",
+      "ingreso_mes_aprox_usd": 4800
+    },
+    "costo_hora_usuario_usd": 8,
+    "costo_hora_es_default": true
+  },
+  "segment": "operator",
+  "procesos": [
+    {
+      "id": "p1",
+      "nombre": "Responder cotizaciones de pedidos grandes",
+      "descripcion_usuario": "Cada que alguien quiere pedido para evento le tengo que escribir precios, opciones, tiempos... casi siempre lo mismo.",
+      "area": "preventa",
+      "frecuencia_veces_semana": 15,
+      "tiempo_por_vez_min": 12,
+      "quien_lo_hace": "Marisol",
+      "como_hoy": "manual por WhatsApp, escribe cada respuesta desde cero",
+      "factores": {
+        "bleed": 4,
+        "frequency": 5,
+        "automatability": 5,
+        "revenue_impact": 4,
+        "speed_to_value": 4
+      },
+      "score": 88,
+      "banda": "automatiza_ya",
+      "score_rationale": "Lo haces ~15 veces/semana, 12 min cada una, casi siempre la misma respuesta, y son pedidos grandes que se te enfrían si tardas. Máximo retorno con mínimo riesgo.",
+      "user_flagged": true,
+      "horas_brutas_mes": 13.0,
+      "factor_captura": 0.70,
+      "horas_ahorradas_mes": 9.1
+    },
+    {
+      "id": "p2",
+      "nombre": "Contestar las mismas preguntas de menú y horarios",
+      "descripcion_usuario": "Todo el día me preguntan lo mismo: si hay envío, a qué hora cierro, qué hay de comida. Lo contesto una por una.",
+      "area": "atencion",
+      "frecuencia_veces_semana": 60,
+      "tiempo_por_vez_min": 2,
+      "quien_lo_hace": "Marisol",
+      "como_hoy": "manual por WhatsApp e Instagram, una respuesta a la vez",
+      "factores": {
+        "bleed": 3,
+        "frequency": 5,
+        "automatability": 5,
+        "revenue_impact": 2,
+        "speed_to_value": 5
+      },
+      "score": 78,
+      "banda": "automatiza_ya",
+      "score_rationale": "Son ~60 mensajes a la semana de preguntas idénticas. Cada uno es corto, pero juntos te roban horas y son perfectos para que un asistente los conteste solo.",
+      "user_flagged": false,
+      "horas_brutas_mes": 8.7,
+      "factor_captura": 0.70,
+      "horas_ahorradas_mes": 6.1
+    },
+    {
+      "id": "p3",
+      "nombre": "Recordar a los clientes que recojan o confirmen su pedido",
+      "descripcion_usuario": "A veces dejan el pedido apartado y no lo recogen, o se me olvida confirmarles. Pierdo comida y tiempo.",
+      "area": "entrega",
+      "frecuencia_veces_semana": 25,
+      "tiempo_por_vez_min": 3,
+      "quien_lo_hace": "empleado",
+      "como_hoy": "manual, cuando alguien se acuerda de escribirle al cliente",
+      "factores": {
+        "bleed": 2,
+        "frequency": 4,
+        "automatability": 5,
+        "revenue_impact": 3,
+        "speed_to_value": 4
+      },
+      "score": 71,
+      "banda": "alto_potencial",
+      "score_rationale": "Pasa ~25 veces por semana y protege dinero (comida que se echa a perder), pero el dolor diario es menor que las cotizaciones. Excelente fase 2.",
+      "user_flagged": false,
+      "horas_brutas_mes": 5.4,
+      "factor_captura": 0.70,
+      "horas_ahorradas_mes": 3.8
+    },
+    {
+      "id": "p4",
+      "nombre": "Publicar el menú del día en redes",
+      "descripcion_usuario": "Todas las mañanas armo el post del menú y lo subo a Instagram y al estado de WhatsApp.",
+      "area": "marketing",
+      "frecuencia_veces_semana": 6,
+      "tiempo_por_vez_min": 20,
+      "quien_lo_hace": "Marisol",
+      "como_hoy": "manual, arma la imagen y el texto a mano cada día",
+      "factores": {
+        "bleed": 1,
+        "frequency": 4,
+        "automatability": 3,
+        "revenue_impact": 2,
+        "speed_to_value": 3
+      },
+      "score": 49,
+      "banda": "mas_adelante",
+      "score_rationale": "Te quita tiempo pero requiere tu toque creativo y vende menos directo que las cotizaciones. Se puede semi-automatizar más adelante, no es lo primero.",
+      "user_flagged": false,
+      "horas_brutas_mes": 8.7,
+      "factor_captura": 0.55,
+      "horas_ahorradas_mes": 4.8
+    },
+    {
+      "id": "p5",
+      "nombre": "Llevar las cuentas del día en un cuaderno",
+      "descripcion_usuario": "Al cierre anoto ventas y gastos en un cuaderno y luego lo paso a Excel cuando puedo.",
+      "area": "admin",
+      "frecuencia_veces_semana": 6,
+      "tiempo_por_vez_min": 15,
+      "quien_lo_hace": "Marisol",
+      "como_hoy": "cuaderno físico, después captura manual en Excel",
+      "factores": {
+        "bleed": 1,
+        "frequency": 3,
+        "automatability": 2,
+        "revenue_impact": 1,
+        "speed_to_value": 2
+      },
+      "score": 34,
+      "banda": "no_prioritario",
+      "score_rationale": "Es importante para ti, pero automatizarlo bien hoy requiere ordenar primero cómo registras todo. No vale la pena empezar por aquí.",
+      "user_flagged": false,
+      "horas_brutas_mes": 6.5,
+      "factor_captura": 0.40,
+      "horas_ahorradas_mes": 2.6
+    }
+  ],
+  "sangrado_declarado": {
+    "tarea_que_quitaria": "Responder cotizaciones de eventos",
+    "proceso_id_match": "p1",
+    "que_pierde_dinero": "Pierdo pedidos grandes porque tardo en contestar y se van con otro proveedor",
+    "frase_textual": "Se me va la tarde contestando lo mismo y aún así se me escapan los pedidos buenos."
+  },
+  "stack_actual": {
+    "herramientas": ["WhatsApp", "Instagram", "Excel", "ChatGPT"],
+    "sabe_usar": ["WhatsApp", "Excel"],
+    "gasto_desperdiciado": null,
+    "nota": "Llegas con poco stack: apps de mensajería + Excel + ChatGPT esporádico. Las automatizaciones se montan sobre lo que ya usas."
+  },
+  "perfil_tecnico": {
+    "sabe_programar": false,
+    "prefiere": "construirlo_el_mismo",
+    "horas_semana_para_implementar": 4,
+    "presupuesto_tools_mes_usd": 30,
+    "no_automatizar": "El trato con clientes de eventos VIP lo quiero personal, ese sí lo atiendo yo",
+    "sensibilidad_bot": "alta"
+  },
+  "meta_90_dias": {
+    "objetivo": "Dejar de perder pedidos grandes y recuperar mis tardes",
+    "tipo": "recuperar_tiempo",
+    "metrica_exito": "Responder toda cotización en menos de 2 minutos y recuperar ~9 h a la semana"
+  },
+  "research": [
+    {
+      "tipo": "benchmark_industria",
+      "hallazgo": "Restaurantes que reciben pedidos por WhatsApp reportan entre 8 y 12 horas a la semana solo en responder cotizaciones, dudas de menú y confirmaciones repetidas.",
+      "valor": null,
+      "fuente": "https://chatarmin.com/en/blog/whatsapp-restaurants",
+      "es_estimacion": false,
+      "usado_en": ["automatizacion:a1", "automatizacion:a2", "roi"]
+    },
+    {
+      "tipo": "ejemplo_competidor",
+      "hallazgo": "Negocios de comida en LATAM ya usan asistentes de WhatsApp que cotizan y responden 24/7; reportan recuperar 1 de cada 4-5 pedidos grandes que antes se enfriaban por tardar en contestar.",
+      "valor": null,
+      "fuente": "https://www.twilio.com/en-us/blog/whatsapp-business-restaurants",
+      "es_estimacion": false,
+      "usado_en": ["automatizacion:a1"]
+    },
+    {
+      "tipo": "precio_herramienta",
+      "hallazgo": "El número de WhatsApp vía Twilio cuesta entre $1 y $15/mes según el plan; las conversaciones iniciadas por el cliente entran gratis en la ventana de servicio.",
+      "valor": 5,
+      "fuente": "https://chatarmin.com/en/blog/twilio-whats-app-api",
+      "es_estimacion": false,
+      "usado_en": ["automatizacion:a1"]
+    }
+  ],
+  "automatizaciones": [
+    {
+      "id": "a1",
+      "rank": 1,
+      "proceso_id": "p1",
+      "titulo": "Tu cotizador automático de WhatsApp",
+      "que_hace": "Un asistente que recibe el mensaje de quien quiere cotizar un evento, le pregunta lo necesario (cuántas personas, fecha, tipo de comida), y le manda la cotización lista en segundos, 24/7, con tu formato y tus precios.",
+      "metafora_empleado": "Como tener una recepcionista que cotiza sola, que nunca duerme y nunca se equivoca de precio.",
+      "arquitectura_simple": [
+        "1. Llega un mensaje a tu WhatsApp pidiendo cotización para un evento",
+        "2. El asistente lee qué necesita y pregunta solo lo que falte",
+        "3. Calcula el precio con tu lista y arma la respuesta completa",
+        "4. Se la manda al cliente al instante, con tu tono",
+        "5. Te avisa a ti que entró un pedido grande para que le des seguimiento"
+      ],
+      "herramientas": [
+        {
+          "nombre": "WhatsApp API (Twilio)",
+          "para_que": "conectar tu WhatsApp para que el asistente reciba y mande mensajes",
+          "costo_mes_usd": 5,
+          "costo_nota": "número + por conversación; los mensajes que inicia el cliente son gratis",
+          "fuente_precio": "https://chatarmin.com/en/blog/twilio-whats-app-api"
+        },
+        {
+          "nombre": "Cloudflare Workers",
+          "para_que": "el lugar en internet donde vive el asistente y corre solo",
+          "costo_mes_usd": 5,
+          "costo_nota": "el patrón barato que usamos en /crear-agente",
+          "fuente_precio": "estimación propia"
+        },
+        {
+          "nombre": "OpenAI API",
+          "para_que": "el cerebro que entiende el mensaje y redacta la cotización",
+          "costo_mes_usd": 4,
+          "costo_nota": "a tu volumen, casi siempre menos de $5/mes",
+          "fuente_precio": "https://openai.com/api/pricing/"
+        }
+      ],
+      "encaja_con_stack": true,
+      "complejidad": "media",
+      "construible_por_usuario": true,
+      "roi": {
+        "horas_ahorradas_mes": 9.1,
+        "costo_hora_usd": 8,
+        "valor_tiempo_mes_usd": 73,
+        "ingreso_recuperado_mes_usd": 180,
+        "ingreso_supuesto": "Asumiendo que recuperas 1 de cada 5 pedidos grandes que hoy se enfrían (≈3/mes × $60 de ticket de evento). Conservador.",
+        "costo_tools_mes_usd": 14,
+        "neto_mes_usd": 239,
+        "factor_captura": 0.70,
+        "factor_captura_nota": "De las ~13 h/mes que esto te come, recuperas ~9 reales; el resto sigue siendo revisar casos especiales y eventos VIP que tú quieres atender personal."
+      },
+      "es_agente_nube": true,
+      "construir_con": "claude_code",
+      "primer_paso": "Junta tu lista de precios de eventos y escribe las 5 preguntas que siempre haces para cotizar."
+    },
+    {
+      "id": "a2",
+      "rank": 2,
+      "proceso_id": "p2",
+      "titulo": "Tu asistente que contesta las dudas de siempre",
+      "que_hace": "Un asistente que responde al instante las preguntas repetidas de tus clientes (horarios, envío, menú del día) por WhatsApp e Instagram, para que tú solo entres cuando de verdad se necesita.",
+      "metafora_empleado": "Como un empleado de mostrador que contesta las preguntas fáciles y solo te pasa las difíciles.",
+      "arquitectura_simple": [
+        "1. Un cliente pregunta algo común (horario, envío, qué hay hoy)",
+        "2. El asistente reconoce la pregunta y responde con tu info actualizada",
+        "3. Si es algo que requiere tu criterio, te lo pasa a ti",
+        "4. Aprende tus respuestas frecuentes para sonar como tú"
+      ],
+      "herramientas": [
+        {
+          "nombre": "WhatsApp API (Twilio)",
+          "para_que": "se reutiliza el mismo número del cotizador, sin costo extra",
+          "costo_mes_usd": 0,
+          "costo_nota": "comparte la conexión con la automatización #1",
+          "fuente_precio": "https://chatarmin.com/en/blog/twilio-whats-app-api"
+        },
+        {
+          "nombre": "OpenAI API",
+          "para_que": "entender y responder las preguntas con tu información",
+          "costo_mes_usd": 3,
+          "costo_nota": "preguntas cortas y frecuentes, costo bajo",
+          "fuente_precio": "https://openai.com/api/pricing/"
+        }
+      ],
+      "encaja_con_stack": true,
+      "complejidad": "baja",
+      "construible_por_usuario": true,
+      "roi": {
+        "horas_ahorradas_mes": 6.1,
+        "costo_hora_usd": 8,
+        "valor_tiempo_mes_usd": 49,
+        "ingreso_recuperado_mes_usd": null,
+        "ingreso_supuesto": null,
+        "costo_tools_mes_usd": 3,
+        "neto_mes_usd": 46,
+        "factor_captura": 0.70,
+        "factor_captura_nota": "De las ~8.7 h/mes en preguntas repetidas, recuperas ~6 reales; algunas dudas siguen necesitando tu respuesta."
+      },
+      "es_agente_nube": true,
+      "construir_con": "claude_code",
+      "primer_paso": "Anota las 10 preguntas que más te hacen y la respuesta correcta de cada una."
+    },
+    {
+      "id": "a3",
+      "rank": 3,
+      "proceso_id": "p3",
+      "titulo": "Tus recordatorios automáticos de pedido",
+      "que_hace": "Un recordatorio que le escribe solo al cliente para confirmar o avisar que su pedido está listo, para que dejes de perder comida apartada que nadie recoge.",
+      "metafora_empleado": "Como un asistente que nunca se olvida de dar el aviso a tiempo.",
+      "arquitectura_simple": [
+        "1. Se registra un pedido apartado o listo para recoger",
+        "2. El asistente le manda un recordatorio al cliente en el momento justo",
+        "3. Si el cliente confirma, te avisa; si no responde, lo vuelve a recordar",
+        "4. Tú solo ves los que de verdad necesitan tu atención"
+      ],
+      "herramientas": [
+        {
+          "nombre": "WhatsApp API (Twilio)",
+          "para_que": "mandar los recordatorios desde tu número",
+          "costo_mes_usd": 0,
+          "costo_nota": "reutiliza la misma conexión",
+          "fuente_precio": "https://chatarmin.com/en/blog/twilio-whats-app-api"
+        },
+        {
+          "nombre": "n8n",
+          "para_que": "agendar y disparar los recordatorios a la hora correcta (un flujo visual, sin código)",
+          "costo_mes_usd": 0,
+          "costo_nota": "plan gratis o self-host; no necesitas escribir código",
+          "fuente_precio": "https://n8n.io/pricing/"
+        }
+      ],
+      "encaja_con_stack": true,
+      "complejidad": "baja",
+      "construible_por_usuario": true,
+      "construir_con": "n8n_o_make",
+      "roi": {
+        "horas_ahorradas_mes": 3.8,
+        "costo_hora_usd": 8,
+        "valor_tiempo_mes_usd": 30,
+        "ingreso_recuperado_mes_usd": 60,
+        "ingreso_supuesto": "Asumiendo que recuperas ~$60/mes en comida que hoy se echa a perder por pedidos no recogidos. Conservador.",
+        "costo_tools_mes_usd": 0,
+        "neto_mes_usd": 90,
+        "factor_captura": 0.70,
+        "factor_captura_nota": "De las ~5.4 h/mes en seguimientos manuales, recuperas ~4 reales; algunos casos siguen necesitando una llamada tuya."
+      },
+      "es_agente_nube": true,
+      "primer_paso": "Define en qué momento exacto quieres que salga cada recordatorio (al apartar, 1 día antes, al estar listo)."
+    }
+  ],
+  "quick_win": {
+    "automatizacion_id": "a1",
+    "por_que_esta": "Es la que más sangras —la nombraste tú— y en 5 minutos, sin instalar nada, puedes tener tu cotizador respondiendo en ChatGPT con tus precios.",
+    "accion_hoy": "Pega este prompt en ChatGPT (o Claude) junto con tu lista de precios, y desde hoy respondes cualquier cotización de evento en segundos copiando y pegando — sin instalar nada.",
+    "prompt": "Eres mi asistente de cotizaciones para Sabores de Casa, un restaurante de comida casera en CDMX que cotiza pedidos para eventos.\n\nMis precios y reglas:\n[PEGA AQUÍ TU LISTA DE PRECIOS POR TIPO DE PEDIDO Y NÚMERO DE PERSONAS]\n\nCuando te pase los datos de un evento (número de personas, fecha, tipo de comida), respóndeme con una cotización completa, cálida y lista para copiar y pegar en WhatsApp. Si me falta algún dato para cotizar bien, pídemelo en UNA sola pregunta breve antes de cotizar.\n\nListo: te voy a ir pegando las solicitudes de cotización que me lleguen.",
+    "pasos_hoy": [
+      "Junta tu lista de precios de eventos y las 5 preguntas que siempre haces para cotizar",
+      "Pega el prompt de arriba en ChatGPT y reemplaza [lo de corchetes] con tus precios reales",
+      "Mándale una solicitud real de cotización y copia su respuesta a WhatsApp",
+      "Cuando veas que cotiza bien, ese mismo guion es la base para automatizarlo del todo (Fase 1 del plan)"
+    ],
+    "tiempo_estimado": "≈5 minutos",
+    "resultado_esperado": "Hoy mismo respondes tus cotizaciones en segundos copiando del asistente, sin instalar nada. Mañana lo automatizas del todo con /crear-agente."
+  },
+  "roi_global": {
+    "horas_ahorradas_mes_total": 19.0,
+    "ahorro_base_mes_usd": 392,
+    "escenarios": {
+      "conservador_usd": 300,
+      "base_usd": 392,
+      "optimista_usd": 540
+    },
+    "costo_total_mes_usd": 17,
+    "neto_mes_usd": 375,
+    "neto_anual_usd": 4500,
+    "roi_anual_x": 22.1,
+    "payback": {
+      "dias": 0,
+      "nota": "Si lo construyes tú con Claude Code, no hay costo de montaje: recuperas tiempo y dinero desde el día 1."
+    },
+    "headline": "Recuperas ~19 h/mes y ~$392 USD/mes —tu tiempo más los pedidos grandes que hoy se te escapan— por ~$17 de herramientas."
+  },
+  "roadmap_90_dias": [
+    {
+      "fase": 1,
+      "rango": "Días 1-30",
+      "titulo": "Tu primer empleado digital",
+      "objetivo": "Montar el cotizador automático y dejar de perder tardes y pedidos grandes",
+      "acciones": [
+        "Construir el cotizador de WhatsApp (tu quick-win) con /crear-agente",
+        "Probarlo 1 semana con cotizaciones reales y ajustar las respuestas",
+        "Medir cuántas horas recuperaste y cuántos pedidos contestaste a tiempo"
+      ],
+      "automatizaciones_ref": ["a1"],
+      "hito": "Toda cotización respondida en menos de 2 minutos, automático"
+    },
+    {
+      "fase": 2,
+      "rango": "Días 31-60",
+      "titulo": "Que conteste todo lo repetido",
+      "objetivo": "Sumar el asistente de preguntas frecuentes y los recordatorios de pedido",
+      "acciones": [
+        "Montar el asistente que contesta dudas de menú y horarios (#2)",
+        "Activar los recordatorios automáticos de pedido (#3)",
+        "Revisar juntas las 3 automatizaciones una vez por semana"
+      ],
+      "automatizaciones_ref": ["a2", "a3"],
+      "hito": "Tus 3 procesos repetitivos corriendo solos, tú solo entras a lo importante"
+    },
+    {
+      "fase": 3,
+      "rango": "Días 61-90",
+      "titulo": "Consolida y mide lo que recuperaste",
+      "objetivo": "Estabilizar las 3 automatizaciones y medir las horas y el dinero que el negocio recuperó",
+      "acciones": [
+        "Sumar la automatización #3 (las que faltaban) al flujo del negocio",
+        "Documentar cómo quedó cada automatización para mantenerla y mejorarla",
+        "Comparar contra el mes 0: horas recuperadas y pedidos que ya no se enfrían"
+      ],
+      "automatizaciones_ref": ["a1", "a2", "a3"],
+      "hito": "Las 3 automatizaciones corriendo y el ROI del negocio medido contra el arranque"
+    }
+  ],
+  "hand_off": {
+    "ofrecer_construir": true,
+    "automatizacion_id": "a1",
+    "skill_destino": "/crear-agente",
+    "mensaje": "Tu automatización #1 es un asistente que corre solo en la nube. ¿Quieres que lo construyamos ahora mismo? Te llevo paso a paso con /crear-agente — ya tengo todo el contexto de tu negocio, no vuelvo a preguntarte nada.",
+    "contexto_precargado": {
+      "que_automatizar": "asistente de WhatsApp que cotiza pedidos de eventos para Sabores de Casa",
+      "fuentes_datos": ["WhatsApp", "lista de precios de eventos"],
+      "frecuencia": "evento (cada mensaje entrante de cotización)",
+      "destino": "respuesta de cotización en WhatsApp + aviso a Marisol",
+      "notificacion": "Pushover o WhatsApp"
+    }
+  },
+  "supuestos_globales": [
+    "Tu hora la valoramos en ~$8 USD (referencia conservadora para México). Si tu tiempo vale más, multiplica el ahorro.",
+    "Aplicamos un factor de captura del 70% — la automatización no elimina el 100% del trabajo, sigues revisando casos especiales.",
+    "Los ahorros de tiempo son lo más sólido; los ingresos recuperados son una estimación conservadora basada en tu volumen.",
+    "Precios de herramientas verificados en junio 2026; pueden cambiar con el tiempo."
+  ],
+  "cierre": {
+    "mensaje_segment": "Ya tienes mapeado a tu primer empleado digital: deja de perder tardes contestando lo mismo y empieza a contratar procesos, no personas. Este reporte es tuyo.",
+    "siguiente_paso": "Empieza por el quick-win hoy. Cuando lo tengas funcionando, vuelve y montamos la #2 y la #3.",
+    "cta_comunidad": "Si quieres que te acompañe a construir las 3 paso a paso, eso es justo lo que hacemos en Horizontes IA.",
+    "cta_url": "https://www.skool.com/horizontes-ia-9992"
+  }
+}

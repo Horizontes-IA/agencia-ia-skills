@@ -1,66 +1,139 @@
 {
   "titulo": "Contrato de Prestación de Servicios de Automatización con IA",
-  "agencia": "Automatiza MX",
+  "agencia": "{{NOMBRE_LEGAL_AGENCIA}}",
   "campos": {
     "FOLIO": "CT-2026-014",
-    "FECHA": "2026-06-25",
-    "CIUDAD_PAIS": "CDMX, México",
-    "NOMBRE_LEGAL_AGENCIA": "Automatiza MX (Juan Pérez, persona física con actividad empresarial)",
-    "RFC_NIT_RUC_CEDULA": "PEXJ900101AB1",
-    "DOMICILIO_AGENCIA": "Calle Reforma 100, CDMX",
-    "REPRESENTANTE_AGENCIA": "Juan Pérez",
-    "CORREO_AGENCIA": "juan@automatizamx.com",
-    "NOMBRE_LEGAL_CLIENTE": "Sabores de Casa S.A. de C.V.",
-    "RFC_NIT_RUC_CEDULA_CLIENTE": "SDC210315XY9",
-    "DOMICILIO_CLIENTE": "Av. Insurgentes 500, CDMX",
-    "REPRESENTANTE_CLIENTE": "Marisol Gómez",
+    "FECHA": "30 de junio de 2026",
+    "CIUDAD_PAIS": "Ciudad de México, México",
+    "NOMBRE_LEGAL_AGENCIA": "Nodo Automatización (Andrés Salazar Ruiz, persona física con actividad empresarial)",
+    "REPRESENTANTE_AGENCIA": "Andrés Salazar Ruiz",
+    "DOMICILIO_AGENCIA": "Av. Chapultepec 280, Col. Roma Norte, Ciudad de México, C.P. 06700, México",
+    "RFC_NIT_RUC_CEDULA": "SARA900215QX3 (RFC / identificación fiscal)",
+    "ACTIVIDAD_AGENCIA": "el diseño, desarrollo e implementación de soluciones de automatización de procesos e inteligencia artificial (chatbots, agentes, integraciones y flujos de trabajo)",
+    "CORREO_AGENCIA": "andres@nodoautomatizacion.com",
+    "NOMBRE_LEGAL_CLIENTE": "Sabores de Casa, S.A. de C.V.",
+    "REPRESENTANTE_CLIENTE": "Marisol Gómez Herrera",
+    "DOMICILIO_CLIENTE": "Av. Insurgentes Sur 1500, Col. Del Valle, Ciudad de México, C.P. 03100, México",
+    "RFC_NIT_RUC_CEDULA_CLIENTE": "SDC210315XY9 (RFC / identificación fiscal)",
+    "TIPO_PERSONA_CLIENTE": "una sociedad mercantil debidamente constituida",
+    "PAIS_CONSTITUCION_CLIENTE": "los Estados Unidos Mexicanos",
+    "GIRO_CLIENTE": "la elaboración y venta de alimentos preparados",
     "CORREO_CLIENTE": "marisol@saboresdecasa.mx",
+    "OBJETO_SERVICIO": "diseño, desarrollo, implementación y puesta en marcha de un sistema de automatización con inteligencia artificial sobre WhatsApp (cotizador automático y bot de preguntas frecuentes)",
     "MONEDA": "USD",
-    "PRECIO_TOTAL": "2,400",
-    "PRECIO_TOTAL_LETRA": "dos mil cuatrocientos dólares",
+    "PRECIO_TOTAL": "3,000",
+    "PRECIO_TOTAL_LETRA": "tres mil dólares estadounidenses 00/100 USD",
     "PCT_ANTICIPO": "30",
-    "MONTO_ANTICIPO": "720",
+    "MONTO_ANTICIPO": "900",
     "PCT_ENTREGA": "40",
-    "MONTO_ENTREGA": "960",
+    "MONTO_ENTREGA": "1,200",
     "PCT_GOLIVE": "30",
-    "MONTO_GOLIVE": "720",
-    "METODO_PAGO": "link de pago Stripe (o transferencia / Wise)",
-    "QUIEN_ABSORBE_COMISIONES": "el Cliente",
-    "RECARGO_MORA": "1% por día de retraso sobre el saldo",
+    "MONTO_GOLIVE": "900",
+    "METODO_PAGO": "link de pago Stripe (o transferencia bancaria / Wise)",
+    "QUIEN_ABSORBE_COMISIONES": "EL CLIENTE",
+    "RECARGO_MORA": "1% por día natural de retraso sobre el saldo vencido",
     "DIAS_PAUSA": "10",
     "NUM_REVISIONES": "2",
-    "TOPE_USO": "≈ 3,000 conversaciones de WhatsApp/mes",
-    "TOPE_USO_DETALLE": "consumo estimado de API de IA bajo $30/mes a ese volumen",
+    "TOPE_USO": "≈ 3,000 conversaciones de WhatsApp al mes",
+    "TOPE_USO_DETALLE": "con un consumo estimado de APIs de IA por debajo de USD 30 al mes a ese volumen",
     "TIPO_CESION": "total",
-    "TERRITORIO_CESION": "nacional",
+    "TERRITORIO_CESION": "internacional",
     "DURACION_CESION": "indefinida",
     "PLAZO_CONFIDENCIALIDAD": "2 años",
     "MONTO_RETAINER": "300",
-    "ALCANCE_RETAINER": "monitoreo, corrección de errores, ajuste de prompts y flujos, actualización de modelos, ajustes menores y el reporte mensual",
-    "AVISO_CANCELACION_RETAINER": "15 días",
-    "AVISO_TERMINACION": "15 días",
-    "DIAS_SUBSANAR": "10",
-    "KILL_FEE": "el 50% del hito en curso, más el trabajo ya realizado",
+    "ALCANCE_RETAINER": "monitoreo, corrección de errores, ajuste de prompts y flujos, actualización de modelos, ajustes menores y un reporte mensual",
+    "AVISO_CANCELACION_RETAINER": "15 días naturales",
+    "AVISO_TERMINACION": "15 días naturales",
+    "DIAS_SUBSANAR": "15",
+    "KILL_FEE": "el 50% del hito en curso, además del trabajo ya realizado",
+    "PAIS_LEY": "los Estados Unidos Mexicanos (México)",
+    "CIUDAD_JURISDICCION": "la Ciudad de México, México",
     "JURISDICCION": "Ciudad de México, México",
     "DIAS_NEGOCIACION": "15",
     "MECANISMO_DISPUTA": "mediación y, en su caso, arbitraje vinculante",
-    "SEDE_ARBITRAJE": "CDMX",
-    "FECHA_PROPUESTA": "2026-06-20",
+    "SEDE_ARBITRAJE": "la Ciudad de México",
+    "FECHA_PROPUESTA": "20 de junio de 2026",
     "HITO_1": "Setup, accesos y configuración inicial",
-    "PLAZO_1": "días 1-3",
-    "HITO_2": "Cotizador de WhatsApp + FAQ bot listos para revisión",
-    "PLAZO_2": "días 4-12",
-    "HITO_3": "Puesta en marcha y handoff",
-    "PLAZO_3": "días 13-15"
+    "PLAZO_1": "días 1 a 3",
+    "HITO_2": "Cotizador de WhatsApp + bot de FAQ listos para revisión",
+    "PLAZO_2": "días 4 a 12",
+    "HITO_3": "Puesta en marcha (go-live) y handoff",
+    "PLAZO_3": "días 13 a 15"
   },
+  "preambulo": "Este **Contrato de Prestación de Servicios de Automatización con Inteligencia Artificial** (el \"Contrato\") se celebra entre, por una parte, **{{NOMBRE_LEGAL_AGENCIA}}**, representada por **{{REPRESENTANTE_AGENCIA}}**, a quien en lo sucesivo se le denominará **\"EL PRESTADOR\"**; y por la otra parte, **{{NOMBRE_LEGAL_CLIENTE}}**, representada por **{{REPRESENTANTE_CLIENTE}}**, a quien en lo sucesivo se le denominará **\"EL CLIENTE\"**; actuando de manera conjunta se les denominará **\"LAS PARTES\"**, al tenor de las siguientes Declaraciones y Cláusulas.",
+  "declaraciones": "### I. Declara EL PRESTADOR, por su propio derecho:\n\n- **a)** Que cuenta con la capacidad legal, así como con los conocimientos, el personal y los elementos técnicos propios y suficientes para obligarse en los términos del presente Contrato.\n- **b)** Que tiene su domicilio en {{DOMICILIO_AGENCIA}}.\n- **c)** Que su clave de identificación fiscal (RFC / NIT / RUC / cédula, según el país) es {{RFC_NIT_RUC_CEDULA}}.\n- **d)** Que dentro de sus actividades se encuentra {{ACTIVIDAD_AGENCIA}}.\n- **e)** Que es su deseo prestar a EL CLIENTE los servicios objeto de este Contrato en calidad de contratista independiente.\n\n### II. Declara EL CLIENTE, por conducto de su representante:\n\n- **a)** Que es {{TIPO_PERSONA_CLIENTE}} conforme a las leyes de {{PAIS_CONSTITUCION_CLIENTE}}, cuyo giro es {{GIRO_CLIENTE}}.\n- **b)** Que su representante cuenta con las facultades necesarias para la celebración de este Contrato, las cuales no le han sido revocadas ni modificadas en forma alguna.\n- **c)** Que tiene su domicilio en {{DOMICILIO_CLIENTE}}.\n- **d)** Que su clave de identificación fiscal es {{RFC_NIT_RUC_CEDULA_CLIENTE}}.\n- **e)** Que para el óptimo desarrollo, eficiencia y productividad de sus operaciones requiere contratar los servicios de EL PRESTADOR a que se refiere el presente Contrato.\n\n### III. Declaran LAS PARTES:\n\n- **a)** Que se reconocen mutua y recíprocamente la personalidad con la que se ostentan para celebrar este Contrato.\n- **b)** Que en la celebración de este Contrato no existe error, dolo, mala fe, lesión ni vicio alguno del consentimiento que pudiera invalidarlo.\n- **c)** Que por así convenir a sus intereses, es su libre voluntad obligarse en los términos y condiciones de las siguientes Cláusulas.",
   "clausulas": [
     {
-      "titulo": "Partes",
-      "cuerpo_md": "Este Contrato se celebra entre el **Proveedor** ({{NOMBRE_LEGAL_AGENCIA}}, identificación {{RFC_NIT_RUC_CEDULA}}, domicilio en {{DOMICILIO_AGENCIA}}) y el **Cliente** ({{NOMBRE_LEGAL_CLIENTE}}, identificación {{RFC_NIT_RUC_CEDULA_CLIENTE}}, domicilio en {{DOMICILIO_CLIENTE}}). Es una **prestación de servicios independiente, no una relación laboral**."
+      "titulo": "OBJETO Y NATURALEZA DE LOS SERVICIOS",
+      "cuerpo_md": "EL PRESTADOR se obliga a prestar a EL CLIENTE, por sí o a través de terceros bajo su responsabilidad, los servicios de **{{OBJETO_SERVICIO}}** (los \"Servicios\").\n\nLos Servicios constituyen una prestación **profesional e independiente**. Este Contrato **no crea ni constituye una relación laboral, de subordinación, asociación, sociedad ni coinversión** entre LAS PARTES; EL PRESTADOR actúa en todo momento como contratista independiente, con sus propios medios y organización.\n\nEL PRESTADOR prestará los Servicios con diligencia profesional y conforme a las buenas prácticas de la industria. Salvo pacto expreso por escrito, las obligaciones de EL PRESTADOR son **de medios y no de resultados** de negocio."
     },
     {
-      "titulo": "Precio y forma de pago",
-      "cuerpo_md": "Precio total: **{{MONEDA}} {{PRECIO_TOTAL}}**, pagado **{{PCT_ANTICIPO}}/{{PCT_ENTREGA}}/{{PCT_GOLIVE}}**.\n\n| Pago | Momento | Monto |\n|---|---|---|\n| Anticipo | Al firmar (antes de iniciar) | {{MONEDA}} {{MONTO_ANTICIPO}} |\n| Entrega | A revisión | {{MONEDA}} {{MONTO_ENTREGA}} |\n| Go-live | Aprobación final | {{MONEDA}} {{MONTO_GOLIVE}} |\n\n> El Proveedor no inicia trabajo hasta recibir el anticipo. Pago tardío: {{RECARGO_MORA}}."
+      "titulo": "ALCANCE DE LOS SERVICIOS",
+      "cuerpo_md": "El detalle de los Servicios, entregables, supuestos y exclusiones se describe en el **Anexo A (Alcance)**, que forma parte integrante de este Contrato.\n\n**Todo aquello que no esté expresamente listado en el Anexo A se considera fuera de alcance** y, de requerirse, se tramitará como una orden de cambio conforme a la cláusula de Órdenes de Cambio y Revisiones.\n\nEL CLIENTE se obliga a proporcionar de forma oportuna la información, contenidos, accesos y aprobaciones necesarios para la ejecución de los Servicios."
+    },
+    {
+      "titulo": "ENTREGABLES Y PLAZOS",
+      "cuerpo_md": "Los Servicios se entregarán por **hitos**, conforme al siguiente calendario estimado:\n\n| Hito | Descripción | Plazo estimado |\n|---|---|---|\n| 1 | {{HITO_1}} | {{PLAZO_1}} |\n| 2 | {{HITO_2}} | {{PLAZO_2}} |\n| 3 | {{HITO_3}} | {{PLAZO_3}} |\n\nLos plazos son estimados y se cuentan en días hábiles a partir de la firma de este Contrato y del pago del anticipo.\n\n**El reloj de los plazos se pausa** mientras EL PRESTADOR esté a la espera de información, contenidos, accesos, aprobaciones o pagos a cargo de EL CLIENTE. Las demoras imputables a EL CLIENTE extienden los plazos de forma proporcional, sin responsabilidad para EL PRESTADOR."
+    },
+    {
+      "titulo": "CONTRAPRESTACIÓN Y FORMA DE PAGO",
+      "cuerpo_md": "La contraprestación total por los Servicios es de **{{MONEDA}} {{PRECIO_TOTAL}}** ({{PRECIO_TOTAL_LETRA}}), pagadera en la estructura **{{PCT_ANTICIPO}}/{{PCT_ENTREGA}}/{{PCT_GOLIVE}}** de la siguiente forma:\n\n| Pago | Momento | Monto |\n|---|---|---|\n| Anticipo ({{PCT_ANTICIPO}}%) | A la firma, antes de iniciar | {{MONEDA}} {{MONTO_ANTICIPO}} |\n| Entrega a revisión ({{PCT_ENTREGA}}%) | Al poner los entregables a revisión | {{MONEDA}} {{MONTO_ENTREGA}} |\n| Puesta en marcha ({{PCT_GOLIVE}}%) | A la aprobación final y go-live | {{MONEDA}} {{MONTO_GOLIVE}} |\n\n**EL PRESTADOR no inicia trabajo hasta recibir el anticipo.** El método de pago será {{METODO_PAGO}}; las comisiones de la plataforma de pago las absorbe {{QUIEN_ABSORBE_COMISIONES}}.\n\nEl pago tardío genera un recargo de **{{RECARGO_MORA}}**. EL PRESTADOR podrá **suspender los Servicios** si un pago se retrasa más de {{DIAS_PAUSA}} días naturales. La entrega final y la transferencia de la propiedad intelectual quedan condicionadas al pago total del precio."
+    },
+    {
+      "titulo": "ÓRDENES DE CAMBIO Y REVISIONES",
+      "cuerpo_md": "El precio incluye **{{NUM_REVISIONES}} rondas de revisión** por entregable. Las revisiones consisten en ajustes razonables dentro del alcance descrito en el Anexo A.\n\nCualquier cambio al objeto, alcance, plazos o precio (incluyendo funcionalidades nuevas o trabajo adicional) deberá pactarse mediante **orden de cambio por escrito** (el correo electrónico es suficiente), debidamente aceptada por ambas Partes, indicando el ajuste de precio y plazo correspondiente. Sin orden de cambio aceptada, EL PRESTADOR no está obligado a ejecutar trabajo fuera de alcance."
+    },
+    {
+      "titulo": "COSTOS DE HERRAMIENTAS Y APIS DE TERCEROS",
+      "cuerpo_md": "Las suscripciones, licencias y servicios de terceros necesarios para operar la solución (modelos de IA, APIs, mensajería, hosting, bases de datos, automatizaciones, entre otros) **son contratados y pagados directamente por EL CLIENTE a su nombre**, salvo pacto expreso distinto. EL CLIENTE es el titular de dichas cuentas y de su facturación.\n\nEl consumo de las APIs de IA y de mensajería es **variable** y depende del uso real. El precio de este Contrato considera un tope estimado de uso de **{{TOPE_USO}}** ({{TOPE_USO_DETALLE}}). El consumo que exceda dicho tope, así como cualquier costo de terceros, corre por cuenta de EL CLIENTE."
+    },
+    {
+      "titulo": "PROPIEDAD INTELECTUAL",
+      "cuerpo_md": "La propiedad intelectual de los **entregables desarrollados a la medida** para EL CLIENTE (configuraciones, prompts, flujos y código específico de este proyecto) se transfiere a EL CLIENTE de forma {{TIPO_CESION}}, para el territorio {{TERRITORIO_CESION}} y por una duración {{DURACION_CESION}}, **únicamente a partir del pago total** de la contraprestación. Antes del pago total, dichos entregables son propiedad de EL PRESTADOR y EL CLIENTE solo cuenta con una licencia temporal y revocable para evaluarlos.\n\nLas **herramientas, librerías, plantillas, frameworks y know-how preexistentes** de EL PRESTADOR, así como sus mejoras genéricas, **permanecen en propiedad de EL PRESTADOR**; sobre éstos, EL CLIENTE recibe una licencia no exclusiva, perpetua e intransferible para usar la solución entregada.\n\nLos **derechos morales** de autor son irrenunciables y permanecen con quien la ley los reconozca. Quedan a salvo los derechos de propiedad intelectual de terceros (modelos, APIs y software de base), que se rigen por sus propias licencias."
+    },
+    {
+      "titulo": "CONFIDENCIALIDAD",
+      "cuerpo_md": "Cada Parte se obliga a tratar como **confidencial** toda la información (técnica, comercial, financiera, datos, secretos industriales, \"know-how\", credenciales y similares) que reciba de la otra con motivo de este Contrato, y a usarla únicamente para cumplir su objeto, sin revelarla a terceros salvo a quienes deban conocerla para la prestación de los Servicios, bajo el mismo deber de confidencialidad.\n\nEsta obligación **subsiste por {{PLAZO_CONFIDENCIALIDAD}} después de terminado el Contrato**; tratándose de secretos comerciales, subsiste de forma indefinida mientras conserven tal carácter.\n\nNo se considera confidencial la información que: (i) sea o pase a ser de dominio público sin culpa de la Parte receptora; (ii) ya obrara legítimamente en poder de la receptora; (iii) sea proporcionada por un tercero sin deber de confidencialidad; o (iv) deba revelarse por mandato de ley o de autoridad competente."
+    },
+    {
+      "titulo": "ACCESOS, DATOS Y PROTECCIÓN DE DATOS",
+      "cuerpo_md": "Para operar la solución, EL CLIENTE otorgará los accesos a sus cuentas y plataformas mediante **autorización delegada (OAuth) revocable**, gestionada a través de un conector seguro (por ejemplo, Composio). **EL CLIENTE no comparte contraseñas con EL PRESTADOR** y puede revocar los accesos en cualquier momento.\n\nEL PRESTADOR usará dichos accesos y datos **únicamente** para prestar los Servicios. Respecto de los datos personales que se traten, **EL CLIENTE es el responsable** y **EL PRESTADOR es el encargado**, obligándose este último a tratarlos conforme a las instrucciones de EL CLIENTE y a la legislación de protección de datos aplicable.\n\n**Al terminar el Contrato**, EL PRESTADOR revocará los accesos delegados (ejecutando la revocación en el conector) y eliminará o devolverá los datos de EL CLIENTE en su poder dentro de un plazo razonable, salvo aquello que deba conservar por obligación legal."
+    },
+    {
+      "titulo": "NO ENTRENAMIENTO DE MODELOS CON DATOS DEL CLIENTE",
+      "cuerpo_md": "EL PRESTADOR **no utilizará los datos de EL CLIENTE para entrenar, ajustar ni mejorar modelos de inteligencia artificial** propios o de terceros, sin autorización previa y por escrito de EL CLIENTE.\n\nEn la medida en que los proveedores de IA de terceros lo permitan, EL PRESTADOR configurará dichos servicios bajo modalidades que **no usen los datos de EL CLIENTE para entrenamiento**. El tratamiento que esos terceros hagan de los datos se rige por sus propios términos, que EL CLIENTE acepta al ser titular de esas cuentas."
+    },
+    {
+      "titulo": "DESCARGO Y LÍMITES DE LA INTELIGENCIA ARTIFICIAL",
+      "cuerpo_md": "EL CLIENTE reconoce que la solución utiliza modelos de inteligencia artificial cuyas respuestas son **probabilísticas** y pueden contener errores o \"alucinaciones\", aun cuando el sistema esté correctamente configurado.\n\nPor ello, EL CLIENTE se obliga a mantener **revisión y supervisión humana** antes de usar los resultados de la IA en decisiones de consecuencia (legales, financieras, médicas, contractuales o que afecten a terceros). La solución **no debe usarse para decisiones críticas totalmente automatizadas** sin validación humana.\n\nEL PRESTADOR no garantiza resultados de negocio específicos (ventas, ahorros o métricas) ni la disponibilidad ininterrumpida de los servicios de terceros. EL CLIENTE es responsable del uso que dé a los resultados generados."
+    },
+    {
+      "titulo": "MANTENIMIENTO Y SOPORTE (RETAINER)",
+      "cuerpo_md": "> Esta cláusula aplica únicamente si LAS PARTES contratan mantenimiento. Si no aplica, se omite.\n\nA solicitud de EL CLIENTE, EL PRESTADOR podrá prestar un servicio mensual de mantenimiento y soporte por **{{MONEDA}} {{MONTO_RETAINER}} al mes, pagaderos por adelantado**.\n\nEl mantenimiento incluye {{ALCANCE_RETAINER}}. **No incluye** nuevas funcionalidades, rediseños ni trabajo fuera de alcance, los cuales se tramitan como orden de cambio. Cualquiera de LAS PARTES puede cancelar el mantenimiento dando aviso por escrito con **{{AVISO_CANCELACION_RETAINER}}** de anticipación."
+    },
+    {
+      "titulo": "LIMITACIÓN DE RESPONSABILIDAD E INDEMNIZACIÓN",
+      "cuerpo_md": "La responsabilidad total de EL PRESTADOR derivada de este Contrato, por cualquier concepto, **no excederá del monto efectivamente pagado por EL CLIENTE** a EL PRESTADOR durante el proyecto. En ningún caso EL PRESTADOR responderá por **daños indirectos, incidentales, lucro cesante, pérdida de datos o de ingresos**.\n\nEste límite **no aplica** en casos de dolo o negligencia grave de EL PRESTADOR.\n\nCada Parte responderá frente a la otra por los daños que cause por el incumplimiento de sus obligaciones. EL CLIENTE será responsable de la **licitud, veracidad y origen de los datos y contenidos** que aporte, y mantendrá en paz y a salvo a EL PRESTADOR de reclamaciones de terceros derivadas de los mismos; EL PRESTADOR mantendrá en paz y a salvo a EL CLIENTE de reclamaciones de terceros sobre la propiedad intelectual de los entregables desarrollados a la medida."
+    },
+    {
+      "titulo": "VIGENCIA, RESCISIÓN Y TERMINACIÓN",
+      "cuerpo_md": "Este Contrato entra en vigor a la fecha de su firma y permanece vigente hasta la conclusión de los Servicios y, en su caso, mientras subsista el mantenimiento contratado.\n\nCualquiera de LAS PARTES podrá **terminar el Contrato** dando aviso por escrito con **{{AVISO_TERMINACION}}** de anticipación. En caso de **incumplimiento** de la otra Parte, la Parte afectada podrá rescindirlo de pleno derecho si el incumplimiento no se subsana dentro de los **{{DIAS_SUBSANAR}} días naturales** siguientes a la notificación por escrito.\n\nSi EL CLIENTE termina el Contrato sin causa imputable a EL PRESTADOR, pagará el trabajo ya realizado más una **penalización (kill fee) equivalente a {{KILL_FEE}}**.\n\n**Al terminar el Contrato por cualquier causa**, EL PRESTADOR revocará los accesos delegados y procederá conforme a la cláusula de Accesos, Datos y Protección de Datos. Las obligaciones de confidencialidad, propiedad intelectual y limitación de responsabilidad subsisten a la terminación."
+    },
+    {
+      "titulo": "RELACIÓN ENTRE LAS PARTES, PERSONAL E IMPUESTOS",
+      "cuerpo_md": "EL PRESTADOR es un **contratista independiente** y cuenta con elementos propios y suficientes para cumplir este Contrato. No existe **vínculo laboral, de subordinación ni de patrón sustituto** entre EL CLIENTE y EL PRESTADOR, ni con el personal que este último emplee para la prestación de los Servicios.\n\nEL PRESTADOR es el único responsable de las obligaciones laborales, de seguridad social y fiscales de su personal, conforme a la **legislación aplicable de su país** (frente a las autoridades fiscales y de seguridad social que correspondan en su país), y se obliga a sacar en paz y a salvo a EL CLIENTE de cualquier reclamación de dicho personal.\n\nCada Parte pagará los **impuestos** que le correspondan conforme a la legislación fiscal aplicable a cada una en su país."
+    },
+    {
+      "titulo": "USO EN PORTAFOLIO Y PROMOCIÓN",
+      "cuerpo_md": "EL CLIENTE acepta que EL PRESTADOR pueda mencionar el nombre de EL CLIENTE, una descripción general de los Servicios prestados y las soluciones desarrolladas como parte de su **portafolio y promoción comercial** (sitio web, redes sociales y materiales), **siempre que no divulgue información confidencial** de EL CLIENTE.\n\nSi EL CLIENTE desea remover dicha información, bastará un aviso por escrito; EL PRESTADOR la removerá dentro de los **10 días naturales** siguientes a la solicitud."
+    },
+    {
+      "titulo": "LEY APLICABLE, JURISDICCIÓN Y SOLUCIÓN DE CONTROVERSIAS",
+      "cuerpo_md": "Este Contrato se rige e interpreta conforme a las leyes de **{{PAIS_LEY}}**.\n\nAnte cualquier controversia, LAS PARTES procurarán primero una **solución de buena fe** mediante negociación directa por un plazo de **{{DIAS_NEGOCIACION}} días naturales**. De no lograrse, se someterán a **{{MECANISMO_DISPUTA}}** con sede en **{{SEDE_ARBITRAJE}}**.\n\nA falta de acuerdo, o cuando proceda acudir a tribunales, LAS PARTES se someten a la jurisdicción de los **tribunales competentes de {{CIUDAD_JURISDICCION}}**, renunciando a cualquier otro fuero que pudiera corresponderles por sus domicilios presentes o futuros."
+    },
+    {
+      "titulo": "DISPOSICIONES GENERALES Y ANEXOS",
+      "cuerpo_md": "- **Acuerdo íntegro.** Este Contrato y sus Anexos constituyen el acuerdo total entre LAS PARTES y dejan sin efecto cualquier acuerdo previo sobre la misma materia.\n- **Modificaciones.** Cualquier modificación deberá constar por escrito y estar firmada (o aceptada por medios electrónicos) por ambas Partes.\n- **Cesión.** Ninguna Parte podrá ceder ni gravar los derechos y obligaciones de este Contrato sin autorización previa por escrito de la otra.\n- **Notificaciones.** Los avisos se harán por escrito a los domicilios señalados o a los correos {{CORREO_AGENCIA}} (EL PRESTADOR) y {{CORREO_CLIENTE}} (EL CLIENTE). LAS PARTES **aceptan el uso de correo electrónico y mensajería (por ejemplo, WhatsApp)** para comunicaciones, avisos y aprobaciones operativas. Todo cambio de domicilio o correo deberá notificarse con al menos 5 días naturales de anticipación.\n- **Independencia de cláusulas.** Si alguna disposición resulta inválida, las demás continuarán en vigor.\n- **Encabezados.** Los títulos de las cláusulas son solo de referencia y no limitan ni amplían su contenido.\n- **Anexos.** Forman parte integrante de este Contrato el **Anexo A (Alcance)** y, en su caso, el **Anexo B (Propuesta / Cotización de fecha {{FECHA_PROPUESTA}})**."
     }
   ]
 }

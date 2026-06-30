@@ -10,6 +10,7 @@ description: Arma la PROPUESTA que cierra al cliente de tu agencia de automatiza
 Antes de generar nada, asegura el perfil de la agencia:
 - Si **NO existe** `~/.config/agencia-ia/perfil.json` → lee `~/.config/agencia-ia/configurar.md` y corre el onboarding (unas preguntas, guarda el perfil). **Solo la primera vez** que el usuario usa cualquier skill de agencia.
 - Si **SÍ existe** → cárgalo y **NO vuelvas a preguntar**. Personaliza TODO con él: nombre de la agencia, nombre legal y datos (contrato), precios (cotización), proveedor/link de pago (cobro), color de acento (HTML), tono.
+- **Contenido a la medida de la agencia** (clave en la propuesta): `agencia.metodologia` → arma la sección "cómo trabajamos / nuestro proceso" y el timeline; `agencia.propuesta_valor` → el ángulo de cierre (por qué con esta agencia); `agencia.que_hace` y `agencia.nicho` → encuadran el problema y la prueba social en el lenguaje del sector; `agencia.construye_con` → con qué se construye la solución.
 - Para reconfigurar: el usuario dice "configura mi agencia" → re-corre `configurar.md`.
 
 El perfil es el DEFAULT, no una jaula: si para ESTE cliente el precio o el alcance cambian, ajústalo para ese trato sin tocar el perfil.
@@ -184,7 +185,12 @@ Construye el contenido de las 7 secciones siguiendo la **anatomía** de arriba. 
    ```
    node scripts/generar_propuesta.mjs <ruta>/propuesta.json <ruta>/propuesta.html
    ```
-   Imprime a stdout la ruta absoluta del `propuesta.html` — captúrala para el mensaje final. Es un documento **claro, premium, imprimible a PDF** (papel blanco, acento cyan #00E5FF, fuentes Space Grotesk + Instrument Serif). Sin dependencias.
+   Imprime a stdout la ruta absoluta del `propuesta.html` — captúrala para el mensaje final. Es un documento **claro, premium, imprimible a PDF** (papel blanco, acento de la marca, fuentes Space Grotesk + Instrument Serif). Sin dependencias.
+1b. **Generar el PDF (automático).** Tras el `propuesta.html`, corre el conversor compartido (multi-OS, usa el navegador que ya tenga el usuario):
+   ```
+   python3 ~/.config/agencia-ia/html2pdf.py <ruta>/propuesta.html
+   ```
+   `PDF: <ruta>` → quedó `propuesta.pdf` junto al HTML (eso le mandas al cliente). `NO_PDF:` → dile que abra el `.html` y haga **Cmd/Ctrl+P → Guardar como PDF**. No bloquees por esto.
 2. **FALLBACK sin Node (el HTML SIEMPRE sale).** Si el comando falla o no hay Node: NO te detengas. Escribe tú el `propuesta.html` con Write, replicando la estructura y el CSS del generador (mira `scripts/generar_propuesta.mjs` — el `CSS` y las funciones de cada sección). Documento claro (NO dark), acento cyan, 7 secciones en orden, 3 tiers con el recomendado resaltado, CTA con pasos numerados. Escapa `<` `>` `&`.
 3. Genera también el **markdown editable** `propuesta-<slug>/propuesta.md` (rellena `templates/propuesta.md` con los datos reales — quita los placeholders `{{...}}`). Es el robusto/editable, como en /docs-entrega.
 4. Genera la **secuencia de seguimiento** `propuesta-<slug>/seguimiento.md` (rellena `templates/seguimiento.md`). Es el activo que de verdad cierra: 5 toques en 21 días.

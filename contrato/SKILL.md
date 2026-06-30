@@ -10,6 +10,7 @@ description: Genera el contrato de prestación de servicios que la agencia de au
 Antes de generar nada, asegura el perfil de la agencia:
 - Si **NO existe** `~/.config/agencia-ia/perfil.json` → lee `~/.config/agencia-ia/configurar.md` y corre el onboarding (unas preguntas, guarda el perfil). **Solo la primera vez** que el usuario usa cualquier skill de agencia.
 - Si **SÍ existe** → cárgalo y **NO vuelvas a preguntar**. Personaliza TODO con él: nombre legal y datos del prestador (contrato), precios, proveedor/link de pago, color de acento (HTML), tono.
+- **Contenido a la medida de la agencia**: `agencia.metodologia` → la cláusula de alcance/proceso de trabajo (cómo se entrega); `agencia.que_hace` / `nicho` → describe el servicio contratado en el lenguaje correcto; `agencia.construye_con` → si aplica, las herramientas que el prestador usará.
 - Para reconfigurar: el usuario dice "configura mi agencia" → re-corre `configurar.md`.
 
 El perfil es el DEFAULT, no una jaula: si para ESTE cliente el precio o el alcance cambian, ajústalo para ese trato sin tocar el perfil.
@@ -167,12 +168,19 @@ contrato-<slug-cliente>/
 El contrato lo **firma el cliente**, así que además del markdown editable genera un **HTML profesional, dark + acento cyan #00E5FF**, que imprima limpio a PDF (Cmd/Ctrl+P → "Guardar como PDF"). Debe verse de **agencia seria**.
 
 **Cómo generarlo (vía cómoda):**
-1. Arma un `contrato.json` con `{ titulo, agencia, campos: {...todos los placeholders llenos}, clausulas: [{titulo, cuerpo_md}, ...] }`. Pon las 19 secciones (su `cuerpo_md` es el texto en markdown ya rellenado). Mira `scripts/contrato.ejemplo.json` como referencia del formato.
+1. Arma un `contrato.json` con `{ titulo, agencia, campos: {...todos los placeholders llenos}, preambulo, declaraciones, clausulas: [{titulo, cuerpo_md}, ...] }`. **Estructura de contrato real** (basada en un contrato vetado por abogado): un **preámbulo** que define a las partes (EL PRESTADOR / EL CLIENTE), las **DECLARACIONES** (capacidad, domicilio, ID fiscal, actividades de cada parte + reconocimiento mutuo), y las **cláusulas** numeradas. Las **firmas** las arma el generador solo (desde `campos`: `NOMBRE_LEGAL_AGENCIA`/`REPRESENTANTE_AGENCIA`/`NOMBRE_LEGAL_CLIENTE`/`REPRESENTANTE_CLIENTE`). Pon todas las secciones (su `cuerpo_md` es el markdown ya rellenado). **Mira `scripts/contrato.ejemplo.json` como referencia COMPLETA del formato y el lenguaje legal** — está basado en un contrato profesional y parametrizado.
+   - **Parametriza por país**: la cláusula de Ley Aplicable usa `{{PAIS_LEY}}` y `{{CIUDAD_JURISDICCION}}` (no hardcodees México); impuestos y relación-no-laboral se refieren a "la legislación aplicable de cada parte". El ejemplo está lleno para México, pero adáptalo al país del usuario (de su perfil) y del cliente.
+   - **Parametriza por servicio/proyecto**: OBJETO y alcance desde el diagnóstico/propuesta; precio, hitos, revisiones, tope de APIs, kill fee y mantenimiento desde lo acordado en este trato.
 2. Corre:
    ```bash
    python3 scripts/generar_contrato_html.py contrato-<slug>/contrato.json contrato-<slug>/contrato.html
    ```
-3. Abre el HTML, verifica que no queden marcadores `[placeholder]` en amarillo (significan campo sin llenar) y que las tablas/firmas se vean bien.
+3. **Generar el PDF (automático).** Corre el conversor compartido (multi-OS):
+   ```bash
+   python3 ~/.config/agencia-ia/html2pdf.py contrato-<slug>/contrato.html
+   ```
+   `PDF: <ruta>` → quedó `contrato.pdf` junto al HTML. `NO_PDF:` → el usuario abre el `.html` y hace **Cmd/Ctrl+P → Guardar como PDF**.
+4. Abre el HTML, verifica que no queden marcadores `[placeholder]` en amarillo (significan campo sin llenar) y que las tablas/firmas se vean bien.
 
 **FALLBACK sin Python (el HTML SIEMPRE sale).** Si no hay Python o el script falla, **escribe tú el `contrato.html` con Write**, replicando el diseño de `scripts/generar_contrato_html.py` (CSS dark `#080810` + cyan `#00E5FF`, fuentes Space Grotesk + Instrument Serif italic para acentos, portada con folio/fecha, secciones numeradas con regla cyan, tablas de pago, bloque de firmas a 2 columnas, disclaimer en caja amarilla al final). Mismas reglas: escapar `<` `>` `&`, montos como `USD 2,400`. El cliente obtiene el mismo documento.
 

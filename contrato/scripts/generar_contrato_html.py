@@ -15,10 +15,37 @@ FALLBACK: si no hay Python o el script falla, el SKILL.md instruye a Claude a es
 replicando este diseño. Este script es la vía cómoda, no la única.
 """
 import json
+import os
 import re
 import sys
 import html as _html
 from pathlib import Path
+
+
+def _color_marca():
+    """Color de acento de la agencia desde el perfil compartido (o None)."""
+    path = os.path.expanduser("~/.config/agencia-ia/perfil.json")
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            p = json.load(f)
+        c = ((p.get("marca") or {}).get("color_acento") or "").strip()
+        return c if (len(c) == 7 and c[0] == "#") else None
+    except Exception:
+        return None
+
+
+def _recolorear(s, hex_color):
+    """Reemplaza el cyan de Horizontes por el acento de la agencia en TODO el HTML."""
+    if not hex_color or len(hex_color) != 7 or hex_color[0] != "#":
+        return s
+    try:
+        r, g, b = int(hex_color[1:3], 16), int(hex_color[3:5], 16), int(hex_color[5:7], 16)
+    except ValueError:
+        return s
+    rgb = "{},{},{}".format(r, g, b)
+    for lit in ("#00E5FF", "#00e5ff", "#22d3ee", "#22D3EE", "#00B8CC", "#00b8cc", "#0e7490", "#0E7490", "#06808f", "#06808F", "#0aa6bd", "#0AA6BD"):
+        s = s.replace(lit, hex_color)
+    return s.replace("0,229,255", rgb).replace("0, 229, 255", rgb).replace("0,184,204", rgb).replace("0, 184, 204", rgb)
 
 
 # ---------- helpers ----------
@@ -152,6 +179,13 @@ td{padding:10px 13px;border-top:1px solid var(--border);vertical-align:top;}
   color:var(--dim);font-size:13px;}
 .disclaimer strong{color:var(--warn);}
 
+.preambulo{margin:8px 0 6px;font-size:14.5px;line-height:1.7;}
+.declaraciones,.firmas{margin-top:30px;}
+.sign-row{display:flex;gap:48px;margin-top:30px;flex-wrap:wrap;}
+.sign{flex:1;min-width:220px;text-align:center;}
+.sign-line{border-top:1.5px solid var(--text);margin:48px 0 8px;}
+.sign-sub{color:var(--dim);font-size:12.5px;margin-top:2px;}
+
 footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);
   color:var(--dim);font-size:12px;text-align:center;}
 
@@ -201,6 +235,30 @@ def build_html(data):
 
     body = "\n".join(sections_html)
 
+    # Preámbulo (recital de las partes) y Declaraciones — opcionales, antes de las cláusulas.
+    preambulo = data.get("preambulo", "")
+    preambulo_html = f'<section class="preambulo">{md_block(fill(preambulo, campos))}</section>' if preambulo else ""
+    declaraciones = data.get("declaraciones", "")
+    declaraciones_html = (
+        '<section class="declaraciones"><h2>Declaraciones</h2><span class="rule"></span>'
+        + md_block(fill(declaraciones, campos)) + '</section>'
+    ) if declaraciones else ""
+
+    # Firmas (2 columnas) — desde campos, salvo que data["firmas"] traiga texto propio.
+    rep_ag = campos.get("REPRESENTANTE_AGENCIA") or campos.get("NOMBRE_LEGAL_AGENCIA") or agencia
+    leg_ag = campos.get("NOMBRE_LEGAL_AGENCIA") or agencia
+    leg_cl = campos.get("NOMBRE_LEGAL_CLIENTE", "EL CLIENTE")
+    rep_cl = campos.get("REPRESENTANTE_CLIENTE", "") or leg_cl
+    firmas_html = (
+        '<section class="firmas"><h2>Firmas</h2><span class="rule"></span>'
+        '<div class="sign-row">'
+        f'<div class="sign"><div class="sign-line"></div><b>{esc(rep_ag)}</b>'
+        f'<div class="sign-sub">{esc(leg_ag)} · EL PRESTADOR</div></div>'
+        f'<div class="sign"><div class="sign-line"></div><b>{esc(rep_cl)}</b>'
+        f'<div class="sign-sub">{esc(leg_cl)} · EL CLIENTE</div></div>'
+        '</div></section>'
+    )
+
     meta = [
         ('Folio', campos.get("FOLIO", "—")),
         ('Fecha', campos.get("FECHA", "—")),
@@ -221,12 +279,15 @@ def build_html(data):
   <h1>{esc(titulo)}</h1>
   <div class="meta">{meta_html}</div>
 </header>
+{preambulo_html}
+{declaraciones_html}
 {body}
+{firmas_html}
 <div class="disclaimer"><strong>Aviso importante — esto no es asesoría legal.</strong>
 Este documento es un modelo de trabajo, no constituye asesoría jurídica. Las leyes de prestación de
 servicios, propiedad intelectual y protección de datos varían según el país. Para tratos de monto alto
 o de riesgo elevado, haz que un abogado de tu país lo revise antes de firmar.</div>
-<footer>Generado con la suite de agencia de Horizontes IA · <span class="accent">premium sin ser pushy</span></footer>
+<footer>{agencia} · <span class="accent">documento de prestación de servicios</span></footer>
 </div></body></html>"""
 
 
@@ -237,7 +298,8 @@ def main():
     src = Path(sys.argv[1])
     data = json.loads(src.read_text(encoding="utf-8"))
     out = Path(sys.argv[2]) if len(sys.argv) > 2 else src.with_suffix(".html")
-    out.write_text(build_html(data), encoding="utf-8")
+    html_out = _recolorear(build_html(data), _color_marca())
+    out.write_text(html_out, encoding="utf-8")
     print(f"OK -> {out}")
 
 

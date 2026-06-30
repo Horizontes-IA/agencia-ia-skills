@@ -38,6 +38,23 @@
 
 import { readFileSync } from "node:fs";
 import { writeFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
+
+function _colorMarca() {
+  try {
+    const p = JSON.parse(readFileSync(join(homedir(), ".config", "agencia-ia", "perfil.json"), "utf8"));
+    const c = ((p.marca || {}).color_acento || "").trim();
+    return (c.length === 7 && c[0] === "#") ? c : null;
+  } catch { return null; }
+}
+function _recolorear(s, hex) {
+  if (!hex || hex.length !== 7 || hex[0] !== "#") return s;
+  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+  const rgb = `${r},${g},${b}`;
+  for (const lit of ["#00E5FF", "#00e5ff", "#22d3ee", "#22D3EE", "#00B8CC", "#00b8cc", "#0e7490", "#0E7490", "#06808f", "#06808F", "#0aa6bd", "#0AA6BD"]) s = s.split(lit).join(hex);
+  return s.split("0,229,255").join(rgb).split("0, 229, 255").join(rgb).split("0,184,204").join(rgb).split("0, 184, 204").join(rgb);
+}
 
 function parseArgs(argv) {
   const a = {};
@@ -99,18 +116,13 @@ const saldoRow = d.saldo_pendiente
   ? `<tr class="muted"><td>Saldo pendiente del proyecto</td><td class="num">${moneda} ${esc(d.saldo_pendiente)}</td></tr>`
   : "";
 
-const pagoBlock = d.link_pago
-  ? `
-      <div class="pay-cta">
-        <p class="pay-label">Paga en un clic, con tarjeta:</p>
-        <a class="pay-button" href="${esc(d.link_pago)}">Pagar ${moneda} ${esc(d.total)}</a>
-        <p class="pay-url">${esc(d.link_pago)}</p>
-        <p class="pay-fine">Es un link seguro. En cuanto pagues, llega la confirmación automática.</p>
-      </div>`
-  : `
+// Sin botón de "Pagar": la mayoría cobra por transferencia o pega su propio link
+// (de Stripe/Mercado Pago). Mostramos las instrucciones/datos y, si hay link, como texto.
+const pagoBlock = `
       <div class="pay-manual">
-        <p class="pay-label">Instrucciones de pago</p>
-        <div class="pay-manual-body">${esc(d.instrucciones_pago).replaceAll("\n", "<br>")}</div>
+        ${d.instrucciones_pago ? `<p class="pay-label">Instrucciones de pago</p>
+        <div class="pay-manual-body">${esc(d.instrucciones_pago).replaceAll("\n", "<br>")}</div>` : ""}
+        ${d.link_pago ? `<p class="pay-url">Link de pago: <a href="${esc(d.link_pago)}">${esc(d.link_pago)}</a></p>` : ""}
       </div>`;
 
 const emisorFiscal = d.emisor?.rfc_o_id_fiscal
@@ -171,12 +183,8 @@ const html = `<!DOCTYPE html>
   .pay { margin-top: 36px; border: 1px solid var(--line); border-radius: 12px; padding: 24px; background: #fbfdff; }
   .pay h3 { margin: 0 0 4px; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
   .pay .metodo { font-size: 15px; font-weight: 600; margin-bottom: 14px; }
-  .pay-cta { text-align: center; }
   .pay-label { font-size: 14px; color: var(--muted); margin: 0 0 12px; }
-  .pay-button { display: inline-block; background: var(--cyan); color: #04222a; text-decoration: none;
-    font-weight: 700; font-size: 16px; padding: 14px 28px; border-radius: 10px; }
-  .pay-url { font-size: 12px; color: var(--muted); word-break: break-all; margin: 12px 0 4px; }
-  .pay-fine { font-size: 12px; color: var(--muted); margin: 0; }
+  .pay-url { font-size: 13px; color: var(--ink); word-break: break-all; margin: 12px 0 4px; }
   .pay-manual-body { font-size: 14px; line-height: 1.6; }
   .conds { margin-top: 16px; font-size: 13px; color: var(--muted); line-height: 1.6; }
   .note { margin-top: 28px; border-left: 3px solid var(--cyan); background: rgba(0,229,255,.06);
@@ -260,10 +268,12 @@ const html = `<!DOCTYPE html>
 </body>
 </html>`;
 
+const htmlFinal = _recolorear(html, _colorMarca());
+
 if (args.out) {
-  writeFileSync(args.out, html, "utf8");
+  writeFileSync(args.out, htmlFinal, "utf8");
   console.error(`✅ Factura HTML escrita en ${args.out}`);
   console.error("   Ábrela en el navegador y haz Cmd/Ctrl+P → 'Guardar como PDF' para mandarla al cliente.");
 } else {
-  process.stdout.write(html);
+  process.stdout.write(htmlFinal);
 }

@@ -23,19 +23,33 @@ git clone --depth 1 -q "$REPO" "$TMP/agencia"
 
 mkdir -p "$SKILLS_DIR" "$CONF_DIR"
 
-# Los 5 skills de agencia (cada uno es un skill independiente de Claude Code)
-for s in cotizacion propuesta contrato cobro cerrar-cliente; do
+# Los 8 skills de agencia (cada uno es un skill independiente de Claude Code).
+# /nuevo-cliente es la puerta de entrada que orquesta a los demás.
+for s in nuevo-cliente diagnostico cotizacion propuesta contrato cobro conectar-cliente cerrar-cliente; do
   rm -rf "$SKILLS_DIR/$s"
   cp -R "$TMP/agencia/$s" "$SKILLS_DIR/$s"
   echo "  ✓ /$s"
 done
 
-# El onboarding + ejemplo de perfil, compartidos (los skills los leen de aquí)
+# /conectar-cliente usa Composio (Node): deja sus dependencias listas desde el inicio.
+# (La llave de Composio NO se pide aquí — el skill te la pide la primera vez que lo usas.)
+if command -v npm >/dev/null 2>&1; then
+  echo "  ⏳ instalando dependencias de /conectar-cliente…"
+  ( cd "$SKILLS_DIR/conectar-cliente" && npm install --silent --no-audit --no-fund ) \
+    && echo "  ✓ dependencias de /conectar-cliente listas" \
+    || echo "  ⚠️ no pude instalar las deps de /conectar-cliente; corre 'npm install' en $SKILLS_DIR/conectar-cliente cuando puedas."
+else
+  echo "  ⚠️ No encontré npm. /conectar-cliente necesita Node: instálalo y corre 'npm install' en $SKILLS_DIR/conectar-cliente."
+fi
+
+# El onboarding + ejemplo de perfil + el conversor HTML→PDF, compartidos (los skills los leen de aquí)
 cp "$TMP/agencia/configurar.md" "$CONF_DIR/configurar.md"
 cp "$TMP/agencia/perfil.ejemplo.json" "$CONF_DIR/perfil.ejemplo.json"
+cp "$TMP/agencia/html2pdf.py" "$CONF_DIR/html2pdf.py"
 
 rm -rf "$TMP"
 echo ""
-echo "✅ Listo. Abre Claude Code y escribe, por ejemplo:  /cotizacion"
+echo "✅ Listo. Abre Claude Code y escribe:  /nuevo-cliente   (la puerta de entrada — arma todo el kit)"
+echo "   O usa un skill suelto: /diagnostico, /cotizacion, /propuesta, /contrato, /cobro."
 echo "   La primera vez te hará unas preguntas para configurar tu agencia (1 sola vez)."
-echo "   Para conectar las cuentas de tus clientes sin pedir API keys, instala también /conectar-cliente."
+echo "   /conectar-cliente te pedirá una llave gratis de Composio (https://app.composio.dev) la primera vez."

@@ -1,0 +1,9 @@
+{
+  "name": "conectar-cliente",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@composio/core": "latest",
+    "dotenv": "^16.4.5"
+  }
+}

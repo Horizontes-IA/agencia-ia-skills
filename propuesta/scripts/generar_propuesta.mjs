@@ -19,6 +19,23 @@
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve, dirname, join } from "node:path";
+import { homedir } from "node:os";
+
+// ---------- color de marca (perfil compartido) ----------
+function _colorMarca() {
+  try {
+    const p = JSON.parse(readFileSync(join(homedir(), ".config", "agencia-ia", "perfil.json"), "utf8"));
+    const c = ((p.marca || {}).color_acento || "").trim();
+    return (c.length === 7 && c[0] === "#") ? c : null;
+  } catch { return null; }
+}
+function _recolorear(s, hex) {
+  if (!hex || hex.length !== 7 || hex[0] !== "#") return s;
+  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+  const rgb = `${r},${g},${b}`;
+  for (const lit of ["#00E5FF", "#00e5ff", "#22d3ee", "#22D3EE", "#00B8CC", "#00b8cc", "#0e7490", "#0E7490", "#06808f", "#06808F", "#0aa6bd", "#0AA6BD"]) s = s.split(lit).join(hex);
+  return s.split("0,229,255").join(rgb).split("0, 229, 255").join(rgb).split("0,184,204").join(rgb).split("0, 184, 204").join(rgb);
+}
 
 // ---------- helpers ----------
 const esc = (s) =>
@@ -597,5 +614,5 @@ ${footer()}
 </body>
 </html>`;
 
-writeFileSync(outPath, html, "utf8");
+writeFileSync(outPath, _recolorear(html, _colorMarca()), "utf8");
 console.log(outPath);
