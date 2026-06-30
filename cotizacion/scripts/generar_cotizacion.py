@@ -5,7 +5,7 @@ generar_cotizacion.py — Generador de la COTIZACIÓN cliente-facing de la suite
 
 Consume un `cotizacion.json` (esquema en _design/schema.md) y escribe, en <output_dir>:
 
-    cotizacion.html   ← el documento que VE EL CLIENTE (self-contained, dark + cyan, imprime a PDF)
+    cotizacion.html   ← el documento que VE EL CLIENTE (self-contained, claro + cyan, imprime a PDF)
     cotizacion.md     ← versión markdown editable / archivable
 
 Uso:
@@ -56,6 +56,8 @@ def _recolorear(s, hex_color):
     except ValueError:
         return s
     rgb = "{},{},{}".format(r, g, b)
+    if (0.299 * r + 0.587 * g + 0.114 * b) < 150:
+        s = s.replace("--on-accent:#15181e", "--on-accent:#ffffff")
     for lit in ("#00E5FF", "#00e5ff", "#22d3ee", "#22D3EE", "#00B8CC", "#00b8cc", "#0e7490", "#0E7490", "#06808f", "#06808F", "#0aa6bd", "#0AA6BD"):
         s = s.replace(lit, hex_color)
     return s.replace("0,229,255", rgb).replace("0, 229, 255", rgb).replace("0,184,204", rgb).replace("0, 184, 204", rgb)
@@ -162,21 +164,22 @@ LOGO_SVG = (
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 3. CSS (todo inline, dark + cyan, con print) — reusa el sistema de /diagnostico
+# 3. CSS (todo inline, claro + cyan, con print) — reusa el sistema de /diagnostico
 # ─────────────────────────────────────────────────────────────────────────────
 
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
 
 :root{
-  --bg:#0a0a0c; --surface:#111317; --surface-2:#16191f;
-  --border:rgba(255,255,255,.08);
-  --text:#e6e6e6; --muted:#8b93a1;
+  --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef2f7;
+  --border:rgba(17,24,39,.12);
+  --text:#15181e; --muted:#5b6573;
   --cyan:#00E5FF; --cyan-2:#22d3ee; --cyan-soft:rgba(0,229,255,.10);
-  --good:#34d399; --warn:#fbbf24; --orange:#fb923c; --dim:#64748b;
+  --on-accent:#15181e;
+  --good:#0f9d6b; --warn:#d97706; --orange:#ea7a2e; --dim:#8a94a3;
   --radius:16px; --radius-sm:10px;
-  --shadow:0 20px 60px -20px rgba(0,0,0,.7);
-  --glow:0 0 40px -8px rgba(0,229,255,.35);
+  --shadow:0 12px 40px -20px rgba(17,24,39,.12);
+  --glow:0 6px 26px -14px rgba(0,229,255,.30);
 }
 
 *{box-sizing:border-box;}
@@ -272,7 +275,7 @@ p{margin:0 0 14px;}
   padding:28px 24px; display:flex; flex-direction:column; opacity:.96;}
 .tier.featured{border:1.5px solid var(--cyan); box-shadow:var(--glow); opacity:1; position:relative;}
 .tier-flag{position:absolute; top:-12px; left:50%; transform:translateX(-50%);
-  background:var(--cyan); color:var(--bg); font-size:11px; font-weight:700; letter-spacing:.08em;
+  background:var(--cyan); color:var(--on-accent); font-size:11px; font-weight:700; letter-spacing:.08em;
   text-transform:uppercase; padding:5px 16px; border-radius:99px; white-space:nowrap;
   -webkit-print-color-adjust:exact; print-color-adjust:exact;}
 .tier-name{font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600;}
@@ -317,7 +320,7 @@ p{margin:0 0 14px;}
 .closing-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:36px 38px;}
 .closing-card h2{font-size:26px; margin:0 0 12px; letter-spacing:-.02em;}
 .closing-card p{font-size:15.5px; color:var(--muted);}
-.cta-btn{display:inline-block; margin-top:18px; background:var(--cyan); color:var(--bg);
+.cta-btn{display:inline-block; margin-top:18px; background:var(--cyan); color:var(--on-accent);
   font-weight:700; font-size:15px; padding:14px 28px; border-radius:99px; letter-spacing:.01em;
   -webkit-print-color-adjust:exact; print-color-adjust:exact;}
 .sign-row{display:flex; gap:40px; margin-top:34px; flex-wrap:wrap;}
@@ -342,16 +345,18 @@ p{margin:0 0 14px;}
 
 @media print{
   *{-webkit-print-color-adjust:exact !important; print-color-adjust:exact !important;}
-  @page{size:A4; margin:15mm;}
+  @page{size:A4; margin:14mm;}
   body{background:var(--bg) !important; font-size:11.5pt;}
   .wrap{max-width:100%; padding:0;}
   section{padding:20px 0;}
   .cover{min-height:auto; padding:20px 0 14px;}
   .cover h1{font-size:38px;}
-  .tier{break-inside:avoid;} .tiers{break-inside:avoid;}
+  .tier{break-inside:avoid;}
   .roi-card,.scope-card,.term,.phase,.retainer{break-inside:avoid;}
   .vigencia,.recognition,.callout,.closing-card,.supuestos{break-inside:avoid;}
-  .sec-head{break-after:avoid;}
+  /* El encabezado no se parte por dentro NI se queda huérfano al final de la página. */
+  .sec-head{break-inside:avoid; break-after:avoid; page-break-inside:avoid; page-break-after:avoid;}
+  h2,h3{break-after:avoid; page-break-after:avoid;}
 }
 """
 
@@ -388,7 +393,7 @@ def build_html(coti):
     parts.append('<div class="eyebrow">Cotizacion</div>')
     parts.append('<h1>{}</h1>'.format(esc(titulo)))
     parts.append('<p class="cover-sub">{}</p>'.format(esc(subtitulo)))
-    meta_bits = ["Preparada para <b style='color:#e6e6e6'>{}</b>".format(esc(nombre_cliente))]
+    meta_bits = ["Preparada para <b style='color:var(--text)'>{}</b>".format(esc(nombre_cliente))]
     if contacto:
         meta_bits.append(esc(contacto))
     if folio:

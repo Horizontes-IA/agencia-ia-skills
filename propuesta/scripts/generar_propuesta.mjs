@@ -33,6 +33,7 @@ function _recolorear(s, hex) {
   if (!hex || hex.length !== 7 || hex[0] !== "#") return s;
   const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
   const rgb = `${r},${g},${b}`;
+  if (0.299 * r + 0.587 * g + 0.114 * b < 150) s = s.split("--on-accent:#15181e").join("--on-accent:#ffffff");
   for (const lit of ["#00E5FF", "#00e5ff", "#22d3ee", "#22D3EE", "#00B8CC", "#00b8cc", "#0e7490", "#0E7490", "#06808f", "#06808F", "#0aa6bd", "#0AA6BD"]) s = s.split(lit).join(hex);
   return s.split("0,229,255").join(rgb).split("0, 229, 255").join(rgb).split("0,184,204").join(rgb).split("0, 184, 204").join(rgb);
 }
@@ -430,6 +431,7 @@ const CSS = `
 :root{
   --paper:#ffffff; --paper-2:#f6f8fa; --ink:#0f1419; --ink-soft:#3d4753; --muted:#6b7480;
   --line:#e3e8ee; --cyan:#00B8CC; --cyan-bright:#00E5FF; --cyan-soft:#e6fbff;
+  --on-accent:#15181e;
   --radius:16px; --radius-sm:11px;
 }
 *{box-sizing:border-box;}
@@ -445,19 +447,19 @@ h3{font-size:16px; font-weight:600; margin:0 0 4px;}
 cite{font-style:normal; color:var(--muted); font-size:13px;}
 .fine{font-size:13px; color:var(--muted); margin-top:10px;}
 
-/* portada */
-.cover{background:linear-gradient(160deg,#0f1419 0%,#1a2330 100%); color:#fff; padding:42px 54px 40px;}
+/* portada (clara, consistente con el cuerpo) */
+.cover{background:#f7f9fc; color:#15181e; padding:42px 54px 40px; border-bottom:1px solid var(--line);}
 .brand{display:flex; align-items:center; gap:13px; margin-bottom:42px;}
-.brand-name{font-weight:700; font-size:17px; letter-spacing:-.01em;}
-.brand-tag{font-size:12.5px; color:#9fb0c0; letter-spacing:.02em;}
+.brand-name{font-weight:700; font-size:17px; letter-spacing:-.01em; color:#15181e;}
+.brand-tag{font-size:12.5px; color:#5b6573; letter-spacing:.02em;}
 .cover-kicker{font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--cyan-bright); margin-bottom:14px;}
-.cover-title{font-size:38px; line-height:1.12; font-weight:700; letter-spacing:-.02em; margin:0 0 12px; max-width:16ch;}
-.cover-sub{font-size:22px; line-height:1.4; color:#cdd9e4; margin:0; max-width:42ch;}
+.cover-title{font-size:38px; line-height:1.12; font-weight:700; letter-spacing:-.02em; margin:0 0 12px; max-width:16ch; color:#15181e;}
+.cover-sub{font-size:22px; line-height:1.4; color:#5b6573; margin:0; max-width:42ch;}
 .cover-sub.accent{color:var(--cyan-bright);}
 .cover-meta{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px 26px;
-  margin-top:40px; padding-top:24px; border-top:1px solid rgba(255,255,255,.14);}
-.cover-meta .lbl{display:block; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:#8a9bab; margin-bottom:3px;}
-.cover-meta .val{display:block; font-size:14.5px; font-weight:500; color:#eef3f7;}
+  margin-top:40px; padding-top:24px; border-top:1px solid rgba(17,24,39,.12);}
+.cover-meta .lbl{display:block; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:#5b6573; margin-bottom:3px;}
+.cover-meta .val{display:block; font-size:14.5px; font-weight:500; color:#15181e;}
 
 /* secciones */
 .sec{position:relative; padding:34px 54px; border-top:1px solid var(--line);}
@@ -552,16 +554,16 @@ cite{font-style:normal; color:var(--muted); font-size:13px;}
 .terms ul li{margin-bottom:6px;}
 
 /* CTA */
-.cta{background:linear-gradient(160deg,#0f1419 0%,#1a2330 100%); color:#fff; border-radius:0; padding:38px 54px 40px;}
-.cta h2{padding-left:0; color:#fff;}
+.cta{background:var(--paper-2); color:var(--ink); border-radius:0; padding:38px 54px 40px; border-top:3px solid var(--cyan);}
+.cta h2{padding-left:0; color:var(--ink);}
 .cta .steps{margin-left:0; padding-left:0; list-style:none; counter-reset:s; margin-bottom:22px;}
-.cta .steps li{counter-increment:s; position:relative; padding:8px 0 8px 42px; font-size:15.5px; color:#dfe8ef;}
+.cta .steps li{counter-increment:s; position:relative; padding:8px 0 8px 42px; font-size:15.5px; color:var(--ink);}
 .cta .steps li:before{content:counter(s); position:absolute; left:0; top:7px; width:27px; height:27px; border-radius:50%;
-  background:var(--cyan-bright); color:#0f1419; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center;}
-.cta-btn{display:inline-block; background:var(--cyan-bright); color:#0f1419; font-weight:700; font-size:16px;
+  background:var(--cyan-bright); color:var(--on-accent); font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center;}
+.cta-btn{display:inline-block; background:var(--cyan-bright); color:var(--on-accent); font-weight:700; font-size:16px;
   padding:14px 34px; border-radius:11px; text-decoration:none;}
-.cta-fine{color:#9fb0c0; font-size:13px; margin-top:16px;}
-.cta-contact{color:#cdd9e4; font-size:14px; margin-top:6px;}
+.cta-fine{color:var(--muted); font-size:13px; margin-top:16px;}
+.cta-contact{color:var(--ink-soft); font-size:14px; margin-top:6px;}
 
 /* footer */
 .foot{padding:22px 54px 30px; font-size:12.5px; color:var(--muted); border-top:1px solid var(--line);}
@@ -569,12 +571,19 @@ cite{font-style:normal; color:var(--muted); font-size:13px;}
 
 /* print */
 @media print{
+  /* fuerza fondo blanco total: sin franja oscura del body/--paper-2 en los bordes */
   body{background:#fff; font-size:11.5pt;}
-  .doc{box-shadow:none; max-width:none;}
+  .doc{box-shadow:none; max-width:none; margin:0; width:100%; background:#fff;}
   @page{size:A4; margin:0;}
+  /* @page margin:0 → el padding lateral propio de cada bloque (54px ≈ 14mm) evita texto pegado al borde */
   .cover, .cta{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
-  .sec{break-inside:avoid;}
-  .tier, .phase, .case, .tl-row{break-inside:avoid;}
+  /* las secciones FLUYEN entre páginas (antes break-inside:avoid empujaba secciones largas
+     a una página nueva y dejaba medio folio en blanco) */
+  .sec{break-inside:auto;}
+  /* solo bloques pequeños se mantienen enteros */
+  .tier, .phase, .case, .tl-row, .kpi, .deliver li{break-inside:avoid;}
+  /* ningún título se queda huérfano al final de la página: va con su contenido */
+  h2,h3{break-after:avoid; page-break-after:avoid; break-inside:avoid;}
   a[href]:after{content:"";}
 }
 @media (max-width:680px){

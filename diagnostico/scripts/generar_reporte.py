@@ -6,7 +6,7 @@ generar_reporte.py — Generador del paquete de diagnóstico de Horizontes IA.
 Consume un `diagnostico.json` (esquema canónico en _design/schema.md) y escribe,
 en <output_dir>, el paquete completo:
 
-    reporte.html              ← el artefacto WOW (self-contained, dark + cyan, imprime a PDF)
+    reporte.html              ← el artefacto WOW (self-contained, claro + acento, imprime a PDF)
     01-procesos-y-roi.md
     02-plan-90-dias.md
     03-stack-recomendado.md
@@ -204,6 +204,9 @@ def recolorear_html(s, hex_color):
     except ValueError:
         return s
     rgb = "{},{},{}".format(r, g, b)
+    # Texto sobre el acento: blanco si el acento es oscuro, tinta oscura si es claro.
+    if (0.299 * r + 0.587 * g + 0.114 * b) < 150:
+        s = s.replace("--on-accent:#15181e", "--on-accent:#ffffff")
     for lit in ("#00E5FF", "#00e5ff", "#22d3ee", "#22D3EE", "#00B8CC", "#00b8cc", "#0e7490", "#0E7490", "#06808f", "#06808F", "#0aa6bd", "#0AA6BD"):
         s = s.replace(lit, hex_color)
     s = s.replace("0,229,255", rgb).replace("0, 229, 255", rgb).replace("0,184,204", rgb).replace("0, 184, 204", rgb)
@@ -605,21 +608,22 @@ def timeline_month(fase):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 4. EL CSS (todo inline, dark + cyan, con print)
+# 4. EL CSS (todo inline, claro + acento, con print)
 # ─────────────────────────────────────────────────────────────────────────────
 
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
 
 :root{
-  --bg:#0a0a0c; --surface:#111317; --surface-2:#16191f;
-  --border:rgba(255,255,255,.08);
-  --text:#e6e6e6; --muted:#8b93a1;
+  --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef2f7;
+  --border:rgba(17,24,39,.12);
+  --text:#15181e; --muted:#5b6573;
   --cyan:#00E5FF; --cyan-2:#22d3ee; --cyan-soft:rgba(0,229,255,.10);
-  --good:#34d399; --warn:#fbbf24; --orange:#fb923c; --dim:#64748b;
+  --on-accent:#15181e;
+  --good:#34d399; --warn:#fbbf24; --orange:#fb923c; --dim:#8a94a3;
   --radius:16px; --radius-sm:10px;
-  --shadow:0 20px 60px -20px rgba(0,0,0,.7);
-  --glow:0 0 40px -8px rgba(0,229,255,.35);
+  --shadow:0 8px 30px -12px rgba(17,24,39,.12);
+  --glow:none;
 }
 
 *{box-sizing:border-box;}
@@ -725,7 +729,7 @@ section:first-of-type{border-top:none;}
   border:1px solid rgba(0,229,255,.3); border-radius:99px; padding:4px 13px;
   -webkit-print-color-adjust:exact; print-color-adjust:exact;}
 .auto-title{font-size:21px; font-weight:700; margin:0; flex:1; letter-spacing:-.01em;}
-.start-badge{font-size:11px; font-weight:700; letter-spacing:.08em; color:var(--bg);
+.start-badge{font-size:11px; font-weight:700; letter-spacing:.08em; color:var(--on-accent);
   background:var(--cyan); border-radius:99px; padding:5px 13px;
   -webkit-print-color-adjust:exact; print-color-adjust:exact;}
 .next-badge{font-size:11px; font-weight:600; letter-spacing:.06em; color:var(--muted);
@@ -759,7 +763,7 @@ section:first-of-type{border-top:none;}
   padding:14px 16px; font-size:12px; letter-spacing:.06em; text-transform:uppercase; font-weight:600;
   -webkit-print-color-adjust:exact; print-color-adjust:exact;}
 .roi-table td{padding:14px 16px; border-top:1px solid var(--border);}
-.roi-table tbody tr:nth-child(even){background:rgba(255,255,255,.015);}
+.roi-table tbody tr:nth-child(even){background:rgba(17,24,39,.025);}
 .roi-table .col-save{color:var(--good);}
 .roi-table .col-net{color:var(--cyan-2); font-weight:600;}
 .roi-table .total-row{background:var(--cyan-soft) !important;
@@ -782,7 +786,7 @@ section:first-of-type{border-top:none;}
 .qw-steps{margin:0 0 18px; padding-left:0; list-style:none; counter-reset:qw;}
 .qw-steps li{counter-increment:qw; position:relative; padding:6px 0 6px 34px; font-size:15px;}
 .qw-steps li::before{content:counter(qw); position:absolute; left:0; top:6px;
-  width:23px; height:23px; background:var(--cyan); color:var(--bg); border-radius:50%;
+  width:23px; height:23px; background:var(--cyan); color:var(--on-accent); border-radius:50%;
   font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center;
   -webkit-print-color-adjust:exact; print-color-adjust:exact;}
 .qw-cont{font-size:13.5px; color:var(--muted); margin:0;}
@@ -836,7 +840,7 @@ section:first-of-type{border-top:none;}
   -webkit-print-color-adjust:exact; print-color-adjust:exact;}
 .closing-title{font-family:'Instrument Serif',Georgia,serif; font-style:italic; font-size:30px; color:var(--text); margin:0 0 18px; line-height:1.3;}
 .closing-text{font-size:16px; color:var(--muted); margin:0 0 30px; line-height:1.65;}
-.cta-primary{display:inline-block; background:var(--cyan); color:var(--bg); font-weight:700; font-size:16px;
+.cta-primary{display:inline-block; background:var(--cyan); color:var(--on-accent); font-weight:700; font-size:16px;
   padding:14px 30px; border-radius:99px; box-shadow:var(--glow); margin-bottom:18px;
   -webkit-print-color-adjust:exact; print-color-adjust:exact;}
 .cta-secondary{display:block; font-size:14.5px; color:var(--muted); margin-top:6px;}
@@ -854,7 +858,7 @@ section:first-of-type{border-top:none;}
 /* ── PRINT ── */
 @media print{
   *{-webkit-print-color-adjust:exact !important; print-color-adjust:exact !important;}
-  @page{size:A4; margin:16mm;}
+  @page{size:A4; margin:14mm;}
   body{background:var(--bg) !important; font-size:12pt;}
   .wrap{max-width:100%; padding:0;}
   section{padding:22px 0;}
@@ -866,8 +870,14 @@ section:first-of-type{border-top:none;}
   .timeline-month{break-inside:avoid;}
   .score-bar{break-inside:avoid;}
   .kpi-card,.stack-card{break-inside:avoid;}
-  .roi-table,.quickwin,.recognition,.callout,.closing-card,.supuestos{break-inside:avoid;}
-  .sec-head{break-after:avoid;}
+  .quickwin,.recognition,.callout,.closing-card,.supuestos{break-inside:avoid;}
+  /* Encabezado de sección: nunca se parte por dentro (título + regla + subtítulo
+     juntos) NI se queda huérfano al final de una página (va con su contenido). */
+  .sec-head{break-inside:avoid; break-after:avoid; page-break-inside:avoid; page-break-after:avoid;}
+  h2,h3{break-after:avoid; page-break-after:avoid;}
+  /* La tabla de ROI puede ser alta: que fluya entre páginas por FILAS (no se parte
+     una fila), en vez de saltar entera y orfanar el encabezado. */
+  .roi-table tr, .roi-table thead{break-inside:avoid;}
 }
 """
 

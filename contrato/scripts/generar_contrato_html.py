@@ -201,6 +201,11 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);
   .accent,[class*="accent"]{color:#0e7490 !important;}
   .disclaimer{background:#fff8e1 !important; color:#5b4a00 !important;}
   *{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  /* cortes de página: el título de cláusula nunca se queda huérfano ni se parte;
+     las firmas y declaraciones no se cortan a la mitad. */
+  h2,h3{break-after:avoid; page-break-after:avoid; break-inside:avoid;}
+  .firmas,.sign-row,.declaraciones h2{break-inside:avoid;}
+  section{break-inside:auto;}
 }
 """
 
