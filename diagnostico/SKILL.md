@@ -108,29 +108,38 @@ Conduce la entrevista **UNA pregunta a la vez**, reflejando cada respuesta. El o
   - `beginner` → está arrancando su propio negocio o tiene una idea todavía sin forma. El diagnóstico cava en ESE negocio (el que tiene o quiere montar). Si la operación aún no está clara, **no lo abandones**: ayúdalo a aterrizarla / elegir un nicho en la entrevista (§casos difíciles de `entrevista.md`).
   - El segmento **reordena y filtra** todo lo demás (orden de preguntas, encuadre del reporte).
 - **🎯 El foco es SIEMPRE su propio negocio.** El diagnóstico es para automatizar adentro de SU negocio (ahorrar tiempo, recuperar dinero), no para vender servicios a terceros. Si la persona pregunta "cómo le vendo esto a clientes" o "cómo monto una agencia", dilo claro — *"eso es otro tema; aquí me enfoco en tu negocio. Para el lado de vender hay otras herramientas."* — y sigue con el diagnóstico. El cierre, en todos los casos, es el mismo: que **vea algo real construirse** (quick-win + hand-off a `/crear-agente`) — valor desde el día 1.
+- **El equipo y la capacidad** → `negocio.tamano`, `negocio.empleados_aprox`. Pregúntalo siempre: *"¿lo llevas tú solo o tienes equipo / alguien que te ayude? ¿cuántos?"*. Define si cada hora automatizada es del dueño (ROI personal brutal) o de proceso, y calibra el encuadre del reporte.
 - **Las tareas repetitivas que le roban el día** → `procesos[]`. **La mina de oro.** Pregunta la de oro: *"pensando en una semana normal, ¿qué tarea repetitiva sientes que te roba más horas — esa que haces una y otra vez y que ojalá alguien más hiciera por ti?"*. Para cada proceso saca: **frecuencia** (veces/semana), **tiempo por vez** (min), **quién lo hace**, **cómo lo hace hoy**. Saca 2-3 procesos, no solo 1.
 - **El sangrado declarado** → `sangrado_declarado`. *"Si pudieras quitarte UNA tarea de encima para siempre, ¿cuál sería?"*. **Captura sus palabras literales** (van textuales al reporte, efecto "me leíste la mente").
-- **La fuga de dinero (clave para el ROI real)** → `negocio.modelo_ingresos.ticket_promedio_usd` + alimenta `ingreso_recuperado`. Si tiene clientes, pregunta natural: *"¿se te caen clientes / citas / pedidos por no contestar a tiempo o por tardar? Más o menos, ¿cuántos al mes — y cuánto vale cada uno para ti?"*. Con eso el reporte cuenta el **ingreso recuperado**, no solo el tiempo ahorrado — y en negocios con clientes (clínica, restaurante, inmobiliaria) ese suele ser el retorno MAYOR. Si no sabe el número, no presiones: estímalo cualitativo y márcalo como supuesto.
+- **La fuga de dinero (la BASE del ROI en dinero — pregúntala, NO la asumas)** → `negocio.modelo_ingresos.ticket_promedio_usd` + `volumen_mes` + tasa de cierre + alimenta `ingreso_recuperado`. Saca los TRES números, uno a uno: *"¿cuánto vale en promedio una venta / cliente / operación para ti?"*, *"¿cuántas cierras al mes, más o menos?"* y *"¿se te caen clientes / citas / pedidos por tardar — cuántos al mes?"*. Con eso el reporte cuenta el **ingreso recuperado** con números REALES del negocio (en clínica, restaurante, inmobiliaria ese suele ser el retorno MAYOR). **Solo** si ya preguntaste y el usuario de verdad no lo sabe, estímalo con un supuesto VISIBLE y marcado — nunca uses un supuesto para ahorrarte la pregunta.
 - **El cuello de botella** → calibra la tesis del reporte. Si ya quedó claro de respuestas previas, NO preguntes: **confírmalo** (*"suena a que tu mayor freno es X, ¿le atino?"*).
 - **Stack actual** → `stack_actual.herramientas[]`. *"¿Qué herramientas usas hoy? Puede ser tan simple como WhatsApp y una libreta."* Normaliza nombres (n8n/N8N→"n8n", Make.com→"Make", ManyChat/Manychat→"ManyChat"). NO preguntes "¿sabes programar?" — esa pregunta murió en la data; infiere comodidad de lo que USA.
 - **Perfil técnico + presupuesto** → `perfil_tecnico`. ¿Quiere construirlo él o que se lo hagan? ¿Con cuánto al mes para herramientas se siente cómodo? (enmárcalo suave: "para no recomendarte algo caro de a gratis").
 - **La meta a 90 días** → `meta_90_dias`. *"Si esto saliera increíble, ¿qué te gustaría que pasara en los próximos 3 meses? ¿Cuál sería tu 'lo logré'?"*. Si menciona dinero sin cifra, ancla suave a lo que el negocio puede ahorrar o crecer (ej. *"recuperar varias horas a la semana"* o *"dejar de perder pedidos por no contestar a tiempo"*).
 
-**No más de ~6-10 preguntas en total.** Un buen consultor cierra rápido con preguntas filosas.
+**La profundidad es lo que separa un diagnóstico que se cobra de un formulario.** No cierres antes de cubrir TODAS las dimensiones de la compuerta de completitud (Fase 1.5): negocio, equipo, ingresos (ticket + volumen + tasa de cierre), procesos, sangrado, cuello de botella confirmado, objetivo con número, presupuesto, comodidad técnica y stack. Pregunta de a una, reflejando, sin sonar a interrogatorio — pero **no dispares con huecos**. Un consultor senior pregunta lo que necesita aunque sean 12 preguntas; no entrega un diagnóstico a medias por cerrar rápido.
 
 ### Fase 1.5 — "Data suficiente" + confirmación (la bisagra, obligatoria)
 
-Evalúa tras cada respuesta. Tienes **data suficiente** cuando cubres las **5 críticas**:
+Evalúa tras cada respuesta. Tienes **data suficiente** para un diagnóstico PROFESIONAL (el que se cobra) solo cuando cubres TODAS estas dimensiones — no solo las primeras:
 
-| # | Dimensión | Campo en `diagnostico.json` |
-|---|---|---|
-| 1 | Qué es el negocio + segmento | `negocio.descripcion`, `segment` |
-| 2 | La tarea-estrella a automatizar (o nicho si beginner) | `procesos[]` + `sangrado_declarado` |
-| 3 | El cuello de botella (la tesis) | inferido del cuello → encuadre |
-| 4 | La meta a 90 días | `meta_90_dias.objetivo` |
-| 5 | Comodidad técnica | `perfil_tecnico.sabe_programar` / `prefiere` |
+| # | Dimensión | Campo en `diagnostico.json` | ¿Bloquea? |
+|---|---|---|---|
+| 1 | Qué es el negocio + segmento | `negocio.descripcion`, `segment` | Sí |
+| 2 | Equipo / capacidad | `negocio.tamano`, `empleados_aprox` | Sí |
+| 3 | Ingresos: ticket + volumen + tasa de cierre | `negocio.modelo_ingresos.*` | Sí (es la BASE del ROI en dinero) |
+| 4 | 2-3 procesos con frecuencia y tiempo por vez | `procesos[]` | Sí |
+| 5 | El sangrado declarado (textual) | `sangrado_declarado` | Sí |
+| 6 | El cuello de botella, CONFIRMADO en voz alta | inferido → confírmalo | Sí |
+| 7 | Objetivo a 90 días, con número si existe | `meta_90_dias.objetivo` + métrica | Sí |
+| 8 | Presupuesto mensual para herramientas | `perfil_tecnico.presupuesto_tools_mes_usd` | Sí |
+| 9 | Comodidad técnica / quién construye | `perfil_tecnico.sabe_programar` / `prefiere` | Sí |
+| 10 | Stack actual | `stack_actual.herramientas[]` | Sí |
+| 11 | Qué NO automatizar | `perfil_tecnico.no_automatizar` | Deseable |
 
-Lo demás (ticket, presupuesto, equipo, canales) **mejora el reporte pero NO bloquea** — si falta, usa rangos/supuestos razonables y márcalos en el reporte. **Tope de seguridad: máximo ~6-8 intercambios** antes de ejecutar igual con lo que haya.
+**Compuerta de completitud (obligatoria antes de disparar):** antes de pasar a la confirmación, recorre la lista 1-10. Por CADA dimensión bloqueante que te falte, haz la pregunta (una a la vez). **No dispares mientras falte una dimensión bloqueante** — ni siquiera si crees que ya tienes "suficiente para algo". El ROI en dinero exige ticket + volumen + tasa de cierre REALES: si no los tienes, pregúntalos ANTES de calcular, no inventes supuestos para saltarte la pregunta. Solo se permite estimar (con supuesto marcado) un dato que el usuario, ya preguntado, de verdad no conoce.
+
+**Si el usuario te da TODO de golpe:** extrae cada dimensión de su mensaje, marca las cubiertas, y pregunta SOLO los huecos de la lista 1-10 — pero pregúntalos. Un párrafo largo casi nunca cubre las 10; equipo, ticket/volumen/cierre, presupuesto y objetivo-con-número suelen faltar. Recibir mucha info NO es licencia para disparar: es licencia para preguntar menos, no para no preguntar.
 
 Cuando hay data suficiente, **NUNCA arranques en silencio.** Resume y pide luz verde:
 
@@ -315,7 +324,7 @@ El skill entrega valor real en CADA peldaño:
 
 - **Emprendimiento sin operación clara (caso común):** NO lo abandones ni le digas "vuelve cuando tengas algo". Guíalo a aterrizar su negocio o elegir un nicho EN la entrevista, sembrando 3 nichos concretos atados a dolores reales del mercado (ver `entrevista.md` §4). Salir con un nicho/operación clara YA es valor — es el antídoto del dolor #1.
 - **"No sé" / respuesta vaga:** nunca presiones ni repitas. Reformula con opciones concretas (andamiaje). El "no sé por dónde empezar" ES su diagnóstico (cuello = `claridad`); díselo y captúralo.
-- **Persona que da TODO de golpe:** no la pases por 9 preguntas. Extrae, refleja en bloque, pregunta solo los huecos.
+- **Persona que da TODO de golpe:** extrae todo, refleja en bloque, y luego pregunta los huecos de la compuerta de completitud (Fase 1.5) — uno a uno. NO dispares solo porque te dieron un párrafo largo: casi siempre faltan equipo, ticket/volumen/tasa de cierre, presupuesto y objetivo-con-número. Recibir mucha info = preguntar menos, NO no preguntar.
 - **Se desvía / cuenta su historia:** escúchala (suele traer el dolor real), captura lo útil, agradece, retoma suave.
 - **Pregunta cómo vender esto / montar agencia:** dilo claro — no es lo de este skill — y reencuadra al diagnóstico de su negocio. Para el lado de vender, los otros skills del repo (`/cotizacion`, `/propuesta`, `/contrato`, `/cobro`, `/cerrar-cliente`).
 - **Python no existe / el generador falla:** usa el fallback de la Fase 4 (Claude genera el `reporte.html` y los markdown él mismo, replicando la estructura del generador). El usuario nunca se queda sin reporte.
