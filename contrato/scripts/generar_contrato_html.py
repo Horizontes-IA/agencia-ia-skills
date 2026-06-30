@@ -191,6 +191,7 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);
 
 @page{margin:14mm;}
 @media print{
+  p,li{orphans:3; widows:3;}  /* sin líneas sueltas al pie/inicio de página */
   /* El contrato se firma en papel/PDF claro. Forzamos tinta OSCURA: si solo
      invertimos el fondo a blanco, el texto y las negritas (heredados del tema
      dark) quedan blancos sobre blanco = ilegibles. Esto lo evita. */

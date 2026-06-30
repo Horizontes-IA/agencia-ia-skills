@@ -193,6 +193,7 @@ const html = `<!DOCTYPE html>
     font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   footer .thanks { font-weight: 600; color: var(--ink); }
   @media print {
+  p,li{orphans:3; widows:3;}  /* sin líneas sueltas al pie/inicio de página */
     html, body { background: #fff; }
     .page { box-shadow: none; margin: 0; max-width: none; border-radius: 0; padding: 24px 28px; }
     @page { size: A4; margin: 14mm; }

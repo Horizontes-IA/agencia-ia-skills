@@ -857,6 +857,7 @@ section:first-of-type{border-top:none;}
 
 /* ── PRINT ── */
 @media print{
+  p,li{orphans:3; widows:3;}  /* sin líneas sueltas al pie/inicio de página */
   *{-webkit-print-color-adjust:exact !important; print-color-adjust:exact !important;}
   @page{size:A4; margin:14mm;}
   body{background:var(--bg) !important; font-size:12pt;}

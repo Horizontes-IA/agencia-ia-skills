@@ -571,6 +571,7 @@ cite{font-style:normal; color:var(--muted); font-size:13px;}
 
 /* print */
 @media print{
+  p,li{orphans:3; widows:3;}  /* sin líneas sueltas al pie/inicio de página */
   /* fuerza fondo blanco total: sin franja oscura del body/--paper-2 en los bordes */
   body{background:#fff; font-size:11.5pt;}
   .doc{box-shadow:none; max-width:none; margin:0; width:100%; background:#fff;}

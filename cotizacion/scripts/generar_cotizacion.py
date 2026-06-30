@@ -344,6 +344,7 @@ p{margin:0 0 14px;}
 }
 
 @media print{
+  p,li{orphans:3; widows:3;}  /* sin líneas sueltas al pie/inicio de página */
   *{-webkit-print-color-adjust:exact !important; print-color-adjust:exact !important;}
   @page{size:A4; margin:14mm;}
   body{background:var(--bg) !important; font-size:11.5pt;}
