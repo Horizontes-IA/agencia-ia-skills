@@ -103,7 +103,13 @@ composio execute GMAIL_SEND_EMAIL -d '{ "recipient_email": "...", "subject": "..
        "arguments": { ...los del --get-schema... }
      }'
    ```
-   > ⚠️ **La `x-api-key` es la API key del dashboard**, NO la sesión del CLI. Sácala de **https://app.composio.dev → Settings → API Keys** (empieza con `ak_`). La key con la que inicias sesión en el CLI (`composio login`, empieza con `uak_`) **no funciona** en este endpoint HTTP (da 401). El `user_id` es el mismo que usaste al conectar la cuenta (para agentes propios sale del `--dry-run`; para clientes, el `userId` que normalizaste, ej. `sabores-de-casa`).
+   > ⚠️ **La `x-api-key` es la API key del dashboard**, NO la sesión del CLI. Sácala de **https://app.composio.dev → Settings → API Keys** (empieza con `ak_`, cópiala con el botón — el preview de pantalla viene recortado). La key con la que inicias sesión en el CLI (`composio login`, empieza con `uak_`) **no funciona** en este endpoint HTTP (da 401).
+   >
+   > 🔑 **El `user_id` debe ser una cuenta conectada bajo el MISMO proyecto de esa `ak_` key.** Es el `userId` que usaste al conectar (ej. `sabores-de-casa`). Si da **400 "No connected account found for user ID …"**, es que ese `userId` no tiene conexión ACTIVE en ese proyecto. Verifica con:
+   > ```bash
+   > curl -s 'https://backend.composio.dev/api/v3/connected_accounts?limit=20' -H 'x-api-key: <ak_...>'
+   > ```
+   > (te lista toolkit · user_id · status). Conecta al cliente con `connect.mjs` usando esa misma key en su `.env`, para que todo viva en el mismo proyecto. Las conexiones OAuth pueden expirar (status `EXPIRED`) → hay que re-conectar.
 3. **Pásalo a la plataforma:**
    - **n8n:** nodo **HTTP Request** → Method `POST`, la URL de arriba, header `x-api-key` (guárdalo como **credencial** de n8n, no en texto plano) y el JSON en el Body.
    - **Make:** módulo **HTTP → Make a request**, igual.
