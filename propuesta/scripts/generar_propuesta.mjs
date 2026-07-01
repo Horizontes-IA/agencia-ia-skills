@@ -575,14 +575,16 @@ cite{font-style:normal; color:var(--muted); font-size:13px;}
   /* fuerza fondo blanco total: sin franja oscura del body/--paper-2 en los bordes */
   body{background:#fff; font-size:11.5pt;}
   .doc{box-shadow:none; max-width:none; margin:0; width:100%; background:#fff;}
-  @page{size:A4; margin:0;}
-  /* @page margin:0 → el padding lateral propio de cada bloque (54px ≈ 14mm) evita texto pegado al borde */
+  @page{size:A4; margin:15mm 0;}
+  /* margen vertical 15mm = respiro arriba/abajo en cada página; el padding lateral propio
+     de cada bloque (54px ≈ 14mm) da el margen horizontal, sin texto pegado al borde */
   .cover, .cta{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
   /* las secciones FLUYEN entre páginas (antes break-inside:avoid empujaba secciones largas
      a una página nueva y dejaba medio folio en blanco) */
   .sec{break-inside:auto;}
-  /* solo bloques pequeños se mantienen enteros */
-  .tier, .phase, .case, .tl-row, .kpi, .deliver li{break-inside:avoid;}
+  /* bloques atómicos: nunca se parten a la mitad entre páginas */
+  .tier, .phase, .case, .tl-row, .kpi, .kpi-row, .deliver li,
+  .exec-cost, blockquote, .quote, .trust, .oos, .anchor, .terms, .logos, .tools{break-inside:avoid;}
   /* ningún título se queda huérfano al final de la página: va con su contenido */
   h2,h3{break-after:avoid; page-break-after:avoid; break-inside:avoid;}
   a[href]:after{content:"";}
