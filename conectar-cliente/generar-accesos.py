@@ -4,6 +4,7 @@
 generar-accesos.py — Documento de accesos del cliente (Modo Manual de /conectar-cliente).
 
 Lee un accesos.json (ver el esquema en SKILL.md §Modo B) y escribe, en <output_dir>:
+    accesos.docx   ← documento Word editable, con la marca de la agencia (si hay python-docx)
     accesos.html   ← documento claro, con la marca de la agencia, imprime a PDF
     accesos.md     ← versión markdown editable
 
@@ -118,6 +119,46 @@ def build_md(d, m):
     return "\n".join(L)
 
 
+def build_docx(d, m, out_path):
+    """Documento Word editable, con la marca de la agencia. Requiere python-docx."""
+    from docx import Document
+    from docx.shared import Pt, RGBColor
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+
+    c = m["color"].lstrip("#")
+    ACC = RGBColor(int(c[0:2], 16), int(c[2:4], 16), int(c[4:6], 16))
+    INK, MUTED = RGBColor(0x15, 0x18, 0x1E), RGBColor(0x5B, 0x65, 0x73)
+    doc = Document()
+    base = doc.styles["Normal"]; base.font.name = "Calibri"; base.font.size = Pt(11); base.font.color.rgb = INK
+
+    p = doc.add_paragraph(); p.paragraph_format.space_after = Pt(2)
+    r = p.add_run("ACCESOS DEL PROYECTO — CONFIDENCIAL"); r.bold = True; r.font.size = Pt(9); r.font.color.rgb = ACC
+    p = doc.add_paragraph(); p.paragraph_format.space_after = Pt(2)
+    r = p.add_run("Accesos de " + (d.get("cliente") or "")); r.bold = True; r.font.size = Pt(24); r.font.color.rgb = INK
+    contacto = (" · " + m["contacto"]) if m["contacto"] else ""
+    p = doc.add_paragraph()
+    r = p.add_run("Preparado por " + m["nombre"] + contacto + " · " + (d.get("fecha") or "")); r.font.size = Pt(10); r.font.color.rgb = MUTED
+
+    headers = ["Cuenta / App", "Método", "Usuario", "Dónde vive la credencial", "Notas"]
+    t = doc.add_table(rows=1, cols=len(headers)); t.style = "Light Grid Accent 2"
+    for i, h in enumerate(headers):
+        run = t.rows[0].cells[i].paragraphs[0].add_run(h); run.bold = True; run.font.size = Pt(9); run.font.color.rgb = ACC
+    for a in d.get("accesos", []) or []:
+        cells = t.add_row().cells
+        for i, v in enumerate([a.get("app"), a.get("metodo"), a.get("usuario"), a.get("ubicacion"), a.get("notas")]):
+            cells[i].text = "" if v is None else str(v)
+
+    doc.add_paragraph()
+    nota = d.get("nota_seguridad") or ("Este documento NO contiene las claves. Guárdalas en un gestor de "
+                                       "contraseñas; nunca por correo o WhatsApp.")
+    p = doc.add_paragraph()
+    r = p.add_run("⚠ Seguridad:  "); r.bold = True; r.font.color.rgb = ACC
+    r2 = p.add_run(nota); r2.font.size = Pt(10.5)
+    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p.add_run(m["nombre"] + " · Documento de accesos · guárdalo en un lugar seguro"); r.font.size = Pt(9); r.font.color.rgb = MUTED
+    doc.save(str(out_path))
+
+
 def main():
     if len(sys.argv) != 3:
         sys.exit("Uso: python3 generar-accesos.py <accesos.json> <output_dir>")
@@ -129,7 +170,11 @@ def main():
     m = marca()
     (out / "accesos.html").write_text(build_html(d, m), encoding="utf-8")
     (out / "accesos.md").write_text(build_md(d, m), encoding="utf-8")
-    print("Accesos → {}".format(out / "accesos.html"))
+    try:
+        build_docx(d, m, out / "accesos.docx")
+        print("Accesos → {} (+ .docx editable, + .html para PDF)".format(out / "accesos.docx"))
+    except ImportError:
+        print("Accesos → {} (.html + .md). Para el .docx editable: pip3 install python-docx".format(out / "accesos.html"))
 
 
 if __name__ == "__main__":

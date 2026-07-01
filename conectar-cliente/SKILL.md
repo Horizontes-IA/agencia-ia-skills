@@ -103,6 +103,7 @@ composio execute GMAIL_SEND_EMAIL -d '{ "recipient_email": "...", "subject": "..
        "arguments": { ...los del --get-schema... }
      }'
    ```
+   > ⚠️ **La `x-api-key` es la API key del dashboard**, NO la sesión del CLI. Sácala de **https://app.composio.dev → Settings → API Keys** (empieza con `ak_`). La key con la que inicias sesión en el CLI (`composio login`, empieza con `uak_`) **no funciona** en este endpoint HTTP (da 401). El `user_id` es el mismo que usaste al conectar la cuenta (para agentes propios sale del `--dry-run`; para clientes, el `userId` que normalizaste, ej. `sabores-de-casa`).
 3. **Pásalo a la plataforma:**
    - **n8n:** nodo **HTTP Request** → Method `POST`, la URL de arriba, header `x-api-key` (guárdalo como **credencial** de n8n, no en texto plano) y el JSON en el Body.
    - **Make:** módulo **HTTP → Make a request**, igual.
@@ -147,11 +148,12 @@ Guárdalo en el expediente del cliente (`cliente-<slug>/` si existe, o `accesos-
 ```bash
 python3 ~/.claude/skills/conectar-cliente/generar-accesos.py <ruta>/accesos.json <ruta>/
 ```
-Escribe `accesos.html` (imprime a PDF, con tu color y marca del perfil) + `accesos.md` (editable). Luego, para el PDF:
-```bash
-python3 ~/.config/agencia-ia/html2pdf.py <ruta>/accesos.html
-```
-Si no hay Python, escribe tú el `accesos.html`/`.md` con la misma tabla (App · Método · Usuario · Dónde vive la credencial · Notas) y la nota de seguridad.
+Escribe, con tu color y marca del perfil:
+- **`accesos.docx`** — Word editable (el que el usuario ajusta a mano). Necesita `python-docx` (`pip3 install python-docx`, se instala solo la primera vez).
+- **`accesos.html`** — imprime a PDF: `python3 ~/.config/agencia-ia/html2pdf.py <ruta>/accesos.html`.
+- **`accesos.md`** — markdown editable.
+
+Si no hay Python, escribe tú el documento con la misma tabla (App · Método · Usuario · Dónde vive la credencial · Notas) y la nota de seguridad.
 
 ---
 
