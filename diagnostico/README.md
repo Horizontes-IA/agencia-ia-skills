@@ -18,7 +18,7 @@ Escribes `/diagnostico` y Claude entrevista el negocio como lo haría un consult
 
 ## 📦 ¿Qué genera? (el paquete de consultoría)
 
-Al terminar la entrevista, el skill genera una carpeta `diagnostico-<negocio>/` con:
+Al terminar la entrevista, el skill genera el expediente `cliente-<negocio>/1-diagnostico/` con:
 
 | Archivo | Qué es |
 |---|---|

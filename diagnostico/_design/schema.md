@@ -70,10 +70,29 @@
     "ticket_promedio_usd": 12,                 // opt — null si no lo dio
     "volumen_mes": "≈400 pedidos/mes",         // opt — string libre o null
     "como_cobra": "por pedido",                // opt — "por proyecto" | "recurrente" | "por hora" | "por pedido"
-    "ingreso_mes_aprox_usd": 4800              // opt — null si no lo dio (NO inventar)
+    "ingreso_mes_aprox_usd": 4800,             // opt — null si no lo dio (NO inventar)
+    "margen_bruto_pct": 45                     // opt — margen grueso si lo sabe, null si no
   },
-  "costo_hora_usuario_usd": 8,                 // req — el dado por el usuario, o el default_por_pais (§3.2 framework)
-  "costo_hora_es_default": true                // req — true si vino de la tabla por país (el reporte lo marca editable)
+
+  // --- Los números duros del negocio (D-Números). Para OPERATORS es data CRÍTICA: es lo que hace
+  // --- el ROI 100% real (no estimado). Para beginners suele ir vacío (aún no factura). NUNCA inventar.
+  "economia": {                                // opt (pero la entrevista la EXIGE a operators)
+    "nomina_mes_usd": 2400,                    // opt — costo del equipo al mes (nómina; incluye al dueño si se paga sueldo)
+    "horas_trabajadas_mes": 300,               // opt — horas totales del equipo/persona al mes (para derivar el costo-hora REAL)
+    "leads_mes": 80,                           // opt — # de interesados/prospectos al mes
+    "ventas_mes": 40,                          // opt — # de operaciones/ventas cerradas al mes
+    "tasa_cierre_pct": null,                   // opt — % de leads que cierran (o se deriva de ventas_mes/leads_mes)
+    "kpis": [                                  // opt — KPIs libres que dio el usuario (se muestran en "Los números de tu negocio")
+      { "nombre": "Pedidos grandes que se enfrían", "valor": 27, "unidad": "al mes" }
+    ]
+  },
+
+  "costo_hora_usuario_usd": 8,                 // req — costo REAL de una hora. Prioridad (§3.2 framework):
+                                               //   1) economia.nomina_mes_usd / economia.horas_trabajadas_mes  (REAL, preferido)
+                                               //   2) el número que el usuario dé directo
+                                               //   3) default_por_pais (último recurso, se marca editable)
+  "costo_hora_fuente": "nomina_real",          // req — "nomina_real" | "dato_usuario" | "default_pais"
+  "costo_hora_es_default": false               // req — true SOLO si costo_hora_fuente == "default_pais"
 }
 ```
 
@@ -267,14 +286,16 @@ Array de exactamente las automatizaciones recomendadas (1-3), ordenadas por prio
 "quick_win": {
   "automatizacion_id": "a1",                   // req — apunta a una de automatizaciones[]
   "por_que_esta": "Es la que más sangras (la nombraste tú) y se puede tener funcionando hoy mismo.",  // req — justifica la elección (regla D4 / speed_to_value)
-  "pasos_hoy": [                               // req — 3-5 pasos accionables para HOY
-    "1. Escribe en un doc las 5 preguntas que siempre haces para cotizar",
-    "2. Pega tu lista de precios",
-    "3. Abre Claude Code y di: /crear-agente — un asistente de WhatsApp que cotiza",
-    "4. Síguelo paso a paso (≈45 min la primera vez)"
+  "accion_hoy": "Pega este prompt en ChatGPT (o Claude) junto con tu lista de precios y desde hoy respondes cualquier cotización en segundos, sin instalar nada.",  // req — la promesa de UNA línea del quick-win: qué logra HOY
+  "prompt": "Eres mi asistente de cotizaciones para [negocio]...\n\nMis precios y reglas:\n[PEGA AQUÍ TU LISTA]\n\nCuando te pase los datos, respóndeme con una cotización lista para copiar a WhatsApp...",  // req — EL ENTREGABLE ESTRELLA: el recurso copy-paste ejecutable HOY (un prompt listo, con [placeholders] que el usuario rellena). Es scope-neutral: automatiza SU negocio. El generador lo renderiza en un bloque de código copiable; sin él, el quick-win queda débil.
+  "pasos_hoy": [                               // req — 3-5 pasos accionables para HOY (complementan al prompt: cómo usarlo/probarlo)
+    "1. Junta tu lista de precios y las preguntas que siempre haces para cotizar",
+    "2. Pega el prompt de arriba en ChatGPT y reemplaza [lo de corchetes] con tus datos reales",
+    "3. Mándale una solicitud real y copia su respuesta a WhatsApp",
+    "4. Cuando veas que cotiza bien, ese guion es la base para automatizarlo del todo (Fase 1 del plan)"
   ],
-  "tiempo_estimado": "≈1 hora",                // req
-  "resultado_esperado": "Esta misma tarde tienes un asistente respondiendo cotizaciones de prueba."  // req
+  "tiempo_estimado": "≈5 minutos",             // req
+  "resultado_esperado": "Hoy mismo respondes cotizaciones en segundos copiando y pegando."  // req
 }
 ```
 

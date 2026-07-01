@@ -24,9 +24,10 @@ Un diagnóstico de consultor real cubre 8 dimensiones. La entrevista NO es un fo
 Quién es, a qué se dedica, tamaño (solo / con equipo / cuántos), país (afecta moneda, costo hora, herramientas disponibles), y a quién le vende (B2C, B2B, local, online).
 *Por qué importa:* todo el reporte se personaliza con esto. El país fija la moneda y el costo-hora de referencia. El tamaño define cómo se encuadra el reporte (un negocio en marcha vs. uno que apenas arranca).
 
-### D2 — Modelo de ingresos (cómo entra el dinero)
-Qué vende, ticket promedio, volumen aproximado (clientes/mes, ventas/mes), y márgenes gruesos si los sabe. Cómo cobra (por proyecto, recurrente, por hora).
-*Por qué importa:* el ROI en dinero necesita anclar el valor de una hora del usuario y el valor de un lead/cliente. Sin esto el modelo de ROI cae a defaults por país (ver §3).
+### D2 — Modelo de ingresos + LOS NÚMEROS DUROS (cómo entra el dinero)
+Qué vende, ticket promedio, y cómo cobra. Y —el corazón de un ROI **real**— **las cifras duras del negocio** (`negocio.economia`): **ingresos ~mensuales, nómina / costo del equipo, horas trabajadas al mes, leads/mes, ventas/mes (o tasa de cierre), margen grueso y 1-2 KPIs del giro**.
+*Por qué importa:* esto es lo que separa un ROI **real** de uno estimado. La nómina ÷ horas da el **costo-hora REAL** del negocio (no un default por país). Los leads × tasa de cierre × ticket dan el **ingreso recuperado REAL**. Sin estos números el modelo cae a supuestos (defaults por país, componente de ingresos omitido) y el diagnóstico se siente genérico.
+*Regla:* para **operators** estos números son **data crítica** — la entrevista los pide (con calidez, se pueden estimar). Para **beginners** (aún no facturan) se saltan o se marcan como meta/estimado. **Nunca se inventan**: si el usuario no lo sabe, se deja el campo vacío y el reporte lo dice.
 
 ### D3 — Mapa de procesos (el inventario "as-is")
 La dimensión central. Se le pide al usuario que liste las tareas repetitivas de su semana: "¿qué haces una y otra vez que se siente mecánico?". Para cada proceso que mencione, Claude indaga 4 atributos mínimos:
@@ -142,13 +143,21 @@ horas_ahorradas_mes = round( horas_brutas_mes × factor_captura, 1 )
 ### 3.2 Valor en dinero del tiempo
 
 ```
-costo_hora = D2.costo_hora_usuario
-             || default_por_pais(D1.pais)      # ver tabla de defaults abajo
+# PRIORIDAD — el número REAL gana; el default por país es el ÚLTIMO recurso:
+costo_hora =
+    economia.nomina_mes_usd / economia.horas_trabajadas_mes   # 1) REAL — derivado de la nómina del negocio
+    || D2.costo_hora_usuario                                   # 2) el número que el usuario dé directo
+    || default_por_pais(D1.pais)                               # 3) último recurso (se marca editable en el reporte)
+
+# Se guarda cuál se usó en costo_hora_fuente ("nomina_real" | "dato_usuario" | "default_pais").
+# CLAVE: con nómina real el costo-hora NO es un supuesto — es la cifra del negocio, y el reporte
+# lo presenta como dato ("tu hora cuesta ~$X, según tu nómina"), no como estimación. SOLO cuando
+# cae al #3 el reporte muestra "asumimos ~$X/hora; ajústalo si tu hora vale más".
 
 valor_tiempo_mes = horas_ahorradas_mes × costo_hora
 ```
 
-**Defaults de costo-hora por país** (USD, conservadores; si el usuario da su propio número, gana ese):
+**Defaults de costo-hora por país** (USD, conservadores; **solo si el usuario NO dio nómina ni su propio número** — es el fallback, no lo preferido):
 
 | País | Costo-hora default (USD) | Nota |
 |---|---|---|
@@ -165,12 +174,17 @@ valor_tiempo_mes = horas_ahorradas_mes × costo_hora
 Para procesos que recuperan leads/ventas perdidas (ej. responder leads que hoy se enfrían), se modela un segundo componente, MUY conservador:
 
 ```
-# Solo si el usuario dio datos de leads/ticket. Si no, se omite (no se inventa).
-leads_recuperados_mes = leads_perdidos_estimados_mes × 0.20   # capturas 1 de cada 5 que hoy pierdes (conservador)
-ingreso_recuperado_mes = leads_recuperados_mes × tasa_cierre × ticket_promedio
+# Se ANCLA en los números reales de `economia` (nada inventado):
+tasa_cierre   = economia.tasa_cierre_pct / 100
+                || (economia.ventas_mes / economia.leads_mes)     # REAL — derivada del embudo del negocio
+ticket        = negocio.modelo_ingresos.ticket_promedio_usd        # REAL — el ticket que dio el usuario
+leads_perdidos_mes = los que hoy se enfrían por el cuello (ej. "27 pedidos grandes/mes que se te van por tardar")
+
+leads_recuperados_mes  = leads_perdidos_mes × 0.20                 # capturas 1 de cada 5 (haircut conservador)
+ingreso_recuperado_mes = leads_recuperados_mes × tasa_cierre × ticket
 ```
 
-Si faltan datos para esto, el reporte dice cualitativamente *"además, dejarías de perder leads por no responder a tiempo — no lo cuantificamos por falta de datos, pero suele ser el mayor retorno oculto"*. **Nunca se inventa un número de ingresos.**
+> Cada factor de esta fórmula es un dato que el usuario dio (leads, ventas, ticket). El reporte muestra el desglose ("de los ~27 que se enfrían, recuperas ~5; a tu cierre de X% y ticket de $Y = $Z/mes"). Si falta ALGÚN factor, se omite el componente completo (NO se inventa) y se dice cualitativamente *"además, dejarías de perder leads por no responder a tiempo — no lo cuantificamos por falta de datos, pero suele ser el mayor retorno oculto"*. **Nunca se inventa un número de ingresos.**
 
 ### 3.4 Costo de la automatización (TCO mensual)
 

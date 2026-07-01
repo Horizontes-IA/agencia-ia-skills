@@ -23,10 +23,23 @@
       "ticket_promedio_usd": 12,
       "volumen_mes": "≈400 pedidos/mes + ~12 cotizaciones de evento/semana",
       "como_cobra": "por pedido",
-      "ingreso_mes_aprox_usd": 4800
+      "ingreso_mes_aprox_usd": 4800,
+      "margen_bruto_pct": 45
+    },
+    "economia": {
+      "nomina_mes_usd": 2400,
+      "horas_trabajadas_mes": 300,
+      "leads_mes": 48,
+      "ventas_mes": 20,
+      "tasa_cierre_pct": null,
+      "kpis": [
+        { "nombre": "Cotizaciones de evento", "valor": 12, "unidad": "por semana" },
+        { "nombre": "Pedidos grandes que se enfrían", "valor": 27, "unidad": "al mes" }
+      ]
     },
     "costo_hora_usuario_usd": 8,
-    "costo_hora_es_default": true
+    "costo_hora_fuente": "nomina_real",
+    "costo_hora_es_default": false
   },
   "segment": "operator",
   "procesos": [
@@ -440,7 +453,7 @@
     }
   },
   "supuestos_globales": [
-    "Tu hora la valoramos en ~$8 USD (referencia conservadora para México). Si tu tiempo vale más, multiplica el ahorro.",
+    "Tu hora la calculamos en ~$8 USD a partir de TU nómina ($2,400/mes ÷ ~300 horas). Es tu costo real, no un promedio de industria.",
     "Aplicamos un factor de captura del 70% — la automatización no elimina el 100% del trabajo, sigues revisando casos especiales.",
     "Los ahorros de tiempo son lo más sólido; los ingresos recuperados son una estimación conservadora basada en tu volumen.",
     "Precios de herramientas verificados en junio 2026; pueden cambiar con el tiempo."

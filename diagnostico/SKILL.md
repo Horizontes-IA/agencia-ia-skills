@@ -112,6 +112,7 @@ Conduce la entrevista **UNA pregunta a la vez**, reflejando cada respuesta. El o
 - **Las tareas repetitivas que le roban el día** → `procesos[]`. **La mina de oro.** Pregunta la de oro: *"pensando en una semana normal, ¿qué tarea repetitiva sientes que te roba más horas — esa que haces una y otra vez y que ojalá alguien más hiciera por ti?"*. Para cada proceso saca: **frecuencia** (veces/semana), **tiempo por vez** (min), **quién lo hace**, **cómo lo hace hoy**. Saca 2-3 procesos, no solo 1.
 - **El sangrado declarado** → `sangrado_declarado`. *"Si pudieras quitarte UNA tarea de encima para siempre, ¿cuál sería?"*. **Captura sus palabras literales** (van textuales al reporte, efecto "me leíste la mente").
 - **La fuga de dinero (la BASE del ROI en dinero — pregúntala, NO la asumas)** → `negocio.modelo_ingresos.ticket_promedio_usd` + `volumen_mes` + tasa de cierre + alimenta `ingreso_recuperado`. Saca los TRES números, uno a uno: *"¿cuánto vale en promedio una venta / cliente / operación para ti?"*, *"¿cuántas cierras al mes, más o menos?"* y *"¿se te caen clientes / citas / pedidos por tardar — cuántos al mes?"*. Con eso el reporte cuenta el **ingreso recuperado** con números REALES del negocio (en clínica, restaurante, inmobiliaria ese suele ser el retorno MAYOR). **Solo** si ya preguntaste y el usuario de verdad no lo sabe, estímalo con un supuesto VISIBLE y marcado — nunca uses un supuesto para ahorrarte la pregunta.
+- **El costo REAL de una hora (nómina — ancla el ROI de tiempo)** → `negocio.economia.nomina_mes_usd` + `horas_trabajadas_mes`. Pregunta: *"¿cuánto se te va al mes en el equipo — sueldos, tú incluido si te pagas? Y si eres tú solo, ¿cuántas horas a la semana le metes al negocio?"*. Con **nómina ÷ horas** sale el **costo-hora REAL** del negocio (`costo_hora_fuente="nomina_real"`), y el ROI de tiempo deja de usar el promedio por país. Estimados sirven; si el operator de plano no lo sabe, cae al default (marcado como supuesto). Para **beginner** (aún no factura) se salta. *(Añade también, si fluye, ingresos ~mensuales, margen y 1-2 KPIs → `negocio.economia`; enriquecen "Los números de tu negocio" del reporte.)*
 - **El cuello de botella** → calibra la tesis del reporte. Si ya quedó claro de respuestas previas, NO preguntes: **confírmalo** (*"suena a que tu mayor freno es X, ¿le atino?"*).
 - **Stack actual** → `stack_actual.herramientas[]`. *"¿Qué herramientas usas hoy? Puede ser tan simple como WhatsApp y una libreta."* Normaliza nombres (n8n/N8N→"n8n", Make.com→"Make", ManyChat/Manychat→"ManyChat"). NO preguntes "¿sabes programar?" — esa pregunta murió en la data; infiere comodidad de lo que USA.
 - **Perfil técnico + presupuesto** → `perfil_tecnico`. ¿Quiere construirlo él o que se lo hagan? ¿Con cuánto al mes para herramientas se siente cómodo? (enmárcalo suave: "para no recomendarte algo caro de a gratis").
@@ -128,6 +129,7 @@ Evalúa tras cada respuesta. Tienes **data suficiente** para un diagnóstico PRO
 | 1 | Qué es el negocio + segmento | `negocio.descripcion`, `segment` | Sí |
 | 2 | Equipo / capacidad | `negocio.tamano`, `empleados_aprox` | Sí |
 | 3 | Ingresos: ticket + volumen + tasa de cierre | `negocio.modelo_ingresos.*` | Sí (es la BASE del ROI en dinero) |
+| 3b | Nómina / costo del equipo + horas (operator) | `negocio.economia.nomina_mes_usd` + `horas_trabajadas_mes` | Casi (da el costo-hora REAL; si no, cae al default marcado) |
 | 4 | 2-3 procesos con frecuencia y tiempo por vez | `procesos[]` | Sí |
 | 5 | El sangrado declarado (textual) | `sangrado_declarado` | Sí |
 | 6 | El cuello de botella, CONFIRMADO en voz alta | inferido → confírmalo | Sí |
@@ -194,9 +196,9 @@ Bandas: 75-100 🟢 `automatiza_ya` · 55-74 🟡 `alto_potencial` · 35-54 🟠
 horas_brutas_mes = (tiempo_por_vez_min × veces_por_semana × 4.33) / 60
 factor_captura   = 0.70 si automatability≥4 · 0.55 si ==3 · 0.40 si ≤2
 horas_ahorradas_mes = round(horas_brutas_mes × factor_captura, 1)
-valor_tiempo_mes = horas_ahorradas_mes × costo_hora        # costo_hora del usuario o default país
+valor_tiempo_mes = horas_ahorradas_mes × costo_hora        # costo_hora: 1º nómina÷horas (REAL) · 2º dato del usuario · 3º default país
 ```
-**Costo-hora default por país** (si el usuario no dio el suyo; márcalo editable en el reporte): México $8 · Colombia/Perú/Argentina/Ecuador $6 · US (diáspora) $20 · España $15 · otro LATAM $7.
+**Costo-hora — prioridad:** 1) `economia.nomina_mes_usd / horas_trabajadas_mes` (REAL, preferido; `costo_hora_fuente="nomina_real"`); 2) el número que el usuario dé directo; 3) **default por país** (último recurso, `costo_hora_es_default=true`, se marca editable): México $8 · Colombia/Perú/Argentina/Ecuador $6 · US (diáspora) $20 · España $15 · otro LATAM $7.
 **Ingresos recuperados:** SOLO si `revenue_impact≥4` Y el usuario dio la fuga de dinero (clientes/citas/pedidos perdidos al mes × su valor unitario, capturado en la Fase 1). Cálculo: `ingreso_recuperado_mes = perdidos_al_mes × ticket × factor_recuperacion(≈0.2-0.3, conservador)`. Si no dio datos, **omite el número** y dilo cualitativamente. **Nunca inventes un número de ingresos.**
 
 **3. Diseña 1-3 automatizaciones** (top-3 procesos por score). Cada una con: título atractivo (lenguaje de empleado/resultado), qué hace (beneficio primero), arquitectura en 3-6 pasos NO técnicos, herramientas con costo real (de la investigación), complejidad, si la puede construir él, y el `roi` completo. Usa la **metáfora del empleado** ("como una recepcionista que cotiza sola, que nunca duerme") — resuena fortísimo con esta audiencia.
@@ -329,7 +331,7 @@ El skill entrega valor real en CADA peldaño:
 7. **El reporte SIEMPRE se genera**, aunque Python falle (fallback) o falten datos (supuestos marcados).
 8. **Bifurca por segmento.** Operator (negocio en marcha) ≠ beginner (emprendimiento / idea): el diagnóstico, el ROI y el encuadre cambian.
 9. **Solo el negocio, nunca la venta de servicios.** El diagnóstico se queda en QUÉ automatizar en el negocio y cuánto ahorra/recupera. NO cubre cómo vender automatizaciones a terceros, precios de un servicio, ni conseguir clientes de agencia (eso lo cubren los otros skills del repo).
-10. **Carpeta auto-contenida.** Todo el paquete vive en `diagnostico-<slug>/`; el `reporte.html` abre sin internet.
+10. **Carpeta auto-contenida.** Todo el paquete vive en `cliente-<slug>/1-diagnostico/` (ver Fase 4, §Convención de carpeta); el `reporte.html` abre sin internet.
 
 ---
 

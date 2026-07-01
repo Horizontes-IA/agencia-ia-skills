@@ -543,9 +543,15 @@ def roi_table(diag, totals):
 
     costo_hora = get(diag, "negocio.costo_hora_usuario_usd", 8)
     nombre_neg = get(diag, "negocio.nombre_negocio") or get(diag, "negocio.tipo", "tu negocio")
-    nota = ("Para {neg}: ahorro = horas recuperadas × tu tarifa (≈{ch}/h, supuesto "
-            "editable). Es conservador: solo el tiempo recuperado (y el ingreso "
-            "rescatado donde había datos).").format(neg=nombre_neg, ch=money(costo_hora))
+    fuente = _costo_hora_fuente(diag)
+    if fuente == "nomina_real":
+        chf = "tu hora cuesta ≈{ch} (según tu nómina)".format(ch=money(costo_hora))
+    elif fuente == "dato_usuario":
+        chf = "tu hora la valoraste en ≈{ch}".format(ch=money(costo_hora))
+    else:
+        chf = "≈{ch}/h (estimado por tu país, editable)".format(ch=money(costo_hora))
+    nota = ("Para {neg}: ahorro = horas recuperadas × {chf}. Es conservador: solo el "
+            "tiempo recuperado (y el ingreso rescatado donde había datos).").format(neg=nombre_neg, chf=chf)
 
     return (
         '<div class="roi-table">'
@@ -559,6 +565,78 @@ def roi_table(diag, totals):
         '<p class="roi-note">{nota}</p>'
         '</div>'
     ).format(rows=rows, total=total_row, nota=esc(nota))
+
+
+def _costo_hora_fuente(diag):
+    """Devuelve la fuente del costo-hora normalizada: nomina_real | dato_usuario | default_pais."""
+    f = get(diag, "negocio.costo_hora_fuente")
+    if f in ("nomina_real", "dato_usuario", "default_pais"):
+        return f
+    return "default_pais" if get(diag, "negocio.costo_hora_es_default") else "dato_usuario"
+
+
+def numeros_negocio_section(diag):
+    """Sección 'Los números de tu negocio' — muestra las cifras REALES que dio el
+    usuario y de dónde sale el costo-hora. Es la base del ROI. Se OMITE por completo
+    si no hay datos económicos (ej. un beginner que aún no factura)."""
+    neg = diag.get("negocio", {}) or {}
+    mi = neg.get("modelo_ingresos", {}) or {}
+    eco = neg.get("economia", {}) or {}
+
+    ingreso = mi.get("ingreso_mes_aprox_usd")
+    ticket = mi.get("ticket_promedio_usd")
+    margen = mi.get("margen_bruto_pct")
+    nomina = eco.get("nomina_mes_usd")
+    leads = eco.get("leads_mes")
+    ventas = eco.get("ventas_mes")
+    tasa = eco.get("tasa_cierre_pct")
+    if tasa is None and leads and ventas:
+        tasa = round(ventas / leads * 100)
+    costo_hora = neg.get("costo_hora_usuario_usd")
+    fuente = _costo_hora_fuente(diag)
+    kpis = eco.get("kpis", []) or []
+
+    tiene = any(v is not None for v in [ingreso, nomina, ticket, leads, ventas, margen]) or bool(kpis)
+    if not tiene:
+        return ""
+
+    cards = []
+    if ingreso is not None:
+        cards.append(kpi_card(money(ingreso), "Ingresos / mes", "Lo que factura el negocio, aprox."))
+    if nomina is not None:
+        cards.append(kpi_card(money(nomina), "Nómina / mes", "El costo de tu equipo al mes."))
+    if costo_hora is not None:
+        ch_ctx = {
+            "nomina_real": "Tu costo REAL por hora (nómina ÷ horas). El ROI usa esto, no un promedio de industria.",
+            "dato_usuario": "El valor que le diste a tu hora.",
+            "default_pais": "Estimado por tu país — ajústalo si tu hora vale más.",
+        }.get(fuente, "El valor de tu hora.")
+        cards.append(kpi_card(money(costo_hora) + "/h", "Cuánto vale tu hora", ch_ctx))
+    if ticket is not None:
+        cards.append(kpi_card(money(ticket), "Ticket promedio", "Lo que deja una venta."))
+    if leads is not None:
+        cards.append(kpi_card(str(leads), "Leads / mes", "Interesados que te llegan al mes."))
+    if tasa is not None:
+        cards.append(kpi_card("{}%".format(tasa), "Tasa de cierre", "De cada interesado, cuántos compran."))
+    if margen is not None:
+        cards.append(kpi_card("{}%".format(margen), "Margen bruto", "Lo que te queda de cada venta."))
+    for k in kpis:
+        val = str(k.get("valor", ""))
+        cards.append(kpi_card(val, esc(k.get("nombre", "")), esc(k.get("unidad", "")) or None))
+
+    real = fuente == "nomina_real"
+    nota = ("Estos son <strong>tus</strong> números — el ahorro y el ROI de este reporte se calculan "
+            "con ellos, no con promedios de industria." if real else
+            "Con estos números afinamos el ROI a tu negocio; lo que falte lo estimamos y lo marcamos como supuesto.")
+
+    return (
+        '<section><div class="wrap">'
+        + section_header("Los números de tu negocio",
+                         "La base real del diagnóstico. Todo el ROI de abajo sale de aquí.")
+        + '<div class="kpi-grid">' + "".join(cards) + '</div>'
+        + '<p class="roi-note">{}</p>'.format(nota)
+        + '</div></section>'
+    )
 
 
 def code_block(texto, label="Copia esto:"):
@@ -986,6 +1064,9 @@ def build_html(diag, marca=None):
                    '<p><strong>{t}</strong> — {pq} La marcamos como tu quick-win más abajo.</p></div>'.format(
                        t=esc(auto1.get("titulo", "")), pq=esc(por_que)))
     out.append('</div></section>')
+
+    # ── B.5 LOS NÚMEROS DE TU NEGOCIO (la base real del ROI; se omite si no hay data) ──
+    out.append(numeros_negocio_section(diag))
 
     # ── Reconocimiento (quote del usuario) ──
     if sd.get("frase_textual"):

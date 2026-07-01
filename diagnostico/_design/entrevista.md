@@ -84,6 +84,21 @@ Cada dimensión = una cosa que el pipeline necesita saber. **No es un orden ríg
 
 ---
 
+### D2·B · Los números de tu negocio — *el ancla del ROI real* (operators)
+**Campos:** `negocio.economia` (`ingreso_mes_usd`, `nomina_mes_usd`, `horas_trabajadas_mes`, `leads_mes`, `ventas_mes`, `tasa_cierre_pct`, `kpis[]`), `negocio.modelo_ingresos.margen_bruto_pct`
+
+Esta es la dimensión que vuelve el diagnóstico de "estimado bonito" a **"los números reales de MI negocio"**. Se le pide SOLO al **operator** (el beginner aún no factura → se salta o se marca como meta). Siempre **con calidez, una a la vez, y dando permiso de estimar**.
+
+- **Encuadre (dilo ANTES de la primera):** *"Para que el ahorro que te calcule sea real y no un número al aire, déjame preguntarte un par de cosas de dinero. Con estimados me sirve — nadie te va a auditar."*
+- **Ingresos:** *"Más o menos, ¿cuánto factura el negocio al mes?"* → `ingreso_mes_usd`.
+- **Nómina / costo del equipo (LA clave del costo-hora REAL):** *"¿Cuánto se te va al mes en el equipo — sueldos, tú incluido si te pagas? Y si eres tú solo, ¿cuántas horas a la semana le metes al negocio?"* → `nomina_mes_usd` + `horas_trabajadas_mes`. *(Nómina ÷ horas = cuánto cuesta DE VERDAD una hora aquí; eso ancla todo el ROI, en vez de un promedio de internet.)*
+- **Volúmenes y cierre:** *"¿Como cuántos interesados te llegan al mes, y de esos cuántos terminan comprando?"* → `leads_mes` + `ventas_mes` (de ahí sale `tasa_cierre_pct`). Con el ticket (D2) = ingreso recuperado real.
+- **KPIs / margen (si fluye, no fuerces):** *"¿Hay algún número que midas y te importe — ticket promedio, margen, cuántos clientes se te enfrían al mes?"* → `kpis[]`, `margen_bruto_pct`.
+- **Intención:** estos números son lo que hace el ROI **100% real** (§3.2/§3.3 framework): nómina÷horas = costo-hora real; leads×cierre×ticket = ingreso recuperado real. **Nunca inventes**: lo que no sepa, se deja vacío y el reporte lo dice.
+- **Reasegura si titubea:** *"Si no lo tienes exacto, tírame un estimado — vale más un aproximado tuyo que un número de internet."* Nunca lo trabes por esto; si de plano no sabe, sigue y el ROI usa lo que haya (marcando el supuesto).
+
+---
+
 ### D3 · El equipo / capacidad — *cuántas manos hay*
 **Campos:** `negocio.equipo` (`solo` | `con_socio` | `equipo_chico` | `equipo_grande`), `negocio.horas_semana` (carga actual)
 
@@ -236,7 +251,9 @@ El skill puede arrancar el pipeline cuando tiene **lo mínimo viable**:
 | 4 | La meta | `meta.objetivo` | Es la brújula y la portada emocional |
 | 5 | Comodidad técnica | `perfil.nivel_tecnico` | Define cuánto traduce el reporte y si el hand-off es viable ya |
 
-**Deseables (mejoran el reporte pero NO bloquean):** `oferta.ticket`, `tareas[]` completa, `adquisicion.*`, `recursos.presupuesto_mensual`, `negocio.equipo`. Si faltan, el reporte usa rangos/supuestos razonables y lo dice ("asumí un ticket promedio de tu industria; ajústalo si quieres").
+**Casi-críticos para OPERATOR (el ROI real depende de esto — pídelos salvo que la persona se cierre):** `negocio.economia.nomina_mes_usd` + `horas_trabajadas_mes` (dan el costo-hora REAL), `oferta.ticket`, `negocio.economia.leads_mes`/`ventas_mes` (dan el ingreso recuperado REAL). Si el operator los da, el reporte deja de estimar y usa SUS cifras. Para **beginner** no aplican (no factura aún).
+
+**Deseables (mejoran el reporte pero NO bloquean):** `negocio.economia.kpis[]`, `margen_bruto_pct`, `tareas[]` completa, `adquisicion.*`, `recursos.presupuesto_mensual`, `negocio.equipo`. Si faltan, el reporte usa rangos/supuestos razonables y **lo dice** ("asumí un costo-hora de tu país; ajústalo si tu hora vale más"). Nunca se inventa un número: lo ausente se marca como supuesto.
 
 **Regla de paro:** en cuanto las 5 críticas estén cubiertas Y no haya un hueco obvio que valga la pena llenar, **dejas de preguntar**. No exprimas las 9 dimensiones por completismo. Un buen consultor cierra rápido.
 

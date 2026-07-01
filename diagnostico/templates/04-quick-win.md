@@ -8,10 +8,12 @@
 
 *{{quick_win.por_que_esta}}*
 
-Empieza juntando esto:
+{{quick_win.accion_hoy}}
+
+**Pega esto en ChatGPT o Claude:**
 
 ```
-{{quick_win.automatizacion.primer_paso}}
+{{quick_win.prompt}}
 ```
 
 ### Pasos para hoy
