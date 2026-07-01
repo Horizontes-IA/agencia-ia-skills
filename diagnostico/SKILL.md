@@ -219,23 +219,36 @@ Elige por FIT real, no por preferencia. Una buena MEZCLA (algunas n8n/Make, algu
 
 **Lee el contrato:** `Read _design/schema.md` (si no existe, `reference/schema.md`). Es la fuente de verdad de los nombres de campo — **respétalo al pie de la letra**, no inventes campos.
 
-1. Decide la carpeta de salida: `diagnostico-<slug>/` en el **directorio de trabajo actual del usuario** (NO dentro del skill). `slug` = kebab-case del negocio (ej. `diagnostico-sabores-de-casa/`). Si ya existe, pregunta antes de sobrescribir o sufija con la fecha (`-2026-06-23`).
-2. Escribe `diagnostico-<slug>/diagnostico.json` con TODO lo calculado, conforme al esquema de `schema.md`. Monedas en USD (número, sin símbolo). Todo número de ROI viaja con su supuesto. Listas vacías `[]` en vez de `null` salvo donde el schema pida req.
-3. Corre el generador (usa el binario detectado en Fase 0):
+1. **Convención de carpeta de entregables (síguela SIEMPRE — el cliente ve esto).** Todo el trato vive en UNA carpeta `cliente-<slug>/` en el directorio de trabajo del usuario. **NO uses `diagnostico-<slug>/`**: la carpeta es el expediente completo del trato (aquí después caen cotización, propuesta, contrato, cobro), no solo el diagnóstico. `slug` = kebab-case del negocio (ej. `cliente-sabores-de-casa/`). El diagnóstico es la etapa 1, y cada etapa separa el PDF cliente-facing de los fuentes:
    ```
-   python3 scripts/generar_reporte.py <ruta>/diagnostico.json <ruta>/
+   cliente-<slug>/
+   └── 1-diagnostico/
+       ├── Diagnóstico — <Negocio>.pdf      ← lo que se le manda al cliente
+       └── archivos/                         ← fuentes editables (NO se mandan)
    ```
-   (Si `python3` no sirvió en Fase 0, usa `python`.) El script imprime a stdout la ruta absoluta del `reporte.html` generado — captúrala para el mensaje final.
-3b. **Generar el PDF (automático).** Tras el `reporte.html`, corre el conversor compartido (usa el navegador que el usuario ya tenga, multi-OS):
+   Crea `cliente-<slug>/1-diagnostico/archivos/`. Si `cliente-<slug>/` ya existe, reúsala (es el mismo trato); si `1-diagnostico/` ya existe, pregunta antes de sobrescribir.
+2. Escribe `diagnostico.json` DENTRO de `cliente-<slug>/1-diagnostico/archivos/`, conforme al esquema de `schema.md`. Monedas en USD (número, sin símbolo). Todo número de ROI viaja con su supuesto. Listas vacías `[]` salvo req. (Ahí lo encontrarán `/cotizacion` y `/propuesta` con `find . -name diagnostico.json`.)
+3. Corre el generador hacia la subcarpeta `archivos/` (usa el binario detectado en Fase 0):
    ```
-   python3 ~/.config/agencia-ia/html2pdf.py <ruta>/reporte.html
+   python3 scripts/generar_reporte.py cliente-<slug>/1-diagnostico/archivos/diagnostico.json cliente-<slug>/1-diagnostico/archivos/
    ```
-   Si imprime `PDF: <ruta>`, ya quedó `reporte.pdf` junto al HTML. Si imprime `NO_PDF:` (no hay navegador), dile al usuario que abra el `reporte.html` y haga **Cmd/Ctrl+P → Guardar como PDF**. No bloquees por esto.
-4. **FALLBACK sin Python (crítico — el reporte SIEMPRE sale).** Si el comando falla (exit ≠ 0) o no hay Python: NO te detengas. Genera tú mismo el `reporte.html` con Write, replicando la estructura y el diseño del generador (mira `scripts/generar_reporte.py` y `_design/entregables.md` §2 para las secciones y el CSS dark+cyan): portada con el negocio + 3 KPIs (horas, ahorro **total = tiempo + ingreso**, retorno), resumen ejecutivo, mapa de procesos con barras de score, las 3 automatizaciones como tarjetas (la #1 destacada), la **tabla de ROI que SIEMPRE sume** (cada fila neto = ahorro − costo; el TOTAL = Σ de las filas, nunca un número que se contradiga), el quick-win con el prompt copy-paste, el roadmap, el stack y el cierre. Mismas reglas de formato (`$X`, `Y h/mes`, escapar `<` `>` `&`). Escribe también los markdown (`01`-`04` + `README.txt`) directo. El usuario obtiene el mismo paquete.
+   (Si `python3` no sirvió en Fase 0, usa `python`.) Escribe `reporte.html` + `01`-`04*.md` + `README.txt` dentro de `archivos/`.
+3b. **PDF cliente-facing (nombre presentable, FUERA de `archivos/`).** Genera el PDF y muévelo/renómbralo a la raíz de la etapa:
+   ```
+   python3 ~/.config/agencia-ia/html2pdf.py cliente-<slug>/1-diagnostico/archivos/reporte.html
+   mv cliente-<slug>/1-diagnostico/archivos/reporte.pdf "cliente-<slug>/1-diagnostico/Diagnóstico — <Negocio>.pdf"
+   ```
+   Si imprime `NO_PDF:` (no hay navegador), dile al usuario que abra `archivos/reporte.html` y haga **Cmd/Ctrl+P → Guardar como PDF** (y lo mueva a la raíz de la etapa con nombre bonito). No bloquees por esto.
+3c. **Limpieza del entregable (obligatoria antes de presentar).** Borra el ruido que no debe llegar al cliente:
+   ```
+   find cliente-<slug> \( -name CLAUDE.md -o -name .DS_Store \) -delete
+   ```
+   (Los `CLAUDE.md` los genera el plugin claude-mem y **filtran tu actividad interna** — nunca deben ir en un entregable.)
+4. **FALLBACK sin Python (crítico — el reporte SIEMPRE sale).** Si el comando falla (exit ≠ 0) o no hay Python: NO te detengas. Genera tú mismo el `reporte.html` con Write, replicando la estructura y el diseño del generador (mira `scripts/generar_reporte.py` y `_design/entregables.md` §2 para las secciones y el CSS dark+cyan): portada con el negocio + 3 KPIs (horas, ahorro **total = tiempo + ingreso**, retorno), resumen ejecutivo, mapa de procesos con barras de score, las 3 automatizaciones como tarjetas (la #1 destacada), la **tabla de ROI que SIEMPRE sume** (cada fila neto = ahorro − costo; el TOTAL = Σ de las filas, nunca un número que se contradiga), el quick-win con el prompt copy-paste, el roadmap, el stack y el cierre. Mismas reglas de formato (`$X`, `Y h/mes`, escapar `<` `>` `&`). Escribe el `reporte.html` y los markdown (`01`-`04` + `README.txt`) dentro de `cliente-<slug>/1-diagnostico/archivos/`, y deja el PDF (o el HTML si no hay navegador) con nombre presentable en `cliente-<slug>/1-diagnostico/`. El usuario obtiene el mismo paquete, igual de organizado.
 
 ### Fase 5 — Verificar los entregables markdown (trabajas)
 
-El generador de la Fase 4 **ya escribió TODOS los entregables** en la carpeta de salida — NO los reescribas (duplicarías con otros nombres). El paquete queda así:
+El generador de la Fase 4 **ya escribió TODOS los entregables** en `cliente-<slug>/1-diagnostico/archivos/` — NO los reescribas (duplicarías con otros nombres). El PDF cliente-facing quedó renombrado en `cliente-<slug>/1-diagnostico/`. En `archivos/`:
 - `reporte.html` — el artefacto premium (ábrelo / imprime a PDF).
 - `01-procesos-y-roi.md` — los procesos calificados + la tabla de ROI consolidada.
 - `02-plan-90-dias.md` — las 3 fases del roadmap.
@@ -260,18 +273,18 @@ Tu oportunidad #1: [título de la automatización #1].
 Te recupera ~[horas] h/mes[ + ~$[Z]/mes en dinero, si aplica] — con su
 supuesto claro en el reporte.
 
-Te dejé todo en la carpeta `diagnostico-[slug]/`:
-  • reporte.html          ← ábrelo, está hecho para verse (e imprimir a PDF)
-  • 04-quick-win.md       ← lo que puedes usar HOY, en 5 minutos
-  • 01-procesos-y-roi.md · 02-plan-90-dias.md · 03-stack-recomendado.md
+Te dejé todo en `cliente-[slug]/1-diagnostico/`:
+  • Diagnóstico — [Negocio].pdf   ← esto le mandas al cliente
+  • archivos/04-quick-win.md      ← lo que puedes usar HOY, en 5 minutos
+  • archivos/  → reporte.html, 01-procesos-y-roi.md, 02-plan-90-dias.md, 03-stack-recomendado.md (fuentes editables)
 
-Para abrir el reporte:
-  • Mac:     open diagnostico-[slug]/reporte.html
-  • Windows: start diagnostico-[slug]\reporte.html
-  • Linux:   xdg-open diagnostico-[slug]/reporte.html
+Para abrir el PDF:
+  • Mac:     open "cliente-[slug]/1-diagnostico/Diagnóstico — [Negocio].pdf"
+  • Windows: start "cliente-[slug]\1-diagnostico\Diagnóstico — [Negocio].pdf"
+  • Linux:   xdg-open "cliente-[slug]/1-diagnostico/Diagnóstico — [Negocio].pdf"
 ```
 
-Indica SIEMPRE la ruta exacta y el comando para abrir el HTML según OS. Luego pasa al hand-off.
+Indica SIEMPRE la ruta exacta y el comando para abrir según OS. Luego pasa al hand-off.
 
 ### Fase 7 — Hand-off de construcción
 
