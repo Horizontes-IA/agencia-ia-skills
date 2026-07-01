@@ -123,7 +123,7 @@ def derivar(coti):
         suma_items = 0
         algun_precio = False
         for it in items:
-            p = it.get("precio")
+            p = it.get("precio") if isinstance(it, dict) else None
             if p is not None:
                 try:
                     suma_items += float(p)
