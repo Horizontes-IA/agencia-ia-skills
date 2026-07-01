@@ -113,7 +113,14 @@ Muéstrale algo como: *"Te armo 3 opciones: Esencial $1,500, **Recomendada $2,20
 
 ### Fase 2 — Escribir el `cotizacion.json`
 
-Crea la carpeta de salida y el JSON. Convención de carpeta: **junto al diagnóstico si existe** (`diagnostico-<negocio>/cotizacion/`), o si no, `cotizacion-<negocio>/` en el directorio de trabajo.
+Crea la carpeta de salida y el JSON. **Convención de carpeta de entregables (síguela SIEMPRE):** el trato vive en `cliente-<slug>/` (el expediente completo; el mismo que creó `/diagnostico`). La cotización es la etapa 2, con el PDF cliente-facing arriba y los fuentes en `archivos/`:
+```
+cliente-<slug>/
+└── 2-cotizacion/
+    ├── Cotización — <Negocio>.pdf     ← lo que se le manda al cliente
+    └── archivos/                        ← cotizacion.html · .json · .md (no se mandan)
+```
+Si ya existe `cliente-<slug>/` (porque hubo diagnóstico), **reúsala** — el diagnóstico está en `cliente-<slug>/1-diagnostico/archivos/diagnostico.json` (lo hallas con `find . -name diagnostico.json`). Si no hay carpeta del trato aún, créala con `slug` = kebab-case del negocio. Crea `cliente-<slug>/2-cotizacion/archivos/`.
 
 1. Copia `templates/cotizacion.template.json` como base mental (NO lo entregues con los `_comentario`).
 2. Llena cada campo con los datos reales (del diagnóstico + lo confirmado). Sigue `templates/schema.md` al pie.
@@ -130,22 +137,23 @@ Reglas de contenido (no inventar):
 **Camino preferido (hay Python):**
 
 ```bash
-python3 scripts/generar_cotizacion.py <ruta-al-cotizacion.json> <carpeta-salida>
+python3 scripts/generar_cotizacion.py cliente-<slug>/2-cotizacion/archivos/cotizacion.json cliente-<slug>/2-cotizacion/archivos/
 ```
 
-Esto escribe en la carpeta:
-- `cotizacion.html` — el documento **cliente-facing** (self-contained, dark + cyan, imprime a PDF perfecto). Es lo que le mandas al cliente.
+Esto escribe en `archivos/`:
+- `cotizacion.html` — el documento **cliente-facing** (self-contained, imprime a PDF perfecto).
 - `cotizacion.md` — versión markdown editable/archivable.
 
 El generador: escapa todo input, recalcula el anticipo de cada tier server-side, omite con gracia las secciones sin datos, y produce un HTML sin dependencias (abre en cualquier navegador → Imprimir → Guardar como PDF).
 
 **Camino fallback (no hay Python):** usa `templates/cotizacion.fallback.md`, rellena los `{{PLACEHOLDERS}}` a mano con los datos del JSON (calcula el anticipo: precio × pct), y entrega ese markdown. Avísale al operador que para el HTML premium necesita Python (o que tú se lo generas en otra máquina).
 
-**Generar el PDF (automático).** Tras crear el `cotizacion.html`, corre el conversor compartido (usa el navegador que el usuario ya tenga, multi-OS):
+**Generar el PDF cliente-facing (nombre presentable, FUERA de `archivos/`).** Tras el `cotizacion.html`, corre el conversor y mueve/renombra el PDF a la raíz de la etapa:
 ```bash
-python3 ~/.config/agencia-ia/html2pdf.py "<salida>/cotizacion.html"
+python3 ~/.config/agencia-ia/html2pdf.py "cliente-<slug>/2-cotizacion/archivos/cotizacion.html"
+mv "cliente-<slug>/2-cotizacion/archivos/cotizacion.pdf" "cliente-<slug>/2-cotizacion/Cotización — <Negocio>.pdf"
 ```
-Si imprime `PDF: <ruta>`, ya quedó el `.pdf` junto al HTML (eso le mandas al cliente). Si imprime `NO_PDF:` (no hay navegador), dile que abra el `.html` y haga **Cmd/Ctrl+P → Guardar como PDF** (sale idéntico, ya tiene CSS de print A4).
+Si imprime `NO_PDF:` (no hay navegador), dile que abra `archivos/cotizacion.html` y haga **Cmd/Ctrl+P → Guardar como PDF** (y lo mueva a la raíz de la etapa con nombre bonito). Luego **limpia el ruido** del entregable: `find cliente-<slug> \( -name CLAUDE.md -o -name .DS_Store \) -delete` (los `CLAUDE.md` del plugin claude-mem filtran actividad interna).
 
 ### Fase 4 — Entregar + encadenar la suite
 
