@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
 generar_contrato_html.py — Convierte un contrato.json lleno en un HTML self-contained,
-profesional, dark + acento cyan (#00E5FF), que imprime limpio a PDF (Cmd+P → Guardar como PDF).
+profesional, claro (papel blanco) + acento cyan (#00E5FF), que imprime limpio a PDF
+(Cmd+P → Guardar como PDF). Documento cliente-facing: fondo claro, cortes de página
+limpios (ningún título huérfano, ninguna caja partida), márgenes A4.
 
 Uso:
     python3 generar_contrato_html.py <ruta>/contrato.json [<ruta>/contrato.html]
@@ -34,18 +36,36 @@ def _color_marca():
         return None
 
 
+def _darken(hex_color, factor):
+    """Variante más oscura de hex_color (factor 0-1; 0.72 = 72% del brillo) para texto/líneas legibles sobre blanco."""
+    try:
+        r, g, b = int(hex_color[1:3], 16), int(hex_color[3:5], 16), int(hex_color[5:7], 16)
+    except ValueError:
+        return hex_color
+    return "#{:02x}{:02x}{:02x}".format(int(r * factor), int(g * factor), int(b * factor))
+
+
 def _recolorear(s, hex_color):
-    """Reemplaza el cyan de Horizontes por el acento de la agencia en TODO el HTML."""
+    """Reemplaza el cyan de Horizontes por el acento de la agencia en TODO el HTML.
+    En documento claro los acentos van en DOS tonos: el brillante (rellenos/números) usa
+    el color de marca tal cual; el legible (texto, líneas, encabezados) usa una variante
+    oscurecida para que no quede cyan claro sobre blanco (ilegible)."""
     if not hex_color or len(hex_color) != 7 or hex_color[0] != "#":
         return s
     try:
         r, g, b = int(hex_color[1:3], 16), int(hex_color[3:5], 16), int(hex_color[5:7], 16)
     except ValueError:
         return s
-    rgb = "{},{},{}".format(r, g, b)
-    for lit in ("#00E5FF", "#00e5ff", "#22d3ee", "#22D3EE", "#00B8CC", "#00b8cc", "#0e7490", "#0E7490", "#06808f", "#06808F", "#0aa6bd", "#0AA6BD"):
+    dark = _darken(hex_color, 0.72)
+    dr, dg, db = int(r * 0.72), int(g * 0.72), int(b * 0.72)
+    # Brillante -> color de marca tal cual (rellenos con texto blanco, números grandes)
+    for lit in ("#00E5FF", "#00e5ff"):
         s = s.replace(lit, hex_color)
-    return s.replace("0,229,255", rgb).replace("0, 229, 255", rgb).replace("0,184,204", rgb).replace("0, 184, 204", rgb)
+    s = s.replace("0,229,255", "{},{},{}".format(r, g, b)).replace("0, 229, 255", "{},{},{}".format(r, g, b))
+    # Legible -> variante oscurecida (texto cyan, bordes, encabezados)
+    for lit in ("#00B8CC", "#00b8cc", "#22d3ee", "#22D3EE", "#0e7490", "#0E7490", "#06808f", "#06808F", "#0aa6bd", "#0AA6BD"):
+        s = s.replace(lit, dark)
+    return s.replace("0,184,204", "{},{},{}".format(dr, dg, db)).replace("0, 184, 204", "{},{},{}".format(dr, dg, db))
 
 
 # ---------- helpers ----------
@@ -124,89 +144,79 @@ def fill(text, campos):
 
 CSS = """
 :root{
-  --bg:#080810; --surface:#0f0f1a; --surface-2:#15151f; --border:#23232f;
-  --text:#e8e8ef; --dim:#9a9ab0; --cyan:#00E5FF; --cyan-2:#22d3ee;
-  --cyan-soft:rgba(0,229,255,.10); --warn:#fbbf24;
+  --paper:#ffffff; --paper-2:#f6f8fa; --ink:#0f1419; --ink-soft:#3d4753; --muted:#6b7480;
+  --line:#e3e8ee; --cyan:#00B8CC; --cyan-bright:#00E5FF; --cyan-soft:#e6fbff; --warn:#b45309;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);
+body{margin:0;background:var(--paper-2);color:var(--ink);
   font-family:'Space Grotesk',system-ui,-apple-system,sans-serif;
   font-size:15px;line-height:1.65;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-.page{max-width:820px;margin:0 auto;padding:56px 60px 80px;}
-.accent{font-family:'Instrument Serif',Georgia,serif;font-style:italic;color:var(--cyan-2);font-weight:400;}
-code{font-family:ui-monospace,'SF Mono',Menlo,monospace;background:var(--surface-2);
-  border:1px solid var(--border);border-radius:5px;padding:1px 6px;font-size:.86em;color:var(--cyan-2);}
-.ph{color:var(--warn);font-style:italic;font-weight:600;}
+.page{max-width:820px;margin:24px auto;background:var(--paper);padding:56px 60px 72px;
+  box-shadow:0 1px 40px rgba(15,20,25,.06);border-radius:2px;}
+.accent{font-family:'Instrument Serif',Georgia,serif;font-style:italic;color:var(--cyan);font-weight:400;}
+code{font-family:ui-monospace,'SF Mono',Menlo,monospace;background:var(--paper-2);
+  border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:.86em;color:var(--cyan);}
+.ph{color:var(--warn);font-style:italic;font-weight:600;background:#fff4d6;border-radius:3px;padding:0 4px;}
 
-header.cover{border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:36px;
-  background:radial-gradient(ellipse 70% 60% at 12% 0%, rgba(0,229,255,.10), transparent 60%);}
+header.cover{border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:36px;
+  background:radial-gradient(ellipse 70% 60% at 12% 0%, var(--cyan-soft), transparent 60%);}
 .brandmark{display:flex;align-items:center;gap:10px;margin-bottom:22px;}
 .brandmark .nm{font-weight:700;letter-spacing:.5px;}
 .brandmark .nm b{color:var(--cyan);}
 h1{font-size:30px;line-height:1.2;margin:0 0 8px;font-weight:700;}
-.cover .meta{color:var(--dim);font-size:13.5px;margin-top:14px;display:flex;gap:18px;flex-wrap:wrap;}
-.cover .meta b{color:var(--text);font-weight:600;}
+.cover .meta{color:var(--muted);font-size:13.5px;margin-top:14px;display:flex;gap:18px;flex-wrap:wrap;}
+.cover .meta b{color:var(--ink);font-weight:600;}
 
 h2{font-size:19px;margin:38px 0 4px;font-weight:700;display:flex;align-items:baseline;gap:10px;}
 h2 .n{color:var(--cyan);font-family:'Instrument Serif',Georgia,serif;font-style:italic;
   font-size:22px;min-width:30px;}
 h2 + .rule{display:block;width:46px;height:2px;background:var(--cyan);margin:0 0 14px 40px;}
-h4{font-size:15.5px;margin:20px 0 4px;color:var(--cyan-2);font-weight:600;}
+h4{font-size:15.5px;margin:20px 0 4px;color:var(--cyan);font-weight:600;}
 p{margin:9px 0;}
 ul{margin:9px 0 9px 4px;padding-left:20px;}
 li{margin:5px 0;}
-strong{color:#fff;font-weight:600;}
+strong{color:var(--ink);font-weight:600;}
 
 blockquote{border-left:3px solid var(--cyan);background:var(--cyan-soft);
-  margin:14px 0;padding:11px 18px;border-radius:0 8px 8px 0;color:var(--text);font-size:14px;}
+  margin:14px 0;padding:11px 18px;border-radius:0 8px 8px 0;color:var(--ink-soft);font-size:14px;}
 
 table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;
-  border:1px solid var(--border);border-radius:10px;overflow:hidden;}
-th{background:var(--cyan-soft);color:var(--cyan-2);text-align:left;padding:10px 13px;
+  border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+th{background:var(--cyan-soft);color:var(--cyan);text-align:left;padding:10px 13px;
   font-weight:600;font-size:13px;}
-td{padding:10px 13px;border-top:1px solid var(--border);vertical-align:top;}
+td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top;}
 
-.sign{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:26px;}
-.sign .box{border:1px solid var(--border);border-radius:12px;padding:22px;background:var(--surface);}
-.sign .line{border-bottom:1px solid var(--dim);height:46px;margin-bottom:8px;}
-.sign .role{color:var(--cyan);font-weight:700;font-size:13px;text-transform:uppercase;
-  letter-spacing:.5px;margin-bottom:14px;}
-.sign .who{font-weight:600;}
-.sign .org{color:var(--dim);font-size:13px;}
-
-.disclaimer{margin-top:44px;border:1px solid var(--border);border-left:3px solid var(--warn);
-  background:rgba(251,191,36,.06);border-radius:0 10px 10px 0;padding:16px 20px;
-  color:var(--dim);font-size:13px;}
+.disclaimer{margin-top:44px;border:1px solid #f0d68a;border-left:3px solid var(--warn);
+  background:#fff8e6;border-radius:0 10px 10px 0;padding:16px 20px;
+  color:#6b5200;font-size:13px;}
 .disclaimer strong{color:var(--warn);}
 
 .preambulo{margin:8px 0 6px;font-size:14.5px;line-height:1.7;}
 .declaraciones,.firmas{margin-top:30px;}
 .sign-row{display:flex;gap:48px;margin-top:30px;flex-wrap:wrap;}
 .sign{flex:1;min-width:220px;text-align:center;}
-.sign-line{border-top:1.5px solid var(--text);margin:48px 0 8px;}
-.sign-sub{color:var(--dim);font-size:12.5px;margin-top:2px;}
+.sign b{color:var(--ink);}
+.sign-line{border-top:1.5px solid var(--ink);margin:48px 0 8px;}
+.sign-sub{color:var(--muted);font-size:12.5px;margin-top:2px;}
 
-footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);
-  color:var(--dim);font-size:12px;text-align:center;}
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:12px;text-align:center;}
 
-@page{margin:14mm;}
+@page{size:A4;margin:16mm 14mm;}
 @media print{
+  html,body{background:#fff !important;}
+  body{font-size:11.5pt;}
+  .page{padding:0;max-width:100%;margin:0;box-shadow:none;border-radius:0;}
   p,li{orphans:3; widows:3;}  /* sin líneas sueltas al pie/inicio de página */
-  /* El contrato se firma en papel/PDF claro. Forzamos tinta OSCURA: si solo
-     invertimos el fondo a blanco, el texto y las negritas (heredados del tema
-     dark) quedan blancos sobre blanco = ilegibles. Esto lo evita. */
-  body{background:#fff !important; color:#111 !important;}
-  .page{padding:0;max-width:100%;}
-  h1,h2,h3,h4,h5,p,li,td,th,div,span,em{color:#111 !important;}
-  strong,b{color:#000 !important;}
-  .accent,[class*="accent"]{color:#0e7490 !important;}
-  .disclaimer{background:#fff8e1 !important; color:#5b4a00 !important;}
-  *{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
-  /* cortes de página: el título de cláusula nunca se queda huérfano ni se parte;
-     las firmas y declaraciones no se cortan a la mitad. */
-  h2,h3{break-after:avoid; page-break-after:avoid; break-inside:avoid;}
-  .firmas,.sign-row,.declaraciones h2{break-inside:avoid;}
+  /* Cortes de página profesionales: el número+título de cláusula y su regla nunca
+     quedan huérfanos al pie (van pegados al inicio del cuerpo); las cajas no se parten. */
   section{break-inside:auto;}
+  h1,h2,h3,h4{break-after:avoid; page-break-after:avoid;}
+  h2,h2 + .rule,.rule{break-after:avoid; page-break-after:avoid;}
+  h2{break-inside:avoid;}
+  blockquote,table,.disclaimer,.sign-row,.firmas,.declaraciones h2{break-inside:avoid;}
+  thead{display:table-header-group;}  /* si una tabla se parte, repite su encabezado */
+  *{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
 }
 """
 
@@ -297,6 +307,12 @@ o de riesgo elevado, haz que un abogado de tu país lo revise antes de firmar.</
 </div></body></html>"""
 
 
+def _marcar_revisar(s):
+    """Resalta en amarillo los datos placeholder '[revisar: ...]' para que sea imposible
+    firmar sin reemplazarlos. Se corre después de armar el HTML (los corchetes sobreviven a esc())."""
+    return re.sub(r"\[revisar[^\]]*\]", lambda m: '<span class="ph">' + m.group(0) + '</span>', s)
+
+
 def main():
     if len(sys.argv) < 2:
         print("uso: python3 generar_contrato_html.py <contrato.json> [salida.html]")
@@ -304,7 +320,7 @@ def main():
     src = Path(sys.argv[1])
     data = json.loads(src.read_text(encoding="utf-8"))
     out = Path(sys.argv[2]) if len(sys.argv) > 2 else src.with_suffix(".html")
-    html_out = _recolorear(build_html(data), _color_marca())
+    html_out = _recolorear(_marcar_revisar(build_html(data)), _color_marca())
     out.write_text(html_out, encoding="utf-8")
     print(f"OK -> {out}")
 
