@@ -189,14 +189,17 @@ const html = `<!DOCTYPE html>
   .conds { margin-top: 16px; font-size: 13px; color: var(--muted); line-height: 1.6; }
   .note { margin-top: 28px; border-left: 3px solid var(--cyan); background: rgba(0,229,255,.06);
     padding: 14px 18px; font-size: 13px; color: #2a3340; border-radius: 0 8px 8px 0; line-height: 1.6; }
+  .ph { background: #fff4d6; color: #8a6d00; font-style: italic; font-weight: 600; border-radius: 3px; padding: 0 4px; }
   footer { margin-top: 34px; padding-top: 18px; border-top: 1px solid var(--line);
     font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   footer .thanks { font-weight: 600; color: var(--ink); }
   @media print {
-  p,li{orphans:3; widows:3;}  /* sin líneas sueltas al pie/inicio de página */
+    p,li{orphans:3; widows:3;}  /* sin líneas sueltas al pie/inicio de página */
     html, body { background: #fff; }
     .page { box-shadow: none; margin: 0; max-width: none; border-radius: 0; padding: 24px 28px; }
     @page { size: A4; margin: 14mm; }
+    /* las cajas no se parten a la mitad entre páginas */
+    .pay, .totals, .note, .parties, table.items tr { break-inside: avoid; }
   }
 </style>
 </head>
@@ -269,7 +272,11 @@ const html = `<!DOCTYPE html>
 </body>
 </html>`;
 
-const htmlFinal = _recolorear(html, _colorMarca());
+// Resalta en amarillo los datos placeholder [revisar: ...] (RFC, CLABE, banco, etc.)
+// para que sea imposible mandar la factura sin reemplazarlos por los reales.
+const marcarRevisar = (s) => s.replace(/\[revisar[^\]]*\]/g, (m) => `<span class="ph">${m}</span>`);
+
+const htmlFinal = _recolorear(marcarRevisar(html), _colorMarca());
 
 if (args.out) {
   writeFileSync(args.out, htmlFinal, "utf8");
