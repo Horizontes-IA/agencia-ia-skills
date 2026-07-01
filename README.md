@@ -1,6 +1,6 @@
 # Sistema de Agencia IA — Skills para Claude Code
 
-Ocho skills de [Claude Code](https://claude.com/claude-code) que cubren el ciclo de una agencia de automatización con IA: **del diagnóstico al onboarding del cliente**. Pensados para operadores de LATAM que están arrancando — premium, sin tecnicismos, y **se auto-configuran con TU marca una sola vez**.
+Diez skills de [Claude Code](https://claude.com/claude-code) que cubren el ciclo completo de una agencia de automatización con IA: **del diagnóstico al mantenimiento mensual**. Pensados para operadores de LATAM que están arrancando — premium, sin tecnicismos, y **se auto-configuran con TU marca una sola vez**.
 
 Hecho por [Horizontes IA](https://www.skool.com/horizontes-ia-9992).
 
@@ -8,7 +8,7 @@ Hecho por [Horizontes IA](https://www.skool.com/horizontes-ia-9992).
 
 ## Empieza por aquí: `/nuevo-cliente`
 
-No necesitas recordar los 8 skills. Di **`/nuevo-cliente`** (o *"arma el kit de [cliente]"*), dale la info que tengas del cliente —toda, la básica o nada— y este skill te pregunta lo que falte y **encadena los demás en orden**, generando todo con tu marca y en PDF, junto en una carpeta. Es inteligente: a un prospecto que aún no cierra le arma el **paquete de venta** (diagnóstico + cotización + propuesta) y deja el contrato y el cobro para cuando diga que sí.
+No necesitas recordar los 10 skills. Di **`/nuevo-cliente`** (o *"arma el kit de [cliente]"*), dale la info que tengas del cliente —toda, la básica o nada— y este skill te pregunta lo que falte y **encadena los demás en orden**, generando todo con tu marca y en PDF, junto en una carpeta. Es inteligente: a un prospecto que aún no cierra le arma el **paquete de venta** (diagnóstico + cotización + propuesta) y deja el contrato y el cobro para cuando diga que sí.
 
 ## Qué incluye
 
@@ -22,6 +22,8 @@ No necesitas recordar los 8 skills. Di **`/nuevo-cliente`** (o *"arma el kit de 
 | `/cobro` | La factura + el **link de pago real** + la cadena de recordatorios. |
 | `/conectar-cliente` | Genera links para que el cliente conecte SUS cuentas (Gmail, Calendar, WhatsApp…) sin darte contraseñas, vía Composio — el onboarding técnico, va DESPUÉS de cobrar. *(Llave gratis de Composio, se pide al usarlo.)* |
 | `/cerrar-cliente` | El orquestador: del apretón de manos al kickoff corre todos los anteriores en orden, sin re-preguntar. |
+| `/docs-entrega` | Los documentos de entrega del proyecto (manual, accesos, docs técnicas) en Word — para el handoff que te hace ver pro. |
+| `/mantenimiento` | El reporte mensual de salud del sistema en Word, para mandárselo al cliente cada mes — eso justifica la mensualidad. |
 
 Cada skill entrega **markdown editable + un HTML premium que imprime a PDF** (listo para mandárselo a un cliente real).
 
@@ -33,7 +35,7 @@ Cada skill entrega **markdown editable + un HTML premium que imprime a PDF** (li
 curl -fsSL https://raw.githubusercontent.com/Horizontes-IA/agencia-ia-skills/main/instalar.sh | bash
 ```
 
-Esto copia los 8 skills a `~/.claude/skills/`, deja listas las dependencias de `/conectar-cliente` (Node), el conversor a PDF y el onboarding compartido a `~/.config/agencia-ia/`.
+Esto copia los 10 skills a `~/.claude/skills/`, deja listas las dependencias de `/conectar-cliente` (Node), el conversor a PDF y el onboarding compartido a `~/.config/agencia-ia/`. (`/docs-entrega` y `/mantenimiento` generan Word con `python-docx`, que el propio skill instala en su primera corrida.)
 
 > ¿Prefieres a mano? Clona el repo y copia cada carpeta de skill a `~/.claude/skills/`, y `configurar.md` + `perfil.ejemplo.json` a `~/.config/agencia-ia/`.
 
@@ -56,9 +58,10 @@ El perfil es el DEFAULT, no una jaula: si para un cliente el precio o el alcance
 ## Cómo se usa (el flujo de una agencia real)
 
 ```
-            ┌──────────────────────── /nuevo-cliente lo orquesta TODO según el punto del trato ────────────────────────┐
-Prospecto → /diagnostico → /cotizacion → /propuesta → (sí) → /contrato → /cobro (anticipo) → /conectar-cliente → kickoff
-                                       └──────────── /cerrar-cliente corre de /cotizacion a /cobro de un jalón ────────────┘
+            ┌──────────────── /nuevo-cliente lo orquesta según el punto del trato ────────────────┐
+Prospecto → /diagnostico → /cotizacion → /propuesta → (sí) → /contrato → /cobro → /conectar-cliente → kickoff
+                                       └──── /cerrar-cliente corre de /cotizacion a /cobro ────┘
+   … construyes … → /docs-entrega (entregas) → /mantenimiento (cada mes → cobras el retainer)
 ```
 
 La forma fácil: **`/nuevo-cliente`** y deja que él rutee. La forma manual (skill por skill):
@@ -70,15 +73,17 @@ La forma fácil: **`/nuevo-cliente`** y deja que él rutee. La forma manual (ski
 4. **`/cobro`** — "cobra el anticipo" → factura + link de pago.
 5. **`/conectar-cliente`** — "conecta el Gmail/WhatsApp de [cliente]" → links de autorización para tener listas sus cuentas antes del kickoff.
 6. **`/cerrar-cliente`** — "acabo de cerrar a [cliente]" → corre `/cotizacion`→`/cobro` en orden y arma el expediente `cliente-<nombre>/`.
+7. *(construyes la automatización — con `/crear-agente`, n8n o Make)*
+8. **`/docs-entrega`** — "documenta la entrega de [cliente]" → manual, accesos y docs técnicas en Word para el handoff.
+9. **`/mantenimiento`** — "genera el reporte mensual de [cliente]" → health check en Word que le mandas cada mes (y cobras el retainer con `/cobro`).
 
 ---
 
 ## Compañeros (otros skills de Horizontes IA)
 
-Estos no vienen en este paquete pero completan el ciclo de la agencia:
+Estos no vienen en este paquete pero completan el ciclo:
 
-- **`/docs-entrega`** — los documentos de entrega del proyecto. → [santmun/docs-entrega-skill](https://github.com/santmun/docs-entrega-skill)
-- **`/mantenimiento`** — el reporte mensual de salud del sistema. → [santmun/mantenimiento-skill](https://github.com/santmun/mantenimiento-skill)
+- **`/crear-agente`** — construye la automatización que vendiste (el paso entre el cierre y la entrega). Es el "construir", no el papeleo.
 
 ---
 

@@ -23,9 +23,9 @@ git clone --depth 1 -q "$REPO" "$TMP/agencia"
 
 mkdir -p "$SKILLS_DIR" "$CONF_DIR"
 
-# Los 8 skills de agencia (cada uno es un skill independiente de Claude Code).
+# Los 10 skills de agencia (cada uno es un skill independiente de Claude Code).
 # /nuevo-cliente es la puerta de entrada que orquesta a los demás.
-for s in nuevo-cliente diagnostico cotizacion propuesta contrato cobro conectar-cliente cerrar-cliente; do
+for s in nuevo-cliente diagnostico cotizacion propuesta contrato cobro conectar-cliente cerrar-cliente docs-entrega mantenimiento; do
   rm -rf "$SKILLS_DIR/$s"
   cp -R "$TMP/agencia/$s" "$SKILLS_DIR/$s"
   echo "  ✓ /$s"
