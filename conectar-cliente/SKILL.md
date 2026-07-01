@@ -1,6 +1,6 @@
 ---
 name: conectar-cliente
-description: Conecta las cuentas del cliente (Gmail, Calendar, WhatsApp, Sheets, Drive, Notion, Slack, APIs, etc.) que tu automatización va a usar — en DOS modos que el skill te deja elegir. Modo Composio - le mandas al cliente un link, da 1 clic y autoriza, sin contraseñas ni cuenta de Composio (revocable). Modo Manual "a la antigua" - tú creas las cuentas o le pides sus API keys, y el skill te genera un DOCUMENTO DE ACCESOS con tu marca para guardarlos ordenados. El skill te pregunta qué método quieres y qué cuentas vas a conectar. Úsalo cuando digas "conéctale las cuentas a [cliente]", "genera un enlace para [cliente] para [app]", "conéctale el [app] a [cliente]", "arma el documento de accesos de [cliente]", "¿qué tiene conectado [cliente]?", "desconecta el [app] de [cliente]". Es la pieza de onboarding técnico del cliente: va DESPUÉS de cobrar el anticipo y antes del kickoff. El modo Composio necesita una llave gratis de Composio (se pide la primera vez).
+description: Conecta las cuentas del cliente (Gmail, Calendar, WhatsApp, Sheets, Drive, Notion, Slack, APIs, etc.) que tu automatización va a usar — en DOS modos que el skill te deja elegir. Modo Composio - le mandas al cliente un link, da 1 clic y autoriza, sin contraseñas ni cuenta de Composio (revocable). Modo Manual "a la antigua" - tú creas las cuentas o le pides sus API keys, y el skill te genera un DOCUMENTO DE ACCESOS con tu marca para guardarlos ordenados. El skill te pregunta qué método quieres y qué cuentas vas a conectar. En modo Composio también te ayuda a usar las cuentas: pregunta con qué vas a construir (Claude Code, n8n o Make) y, si es n8n/Make, usando el CLI de Composio te da el `curl` listo para llamar la app conectada desde el nodo HTTP. Úsalo cuando digas "conéctale las cuentas a [cliente]", "genera un enlace para [cliente] para [app]", "conéctale el [app] a [cliente]", "dame el curl de [app] para n8n", "arma el documento de accesos de [cliente]", "¿qué tiene conectado [cliente]?", "desconecta el [app] de [cliente]". Es la pieza de onboarding técnico del cliente: va DESPUÉS de cobrar el anticipo y antes del kickoff. El modo Composio necesita una llave gratis de Composio (se pide la primera vez).
 ---
 
 # Conectar Cliente — dos modos
@@ -67,6 +67,48 @@ node ~/.claude/skills/conectar-cliente/connect.mjs <accion> <cliente> [app]
 1. Normaliza el nombre del cliente a un `userId` estable sin espacios (ej. "Barbería Hugo" → `barberia-hugo`). Usa SIEMPRE el mismo para ese cliente. Si ya usaste uno antes, reúsalo.
 2. Apps por nombre común que el script entiende: `correo/gmail`, `calendario`, `whatsapp`, `hojas/sheets`, `drive`, `notion`, `slack`, `hubspot`, `instagram`, `github`, `outlook`, `trello`. Otras → pásalas como su slug de Composio.
 3. Muéstrale el link y el mensaje listo para mandar. **No expongas la API key ni IDs internos.**
+
+### Paso final — úsalo desde tu agente (¿con qué vas a construir?)
+
+Cuando el cliente ya conectó sus cuentas, pregúntale al operador **con qué va a construir la automatización**:
+
+```
+Listo, [cliente] ya conectó sus cuentas. ¿Con qué vas a construir el agente?
+  1. Claude Code / un agente propio (SDK)
+  2. n8n
+  3. Make
+  4. Otro
+```
+
+**Si es Claude Code / SDK** → ejecuta las acciones directo, la conexión ya está lista:
+```bash
+composio execute GMAIL_SEND_EMAIL -d '{ "recipient_email": "...", "subject": "...", "body": "..." }'
+```
+(o `composio.tools.execute(slug, { userId, arguments })` desde el SDK.)
+
+**Si es n8n o Make → dale el `curl` listo.** Estas plataformas llaman a Composio por HTTP (nodo **HTTP Request** en n8n / módulo **HTTP** en Make), y Composio pone la autenticación con la cuenta que el cliente ya conectó — sin contraseñas.
+
+1. **Encuentra el tool de la app con el CLI** (te da el SLUG y los argumentos):
+   ```bash
+   composio search "lo que va a hacer el agente" --toolkits <app>   # ej: --toolkits gmail  →  GMAIL_SEND_EMAIL
+   composio execute <SLUG> --get-schema                              # ver los argumentos
+   ```
+2. **Arma el `curl`** (endpoint de ejecución de Composio, v3):
+   ```bash
+   curl -X POST 'https://backend.composio.dev/api/v3/tools/execute/<SLUG>' \
+     -H 'x-api-key: <TU_COMPOSIO_API_KEY>' \
+     -H 'Content-Type: application/json' \
+     -d '{
+       "user_id": "<userId-del-cliente>",
+       "arguments": { ...los del --get-schema... }
+     }'
+   ```
+3. **Pásalo a la plataforma:**
+   - **n8n:** nodo **HTTP Request** → Method `POST`, la URL de arriba, header `x-api-key` (guárdalo como **credencial** de n8n, no en texto plano) y el JSON en el Body.
+   - **Make:** módulo **HTTP → Make a request**, igual.
+   Así el flujo usa la cuenta conectada del cliente vía Composio, sin manejar tokens a mano.
+
+> **Nunca pegues la API key de Composio en el chat.** En el `curl` va el placeholder `<TU_COMPOSIO_API_KEY>`; el operador la toma de su `.env` (`~/.claude/skills/conectar-cliente/.env`) y en n8n la guarda como credencial. El `<userId-del-cliente>` es el mismo que usaste al conectar (ej. `sabores-de-casa`).
 
 ---
 
