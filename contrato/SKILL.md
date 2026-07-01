@@ -1,6 +1,6 @@
 ---
 name: contrato
-description: Genera el contrato de prestación de servicios que la agencia de automatización con IA firma con su cliente ANTES de construir — un acuerdo profesional, en español neutro LATAM, con TODAS las cláusulas que de verdad protegen al operador (alcance, pago por hitos, propiedad intelectual atada al pago, confidencialidad, accesos y datos vía OAuth revocable, no-entrenamiento con datos del cliente, descargo de IA, mantenimiento, límite de responsabilidad, terminación con kill fee, ley aplicable). Úsalo cuando alguien escriba "/contrato", "arma el contrato", "hazme el contrato de este cliente", "genera el acuerdo de servicio", "contrato para [cliente]", "necesito un contrato para cobrar", "qué cláusulas le pongo al cliente", "el cliente ya dijo que sí, hazme el contrato", "redacta el acuerdo", o cualquier variación donde un operador de agencia (probablemente principiante de LATAM) cerró un trato y necesita el documento legal para firmar antes de empezar. Lee el diagnostico.json de /diagnostico si existe para autollenar alcance y precio, referencia la propuesta/cotización como anexo, y ata la cláusula de accesos al revoke de /conectar-cliente. Entrega markdown editable + un HTML profesional dark+cyan que imprime a PDF + opción de subir a Google Docs. Incluye disclaimer honesto: es un modelo, no asesoría legal.
+description: Genera el contrato de prestación de servicios que la agencia de automatización con IA firma con su cliente ANTES de construir — un acuerdo profesional, en español neutro LATAM, con TODAS las cláusulas que de verdad protegen al operador (alcance, pago por hitos, propiedad intelectual atada al pago, confidencialidad, accesos y datos vía OAuth revocable, no-entrenamiento con datos del cliente, descargo de IA, mantenimiento, límite de responsabilidad, terminación con kill fee, ley aplicable). Úsalo cuando alguien escriba "/contrato", "arma el contrato", "hazme el contrato de este cliente", "genera el acuerdo de servicio", "contrato para [cliente]", "necesito un contrato para cobrar", "qué cláusulas le pongo al cliente", "el cliente ya dijo que sí, hazme el contrato", "redacta el acuerdo", o cualquier variación donde un operador de agencia (probablemente principiante de LATAM) cerró un trato y necesita el documento legal para firmar antes de empezar. Lee el diagnostico.json de /diagnostico si existe para autollenar alcance y precio, referencia la propuesta/cotización como anexo, y ata la cláusula de accesos al revoke de /conectar-cliente. Entrega markdown editable + un HTML profesional claro+cyan que imprime a PDF + opción de subir a Google Docs. Incluye disclaimer honesto: es un modelo, no asesoría legal.
 ---
 
 # Contrato — Skill `/contrato`
@@ -153,36 +153,41 @@ El contrato vive en **markdown editable** (el cliente lo firma/edita; no es un f
 
 **Genera también el `Anexo A`** desde `templates/anexo-a-alcance.md`, autollenando las automatizaciones del JSON. Es donde vive el detalle del trabajo; el contrato lo referencia.
 
-Escribe los archivos en una carpeta del trato:
+Escribe los archivos en el **expediente del trato** (la MISMA carpeta que usan los demás skills: `cliente-<slug>/`, una carpeta por cliente con etapas numeradas). El contrato es la etapa **4-contrato/**: el PDF cliente-facing con **nombre presentable** arriba, y los fuentes editables en `archivos/`:
 ```
-contrato-<slug-cliente>/
-├── contrato.md            # el contrato completo, editable
-├── anexo-a-alcance.md     # el alcance (autollenado del diagnóstico)
-└── contrato.html          # versión cliente-facing (Fase 3)
+cliente-<slug>/
+└── 4-contrato/
+    ├── Contrato — <Negocio>.pdf   # lo que se manda a firmar (Fase 3)
+    └── archivos/
+        ├── contrato.md            # el contrato completo, editable (la fuente)
+        ├── anexo-a-alcance.md     # el alcance (autollenado del diagnóstico)
+        ├── contrato.json          # los datos (para regenerar)
+        └── contrato.html          # versión cliente-facing (se imprime a PDF)
 ```
+> `<slug>` = kebab-case del negocio (ej. `cliente-inmobiliaria-vista-real`). Si ya existe el expediente (porque corriste `/diagnostico`, `/cotizacion` o `/propuesta` antes), **reúsalo** — solo agrega `4-contrato/`. No crees una carpeta `contrato-<slug>/` aparte.
 
 ---
 
 ## Fase 3 — Versión cliente-facing en HTML (imprime a PDF)
 
-El contrato lo **firma el cliente**, así que además del markdown editable genera un **HTML profesional, dark + acento cyan #00E5FF**, que imprima limpio a PDF (Cmd/Ctrl+P → "Guardar como PDF"). Debe verse de **agencia seria**.
+El contrato lo **firma el cliente**, así que además del markdown editable genera un **HTML profesional, claro (papel blanco) + acento cyan #00E5FF**, que imprima limpio a PDF (Cmd/Ctrl+P → "Guardar como PDF"). Debe verse de **agencia seria**. Documento cliente-facing = **fondo claro, NO dark** (consistente con la cotización y la propuesta que el cliente ya vio). El generador ya trae cortes de página limpios (ningún título de cláusula huérfano al pie, ninguna caja/tabla partida a la mitad) y márgenes A4.
 
 **Cómo generarlo (vía cómoda):**
 1. Arma un `contrato.json` con `{ titulo, agencia, campos: {...todos los placeholders llenos}, preambulo, declaraciones, clausulas: [{titulo, cuerpo_md}, ...] }`. **Estructura de contrato real** (basada en un contrato vetado por abogado): un **preámbulo** que define a las partes (EL PRESTADOR / EL CLIENTE), las **DECLARACIONES** (capacidad, domicilio, ID fiscal, actividades de cada parte + reconocimiento mutuo), y las **cláusulas** numeradas. Las **firmas** las arma el generador solo (desde `campos`: `NOMBRE_LEGAL_AGENCIA`/`REPRESENTANTE_AGENCIA`/`NOMBRE_LEGAL_CLIENTE`/`REPRESENTANTE_CLIENTE`). Pon todas las secciones (su `cuerpo_md` es el markdown ya rellenado). **Mira `scripts/contrato.ejemplo.json` como referencia COMPLETA del formato y el lenguaje legal** — está basado en un contrato profesional y parametrizado.
    - **Parametriza por país**: la cláusula de Ley Aplicable usa `{{PAIS_LEY}}` y `{{CIUDAD_JURISDICCION}}` (no hardcodees México); impuestos y relación-no-laboral se refieren a "la legislación aplicable de cada parte". El ejemplo está lleno para México, pero adáptalo al país del usuario (de su perfil) y del cliente.
    - **Parametriza por servicio/proyecto**: OBJETO y alcance desde el diagnóstico/propuesta; precio, hitos, revisiones, tope de APIs, kill fee y mantenimiento desde lo acordado en este trato.
-2. Corre:
+2. Corre (los fuentes viven en `cliente-<slug>/4-contrato/archivos/`):
    ```bash
-   python3 scripts/generar_contrato_html.py contrato-<slug>/contrato.json contrato-<slug>/contrato.html
+   python3 scripts/generar_contrato_html.py cliente-<slug>/4-contrato/archivos/contrato.json cliente-<slug>/4-contrato/archivos/contrato.html
    ```
 3. **Generar el PDF (automático).** Corre el conversor compartido (multi-OS):
    ```bash
-   python3 ~/.config/agencia-ia/html2pdf.py contrato-<slug>/contrato.html
+   python3 ~/.config/agencia-ia/html2pdf.py cliente-<slug>/4-contrato/archivos/contrato.html
    ```
-   `PDF: <ruta>` → quedó `contrato.pdf` junto al HTML. `NO_PDF:` → el usuario abre el `.html` y hace **Cmd/Ctrl+P → Guardar como PDF**.
-4. Abre el HTML, verifica que no queden marcadores `[placeholder]` en amarillo (significan campo sin llenar) y que las tablas/firmas se vean bien.
+   `PDF: <ruta>` → quedó `contrato.pdf` junto al HTML. Cópialo al root de la etapa con nombre presentable: `cp .../archivos/contrato.pdf "cliente-<slug>/4-contrato/Contrato — <Negocio>.pdf"`. `NO_PDF:` → el usuario abre el `.html` y hace **Cmd/Ctrl+P → Guardar como PDF**.
+4. Abre el HTML/PDF y verifica: (a) no quedan `[placeholder]` de campos SIN llenar (`{{...}}` sin resolver); (b) los datos legales que dejaste a propósito como placeholder salen **resaltados en amarillo** como `[revisar: ...]` — es la señal para reemplazarlos antes de firmar; (c) las tablas y el bloque de firmas se ven bien y ningún título de cláusula queda solo al pie de una página.
 
-**FALLBACK sin Python (el HTML SIEMPRE sale).** Si no hay Python o el script falla, **escribe tú el `contrato.html` con Write**, replicando el diseño de `scripts/generar_contrato_html.py` (CSS dark `#080810` + cyan `#00E5FF`, fuentes Space Grotesk + Instrument Serif italic para acentos, portada con folio/fecha, secciones numeradas con regla cyan, tablas de pago, bloque de firmas a 2 columnas, disclaimer en caja amarilla al final). Mismas reglas: escapar `<` `>` `&`, montos como `USD 2,400`. El cliente obtiene el mismo documento.
+**FALLBACK sin Python (el HTML SIEMPRE sale).** Si no hay Python o el script falla, **escribe tú el `contrato.html` con Write**, replicando el diseño de `scripts/generar_contrato_html.py` (CSS **claro**: papel blanco `#ffffff`/`#f6f8fa`, tinta `#0f1419`, acento cyan legible `#00B8CC`/`#00E5FF`, fuentes Space Grotesk + Instrument Serif italic para acentos, portada con folio/fecha, secciones numeradas con regla cyan, tablas de pago, bloque de firmas a 2 columnas, disclaimer en caja amarilla al final, y `@media print` con `break-after:avoid` en encabezados + `break-inside:avoid` en tablas/cajas/firmas). Mismas reglas: escapar `<` `>` `&`, montos como `USD 2,400`, y envolver los `[revisar: ...]` en `<span class="ph">`. El cliente obtiene el mismo documento.
 
 > El markdown es la **fuente editable**; el HTML/PDF es lo que **se manda a firmar**. Mantén ambos en sync (mismos datos).
 
@@ -204,9 +209,10 @@ gws drive files create --json '{"name":"Contrato — <Cliente>","mimeType":"appl
 
 Al terminar, dale al usuario:
 
-1. **Las rutas de los 3 archivos** (markdown, anexo, HTML) y dile cuál es cuál: *"`contrato.md` lo editas tú; `contrato.html` lo abres e imprimes a PDF para mandar a firmar."*
-2. **Un resumen de 5-6 bullets de las cláusulas que más lo protegen** (en cuate): el anticipo antes de empezar, la PI atada al pago completo, el kill fee, que el cliente paga las APIs con tope de uso, el descargo de IA, y el revoke de accesos al terminar.
-3. **Qué sigue en el flujo:** *"Cuando lo firme, generas el link de cobro del anticipo con `/cobro`, y conectas sus cuentas con `/conectar-cliente`."*
+1. **Las rutas** dentro del expediente `cliente-<slug>/4-contrato/`: el **PDF con nombre presentable** (`Contrato — <Negocio>.pdf`) es lo que se manda a firmar, y en `archivos/` están el `contrato.md` (editable), `anexo-a-alcance.md` y `contrato.html`. Dile cuál es cuál: *"el PDF lo mandas a firmar; el `contrato.md` lo editas tú y regeneras el PDF si cambias algo."*
+2. **Si dejaste datos legales como placeholder**, avísalo claro: *"los datos legales van resaltados en amarillo como `[revisar: ...]` (RFC, domicilios, razón social, correo). Reemplázalos por los reales en el `contrato.md` y regenera el PDF ANTES de mandarlo a firmar."*
+3. **Un resumen de 5-6 bullets de las cláusulas que más lo protegen** (en cuate): el anticipo antes de empezar, la PI atada al pago completo, el kill fee, que el cliente paga las APIs con tope de uso, el descargo de IA, y el revoke de accesos al terminar.
+4. **Qué sigue en el flujo:** *"Cuando lo firme, generas el link de cobro del anticipo con `/cobro` (cae en `5-cobro/`), y conectas sus cuentas con `/conectar-cliente`."*
 4. **El disclaimer, siempre:** *"Esto es un modelo sólido para arrancar. Si el trato es grande o de riesgo, que un abogado de tu país le dé una pasada antes de firmar."*
 
 ---
@@ -221,6 +227,8 @@ Al terminar, dale al usuario:
 - [ ] Cláusula 16 tiene **kill fee** y anticipo no reembolsable.
 - [ ] Anexo A autollenado del `diagnostico.json` si existía (no re-pedido).
 - [ ] Ningún `{{PLACEHOLDER}}` ni `[placeholder]` amarillo sin resolver (o marcado `[revisar]` a propósito).
+- [ ] Documento **claro (fondo blanco), NO dark**; cortes de página limpios (ningún título de cláusula huérfano al pie, ninguna tabla/caja/firmas partida).
+- [ ] Entregado en el expediente `cliente-<slug>/4-contrato/` (PDF presentable arriba, fuentes en `archivos/`); `CLAUDE.md` y `.DS_Store` borrados: `find cliente-<slug> \( -name CLAUDE.md -o -name .DS_Store \) -delete`.
 - [ ] **Disclaimer "no es asesoría legal"** al final de markdown y HTML.
 
 ---
@@ -232,7 +240,7 @@ Al terminar, dale al usuario:
 | `SKILL.md` | Este archivo — el flujo completo. |
 | `templates/contrato.md` | El contrato completo (19 secciones) con placeholders — la fuente editable. |
 | `templates/anexo-a-alcance.md` | El Anexo A (alcance), autollenado del diagnóstico. |
-| `scripts/generar_contrato_html.py` | Convierte un `contrato.json` lleno en el HTML cliente-facing (dark+cyan, imprime a PDF). |
+| `scripts/generar_contrato_html.py` | Convierte un `contrato.json` lleno en el HTML cliente-facing (claro+cyan, cortes de página limpios, imprime a PDF). |
 | `scripts/contrato.ejemplo.json` | Ejemplo del formato JSON que consume el generador (referencia / test). |
 
 ## Fuentes (de `_research/contrato.md`)
