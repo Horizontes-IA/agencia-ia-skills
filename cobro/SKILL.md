@@ -197,11 +197,21 @@ Esto es lo que **ve el cliente**, así que va doble: markdown editable + HTML pr
    `PDF: <ruta>` → quedó `factura.pdf` junto al HTML. `NO_PDF:` → el usuario abre el `.html` y hace **Cmd/Ctrl+P → Guardar como PDF**.
 4. *(opcional)* Si el usuario quiere, **súbelo a Google Docs** con la CLI `gws` (autenticada) para que lo edite/comparta. No es obligatorio.
 
-Guarda los entregables junto al cliente: idealmente dentro de `diagnostico-<negocio>/cobro/` (o `cobro-<negocio>/` si no hay diagnóstico):
-- `factura-<fase>.md`
-- `factura-<fase>.html`
-- `instrucciones-pago-<metodo>.md` (si no es Stripe)
-- `recordatorios-pago.md`
+Guarda los entregables en el **expediente del trato** (la MISMA carpeta que usan los demás skills: `cliente-<slug>/`, una carpeta por cliente con etapas numeradas). El cobro es la etapa **5-cobro/**: el **PDF cliente-facing con nombre presentable** arriba, la cobranza interna suelta, y los fuentes editables en `archivos/`:
+```
+cliente-<slug>/
+└── 5-cobro/
+    ├── Factura <Fase> — <Negocio>.pdf   # lo que le mandas al cliente
+    ├── seguimiento-cobranza.md          # uso interno: los 4 recordatorios si se atrasa
+    └── archivos/
+        ├── factura.json                 # los datos (para regenerar)
+        ├── factura.md                   # la factura editable
+        ├── factura-<fase>.html          # se imprime a PDF
+        └── instrucciones-pago-<metodo>.md   # si no es Stripe (datos/pasos del método)
+```
+> `<slug>` = kebab-case del negocio (ej. `cliente-inmobiliaria-vista-real`). Si ya existe el expediente (de `/diagnostico`, `/cotizacion`, `/propuesta`, `/contrato`), **reúsalo** — solo agrega `5-cobro/`. No crees una carpeta `cobro-<negocio>/` aparte.
+> **Limpia `CLAUDE.md` y `.DS_Store` del entregable** antes de presentar: `find cliente-<slug> \( -name CLAUDE.md -o -name .DS_Store \) -delete`.
+> Si dejaste datos de pago como placeholder (CLABE, banco, RFC), márcalos **`[revisar: ...]`** — el generador de la factura los resalta en amarillo para que sea imposible mandarla sin reemplazarlos.
 
 ### Fase 5 — Dejar lista la cobranza de pago tardío
 
