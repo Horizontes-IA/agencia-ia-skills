@@ -176,24 +176,34 @@ Construye el contenido de las 7 secciones siguiendo la **anatomía** de arriba. 
 
 **Lee el contrato:** `Read templates/propuesta.schema.md` — es la fuente de verdad de los nombres de campo. Respétalo al pie de la letra.
 
-1. Carpeta de salida: `propuesta-<slug>/` en el **directorio de trabajo actual del usuario** (NO dentro del skill). `slug` = kebab-case del negocio (ej. `propuesta-sabores-de-casa/`). Si existe, pregunta antes de sobrescribir o sufija con la fecha.
-2. Escribe `propuesta-<slug>/propuesta.json` con TODAS las secciones, conforme al schema. Montos en USD (número). `meta.validez_dias = 14`. Listas vacías `[]` donde no haya dato (NO inventar). Marca `"recomendada": true` SOLO en el tier del medio.
+1. **Convención de carpeta de entregables (síguela SIEMPRE):** el trato vive en `cliente-<slug>/` (el expediente completo; el mismo que crearon `/diagnostico` y `/cotizacion`). La propuesta es la etapa 3, con el PDF cliente-facing arriba y los fuentes en `archivos/`:
+   ```
+   cliente-<slug>/
+   └── 3-propuesta/
+       ├── Propuesta — <Negocio>.pdf     ← lo que se le manda al cliente
+       ├── seguimiento.md                 ← uso interno (los 5 correos de follow-up)
+       └── archivos/                       ← propuesta.html · .json · .md (no se mandan)
+   ```
+   Si ya existe `cliente-<slug>/` (por el diagnóstico/cotización), **reúsala**. Si no, créala con `slug` = kebab-case del negocio. Crea `cliente-<slug>/3-propuesta/archivos/`.
+2. Escribe `cliente-<slug>/3-propuesta/archivos/propuesta.json` con TODAS las secciones, conforme al schema. Montos en USD (número). `meta.validez_dias = 14`. Listas vacías `[]` donde no haya dato (NO inventar). Marca `"recomendada": true` SOLO en el tier del medio.
 
 ### Fase 4 — Genera el HTML cliente-facing + el markdown (trabajas)
 
-1. Corre el generador (usa el binario detectado en Fase 0):
+1. Corre el generador hacia `archivos/` (usa el binario detectado en Fase 0):
    ```
-   node scripts/generar_propuesta.mjs <ruta>/propuesta.json <ruta>/propuesta.html
+   node scripts/generar_propuesta.mjs cliente-<slug>/3-propuesta/archivos/propuesta.json cliente-<slug>/3-propuesta/archivos/propuesta.html
    ```
-   Imprime a stdout la ruta absoluta del `propuesta.html` — captúrala para el mensaje final. Es un documento **claro, premium, imprimible a PDF** (papel blanco, acento de la marca, fuentes Space Grotesk + Instrument Serif). Sin dependencias.
-1b. **Generar el PDF (automático).** Tras el `propuesta.html`, corre el conversor compartido (multi-OS, usa el navegador que ya tenga el usuario):
+   Es un documento **claro, premium, imprimible a PDF** (papel blanco, acento de la marca). Sin dependencias.
+1b. **PDF cliente-facing (nombre presentable, FUERA de `archivos/`).** Genera el PDF y muévelo/renómbralo a la raíz de la etapa:
    ```
-   python3 ~/.config/agencia-ia/html2pdf.py <ruta>/propuesta.html
+   python3 ~/.config/agencia-ia/html2pdf.py cliente-<slug>/3-propuesta/archivos/propuesta.html
+   mv cliente-<slug>/3-propuesta/archivos/propuesta.pdf "cliente-<slug>/3-propuesta/Propuesta — <Negocio>.pdf"
    ```
-   `PDF: <ruta>` → quedó `propuesta.pdf` junto al HTML (eso le mandas al cliente). `NO_PDF:` → dile que abra el `.html` y haga **Cmd/Ctrl+P → Guardar como PDF**. No bloquees por esto.
+   `NO_PDF:` → dile que abra `archivos/propuesta.html` y haga **Cmd/Ctrl+P → Guardar como PDF** (y lo mueva a la raíz de la etapa con nombre bonito). No bloquees por esto.
 2. **FALLBACK sin Node (el HTML SIEMPRE sale).** Si el comando falla o no hay Node: NO te detengas. Escribe tú el `propuesta.html` con Write, replicando la estructura y el CSS del generador (mira `scripts/generar_propuesta.mjs` — el `CSS` y las funciones de cada sección). Documento claro (NO dark), acento cyan, 7 secciones en orden, 3 tiers con el recomendado resaltado, CTA con pasos numerados. Escapa `<` `>` `&`.
-3. Genera también el **markdown editable** `propuesta-<slug>/propuesta.md` (rellena `templates/propuesta.md` con los datos reales — quita los placeholders `{{...}}`). Es el robusto/editable, como en /docs-entrega.
-4. Genera la **secuencia de seguimiento** `propuesta-<slug>/seguimiento.md` (rellena `templates/seguimiento.md`). Es el activo que de verdad cierra: 5 toques en 21 días.
+3. Genera también el **markdown editable** en `cliente-<slug>/3-propuesta/archivos/propuesta.md` (rellena `templates/propuesta.md` con los datos reales — quita los placeholders `{{...}}`). Es el robusto/editable, como en /docs-entrega.
+4. Genera la **secuencia de seguimiento** en `cliente-<slug>/3-propuesta/seguimiento.md` (raíz de la etapa, NO en `archivos/` — es un activo interno que el operador usa a diario; rellena `templates/seguimiento.md`). Es el activo que de verdad cierra: 5 toques en 21 días.
+5. **Limpia el ruido del entregable** (obligatorio antes de presentar): `find cliente-<slug> \( -name CLAUDE.md -o -name .DS_Store \) -delete` — los `CLAUDE.md` del plugin claude-mem filtran tu actividad interna y no deben ir en un entregable.
 
 ### Fase 5 — (Opcional) Google Docs + presentar el paquete (el wow)
 
@@ -214,16 +224,16 @@ Lo que hace que cierre:
 • 3 opciones con [Recomendado $Y] marcado — la mayoría elige esa.
 • Cierra con 3 pasos claros y vigencia de 14 días (urgencia real, no falsa).
 
-Te dejé todo en `propuesta-[slug]/`:
-  • propuesta.html      ← el PDF premium para mandarle (ábrelo → imprime a PDF)
-  • propuesta.md        ← versión editable por si quieres ajustar algo
-  • seguimiento.md      ← los 5 correos de follow-up (recuperan 25-30% de los que se enfrían)
+Te dejé todo en `cliente-[slug]/3-propuesta/`:
+  • Propuesta — [Negocio].pdf   ← esto le mandas al cliente
+  • seguimiento.md              ← los 5 correos de follow-up (recuperan 25-30% de los que se enfrían)
+  • archivos/                   ← propuesta.html + .md editables por si ajustas algo
   • propuesta.json      ← los datos (para regenerar o pasar a /contrato)
 
 Para abrir el PDF:
-  • Mac:     open propuesta-[slug]/propuesta.html  (luego ⌘P → Guardar como PDF)
-  • Windows: start propuesta-[slug]\propuesta.html
-  • Linux:   xdg-open propuesta-[slug]/propuesta.html
+  • Mac:     open "cliente-[slug]/3-propuesta/Propuesta — [Negocio].pdf"
+  • Windows: start "cliente-[slug]\3-propuesta\Propuesta — [Negocio].pdf"
+  • Linux:   xdg-open "cliente-[slug]/3-propuesta/Propuesta — [Negocio].pdf"
 
 Cómo presentarla para que cierre (de la investigación):
   1. NO se la mandes en frío por correo — preséntala en una llamada de 15 min y cierra ahí
@@ -250,7 +260,7 @@ Indica SIEMPRE la ruta exacta y el comando para abrir según OS.
 7. **Nada inventado.** Ningún ROI/precio/caso que no venga del diagnóstico/cotización o que el operador confirme. Sin dato → se omite la sección, no se rellena.
 8. **NUNCA pushy.** Prohibido countdowns, "cupos", "oferta". La única urgencia es la vigencia de 14 días (real).
 9. **Reusa, no recalcules.** Si hay diagnóstico → hereda el dolor y el ROI. Si hay cotización → hereda los tiers. No re-entrevistes lo que ya existe.
-10. **Carpeta auto-contenida.** Todo en `propuesta-<slug>/`. El HTML abre e imprime a PDF sin internet (fuentes por CDN; degrada a system fonts si no hay red).
+10. **Carpeta del trato, ordenada.** Todo en `cliente-<slug>/3-propuesta/` (etapa 3 del expediente): PDF cliente-facing arriba, fuentes en `archivos/`, `seguimiento.md` a la mano. El HTML abre e imprime a PDF sin internet (fuentes por CDN; degrada a system fonts si no hay red).
 
 ---
 
