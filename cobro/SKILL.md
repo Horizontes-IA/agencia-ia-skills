@@ -121,7 +121,9 @@ Reglas:
 
 #### Si eligió Stripe → automatízalo con Composio
 
-Usa el toolkit **`stripe`** vía la CLI de Composio. El slug principal es **`STRIPE_CREATE_PAYMENT_LINK`**.
+Usa el toolkit **`stripe`** vía la CLI de Composio (el instalador del kit ya deja el CLI listo). El slug principal es **`STRIPE_CREATE_PAYMENT_LINK`**.
+
+> **Si el CLI no está autenticado** (`composio whoami` falla), dile al usuario que corra **`composio login`** una vez (gratis, abre el navegador). Si el comando `composio` no existe, instálalo con `curl -fsSL https://composio.dev/install | bash`.
 
 **Antes de ejecutar**, dos cuidados confirmados por la investigación:
 - ⚠️ **El monto va en la unidad mínima (centavos).** $1,500.00 USD → `unit_amount: 150000`. **NO** pongas `1500`. Multiplica el monto por 100.

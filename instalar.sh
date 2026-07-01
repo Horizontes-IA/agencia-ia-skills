@@ -42,6 +42,21 @@ else
   echo "  ⚠️ No encontré npm. /conectar-cliente necesita Node: instálalo y corre 'npm install' en $SKILLS_DIR/conectar-cliente."
 fi
 
+# El CLI de Composio: lo usan /cobro (link de pago de Stripe) y /conectar-cliente (descubrir
+# tools para el curl de n8n/Make). Se instala UNA vez; la autenticación la hace el usuario
+# después con `composio login` (abre el navegador, no se puede automatizar aquí).
+if command -v composio >/dev/null 2>&1 || [ -x "$HOME/.composio/composio" ]; then
+  echo "  ✓ Composio CLI ya instalado"
+else
+  echo "  ⏳ instalando el Composio CLI…"
+  if curl -fsSL https://composio.dev/install | bash >/dev/null 2>&1; then
+    echo "  ✓ Composio CLI instalado (autentícalo después con: composio login)"
+  else
+    echo "  ⚠️ no pude instalar el Composio CLI. Instálalo tú (macOS/Linux; Windows con WSL):"
+    echo "       curl -fsSL https://composio.dev/install | bash"
+  fi
+fi
+
 # El onboarding + ejemplo de perfil + el conversor HTML→PDF, compartidos (los skills los leen de aquí)
 cp "$TMP/agencia/configurar.md" "$CONF_DIR/configurar.md"
 cp "$TMP/agencia/perfil.ejemplo.json" "$CONF_DIR/perfil.ejemplo.json"
@@ -52,4 +67,8 @@ echo ""
 echo "✅ Listo. Abre Claude Code y escribe:  /nuevo-cliente   (la puerta de entrada — arma todo el kit)"
 echo "   O usa un skill suelto: /diagnostico, /cotizacion, /propuesta, /contrato, /cobro."
 echo "   La primera vez te hará unas preguntas para configurar tu agencia (1 sola vez)."
-echo "   /conectar-cliente te pedirá una llave gratis de Composio (https://app.composio.dev) la primera vez."
+echo ""
+echo "🔑 Un paso más — autentícate en Composio (una sola vez, gratis):"
+echo "     composio login"
+echo "   Lo usan /cobro (para el link de pago de Stripe) y /conectar-cliente (cuentas del cliente)."
+echo "   Si 'composio' no se reconoce, cierra y reabre la terminal (o corre: source ~/.zshrc)."
