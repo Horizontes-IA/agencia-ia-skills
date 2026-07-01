@@ -138,7 +138,7 @@ Y para cada una: quién es el **usuario/email**, y **dónde vas a guardar la cre
 
 ### Paso 2 — Escribe el `accesos.json`
 
-Guárdalo en el expediente del cliente (`cliente-<slug>/` si existe, o `accesos-<slug>/`):
+Guárdalo en el **expediente del trato** — la MISMA carpeta que usan los demás skills (`cliente-<slug>/`), en la etapa **`6-accesos/`** (va después de `5-cobro/`). El documento presentable (`.docx` editable + `.pdf`) queda arriba con nombre `Accesos — <Negocio>`, y los fuentes (`accesos.json/.html/.md`) en `archivos/`. Si el expediente ya existe (de `/diagnostico`…`/cobro`), reúsalo; si no, crea `cliente-<slug>/6-accesos/`. Al terminar, limpia `CLAUDE.md` y `.DS_Store` del entregable: `find cliente-<slug> \( -name CLAUDE.md -o -name .DS_Store \) -delete`. Datos por llenar → márcalos `[revisar: ...]` (el generador los resalta en amarillo en el HTML/PDF). Ejemplo de `accesos.json`:
 ```json
 {
   "cliente": "Sabores de Casa",
