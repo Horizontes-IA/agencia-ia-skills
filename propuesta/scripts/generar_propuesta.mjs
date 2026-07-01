@@ -587,6 +587,15 @@ cite{font-style:normal; color:var(--muted); font-size:13px;}
   .exec-cost, blockquote, .quote, .trust, .oos, .anchor, .terms, .logos, .tools{break-inside:avoid;}
   /* ningún título se queda huérfano al final de la página: va con su contenido */
   h2,h3{break-after:avoid; page-break-after:avoid; break-inside:avoid;}
+  /* la intro que sigue al título se pega al título Y a su primer bloque:
+     el encabezado nunca queda solo (con su intro) al pie de una página */
+  .sec h2 + p{break-after:avoid; page-break-after:avoid;}
+  /* los contenedores grid/flex-column NO se fragmentan entre páginas (el motor los
+     trata como bloque atómico y empujan todo a la hoja siguiente dejando un hueco):
+     en print los volvemos flujo para que sus tarjetas se repartan y llenen la página */
+  .cases, .phases{display:block;}
+  .cases .case, .phases .phase{margin-bottom:12px;}
+  .cases .case:last-child, .phases .phase:last-child{margin-bottom:0;}
   a[href]:after{content:"";}
 }
 @media (max-width:680px){
