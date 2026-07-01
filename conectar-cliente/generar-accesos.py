@@ -13,12 +13,18 @@ La marca (nombre, color, contacto) sale de ~/.config/agencia-ia/perfil.json.
 
 Uso:  python3 generar-accesos.py <accesos.json> <output_dir>
 """
-import sys, os, json, html
+import sys, os, json, html, re
 from pathlib import Path
 
 
 def esc(s):
     return html.escape("" if s is None else str(s), quote=True)
+
+
+def marcar_revisar(s):
+    """Resalta en amarillo los datos placeholder [revisar: ...] para que sea imposible
+    entregar el documento sin llenarlos (los corchetes sobreviven a esc())."""
+    return re.sub(r"\[revisar[^\]]*\]", lambda m: '<span class="ph">' + m.group(0) + "</span>", s)
 
 
 def marca():
@@ -81,6 +87,7 @@ th{{text-align:left; background:var(--surface); color:var(--muted); text-transfo
   font-size:11px; font-weight:700; padding:11px 12px; border-bottom:2px solid var(--acc);}}
 td{{padding:12px; border-bottom:1px solid var(--line); vertical-align:top;}}
 td.app{{font-weight:600;}} td.loc{{color:var(--acc); font-weight:600;}} td.muted{{color:var(--muted);}}
+.ph{{background:#fff4d6; color:#8a6d00; font-style:italic; font-weight:600; border-radius:3px; padding:0 4px;}}
 .warn{{margin-top:28px; border:1px solid var(--line); border-left:4px solid var(--acc);
   background:var(--surface); border-radius:0 10px 10px 0; padding:16px 20px; font-size:13.5px; color:#3d4753;}}
 .warn b{{color:var(--ink);}}
@@ -168,7 +175,7 @@ def main():
         sys.exit("No pude leer el accesos.json: {}".format(e))
     out = Path(sys.argv[2]); out.mkdir(parents=True, exist_ok=True)
     m = marca()
-    (out / "accesos.html").write_text(build_html(d, m), encoding="utf-8")
+    (out / "accesos.html").write_text(marcar_revisar(build_html(d, m)), encoding="utf-8")
     (out / "accesos.md").write_text(build_md(d, m), encoding="utf-8")
     try:
         build_docx(d, m, out / "accesos.docx")
